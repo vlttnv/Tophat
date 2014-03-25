@@ -1,4 +1,4 @@
-from flask import render_template, request
+from flask import render_template, request, abort, jsonify
 from server import app
 import os
 
@@ -9,6 +9,14 @@ def index():
 
 @app.route('/register', methods = ['POST'])
 def register():
-    id = request.form['id']
-    location = request.form['location']
-	return 'Registered'
+    if not request.json or not 'id' and 'location' in request.json:
+        abort(400)
+        
+    producer = {
+        'id': request.json['id'],
+        'location': request.json['location']
+    }
+
+    print producer
+    
+    return jsonify( { 'producer': producer } ), 201
