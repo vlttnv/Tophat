@@ -1,0 +1,7 @@
+import requests, json
+from flask import jsonify
+
+payload = {'id': 'value', 'location': 'value2'}
+r = requests.post("http://138.251.207.92:5000/register", params=payload)
+print r.text
+print r.url
