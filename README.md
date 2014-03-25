@@ -1,5 +1,7 @@
-CTprac1
+Requirements
 =======
+pip install sqlalchemy
+pip install sqlalchemy-migrate
 
 Producer
 =======
