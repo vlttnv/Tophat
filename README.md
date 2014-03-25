@@ -2,6 +2,7 @@ Requirements
 =======
 pip install sqlalchemy  
 pip install sqlalchemy-migrate
+pip install flask
 
 Producer
 =======
