@@ -16,7 +16,13 @@ def register():
         'id': request.json['id'],
         'location': request.json['location']
     }
-
-    print producer
     
     return jsonify( { 'producer': producer } ), 201
+
+@app.route('/get_location/<int:producer_id>', methods = ['GET'])
+def get_location(producer_id):
+    data = {
+        'location': 'St Andrews'
+    }
+
+    return jsonify( { 'data': data } ), 201
