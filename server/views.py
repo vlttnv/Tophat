@@ -5,5 +5,10 @@ import os
 @app.route('/')
 @app.route('/index')
 def index():
-    title = 'Home'
-    return title
+    return 'Hello World'
+
+@app.route('/register', methods = ['POST'])
+def register():
+    id = request.form['id']
+    location = request.form['location']
+	return 'Registered'
