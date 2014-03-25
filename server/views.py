@@ -16,8 +16,6 @@ def register():
         'id': request.json['id'],
         'location': request.json['location']
     }
-
-    print producer
     
     return jsonify( { 'producer': producer } ), 201
 
@@ -27,4 +25,4 @@ def get_location(producer_id):
         'location': 'St Andrews'
     }
 
-    return jsonify( { 'data': data} )
+    return jsonify( { 'data': data } ), 201
