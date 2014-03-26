@@ -49,10 +49,9 @@ def receive():
     }
 
     now = datetime.utcnow()
-    epoch = time.time()
 
     # updateDB(data)
-    data_set = models.ProducerDataSet(id=int(request.json['id']) + int(time.time()), producer_id=request.json['id'], data=request.json['data'], time_stamp=now)
+    data_set = models.ProducerDataSet(id=int(request.json['id']) + int(time.time), producer_id=request.json['id'], data=request.json['data'], time_stamp=now)
     db.session.add(data_set)
     db.session.commit()
 
