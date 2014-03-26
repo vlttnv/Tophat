@@ -12,33 +12,35 @@ def index():
 
 @app.route('/heartbeat', methods = ['POST'])
 def heartbeat():
+
     if not request.json or not ('id' and 'location' in request.json):
         return 'Heartbeat object not understood.\n', 400
         
     producer = {
         'ip': request.remote_addr,
-        'id': request.json['id'],
-        'location': request.json['location']
+        'id': int(request.json['id']),
+        'location': request.json['location'],
+        'timestamp': datetime.utcnow()
     }
-    
-    # updateDB(producer)
-    # -check if producer exists
-    # --if not create new producer
-    # --otherwise query db for user id
-    # --and modify timestap
-    if models.Producer.query.filter_by(id=request.json['id']).count() == 0:
-	    prd = models.Producer(id=int(request.json['id']),
-			    location=request.json['location'],
-			    ip_address="null",
-			    timestamp=11)
-	    db.session.add(prd)
+
+    if models.Producer.query.filter_by(id = producer['id']).count() == 0:
+	    producer_model = models.Producer(
+            id = producer['id'],
+			location = producer['location'],
+			ip_address = producer['ip'],
+			timestamp = producer['timestamp']
+        )
+	    db.session.add(producer_model)
 	    db.session.commit()
-	    print "Added new user"
+
+	    print 'Added new producer:', producer['id'] 
+
     else:
-	    prd = models.Producer.query.filter_by(id=request.json['id']).first()
-	    prd.timestamp = 11
+	    producer_model = models.Producer.query.filter_by(id=producer['id']).first()
+	    producer_model.timestamp = producer['timestamp']
 	    db.session.commit()
-	    print "Heartbeat for producer id" + request.json['id'] 
+
+	    print 'Updated heartbeat for producer:', producer['id'] 
 
     return 'Heartbeat recorded', 200
 
@@ -46,7 +48,8 @@ def heartbeat():
 def get_location(producer_id):
 
     # getProducerLocation(producer_id)
-
+    
+    
     location = {
         'location': 'St Andrews'
     }
