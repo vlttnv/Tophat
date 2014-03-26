@@ -1,6 +1,6 @@
 import requests, json, argparse
 
-parser = argparse.ArgumentParser()
+parserrser = argparse.ArgumentParser()
 parser.add_argument('-a', '--address', help='Destination IP address')
 args = parser.parse_args()
 some_id = 1
