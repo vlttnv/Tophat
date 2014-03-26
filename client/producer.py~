@@ -5,9 +5,9 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-a', '--address', help='Destination IP address')
 args = parser.parse_args()
 
-payload = {'id': 'value', 'location': 'value2'}
+payload = {'id': '1', 'location': 'value2'}
 headers = {'content-type': 'application/json'}
-r = requests.post("http://138.251.207.92:5000/heartbeat", data=json.dumps(payload), headers=headers)
+r = requests.post("http://" + args.address + "/heartbeat", data=json.dumps(payload), headers=headers)
 print r.text
 print r.url
 
