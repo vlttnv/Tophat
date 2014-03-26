@@ -9,6 +9,9 @@ sets = db.Table('sets',
 class Producer(db.Model):
 	id		= db.Column(db.Integer, primary_key = True)
 	location	= db.Column(db.String(120))
+	ip_adress	= db.Column(db.String(120))
+	timestamp	= db.Column(db.DateTime)
+
 
 	def __repr__(self):
 		return '<Producer %r>' % (self.id)

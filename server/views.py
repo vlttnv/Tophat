@@ -27,6 +27,7 @@ def heartbeat():
     # --otherwise query db for user id
     # --and modify timestap
 
+
     return 'Heartbeat recorded', 200
 
 @app.route('/get_location/<int:producer_id>', methods = ['GET'])

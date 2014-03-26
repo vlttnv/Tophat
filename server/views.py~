@@ -22,6 +22,10 @@ def heartbeat():
     }
     
     # updateDB(producer)
+    # -check if producer exists
+    # --if not create new producer
+    # --otherwise query db for user id
+    # --and modify timestap
 
     return 'Heartbeat recorded', 200
 
