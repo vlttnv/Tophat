@@ -1,7 +1,7 @@
 Requirements
 =======
 pip install sqlalchemy  
-pip install sqlalchemy-migrate 
+pip install sqlalchemy-migrate  
 pip install flask-sqlalchemy  
 pip install flask
 
