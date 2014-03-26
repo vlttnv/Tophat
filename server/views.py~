@@ -27,7 +27,10 @@ def heartbeat():
     # --otherwise query db for user id
     # --and modify timestap
     if models.Producer.query.filter_by(id=request.json['id']).count() == 0:
-	    prd = models.Producer(id=request.json['id'],location=request.json['location'],ip_address="null",timestamp=11)
+	    prd = models.Producer(id=request.json['id'],
+			    location=request.json['location'],
+			    ip_address="null",
+			    timestamp=11)
 	    db.session.add(prd)
 	    db.session.commit()
 	    print "Added new user"
