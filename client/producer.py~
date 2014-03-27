@@ -3,7 +3,7 @@ from flask import jsonify
 
 # Finals
 HOST_NAME = ""
-PORT_NUMBER = 1337
+PORT_NUMBER = "1337"
 
 
 # Sample Json
