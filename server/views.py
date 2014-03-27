@@ -14,7 +14,6 @@ def index():
 
 @app.route('/heartbeat', methods=['POST'])
 def heartbeat():
-
     if not request.json or not ('id' and 'location' in request.json):
         return 'Heartbeat object not understood.', 400
     
@@ -34,6 +33,9 @@ def heartbeat():
 
 @app.route('/get_data/<int:producer_id>', methods=['GET'])
 def get_data(producer_id):
+    """
+    Consumer requests data from a producer
+    """
 
     if dbManager.doesProducerExist(producer_id) == False:
         return 'Producer does not exist', 400
@@ -46,17 +48,27 @@ def get_data(producer_id):
         if producer_ip is None:
             return 'Cannot find producer\'s IP address. Try again later', 400
 
-        fire_data_request(producer_ip)
+        return handleDataRequest(producer_id, producer_ip)
 
-        check_response = threading.Timer(1000.0, check_producer_response,
-            [producer_id, request.remote_addr])
-        check_response.start()
+def handleDataRequest(producer_id, producer_ip):
+    data = get_live_data_from_producer(producer_ip)
 
-    location = {
-        'location': 'St Andrews'
+    package = {
+        'id': producer_id + int(time.time()),
+        'producer_id': producer_id,
+        'data': data,
+        'timestamp': datetime.utcnow()
     }
 
-    return jsonify({'location': location}), 200
+    # update DB
+    dbManager.addProducerData(package)
+
+    return data, 200
+
+def get_live_data_from_producer(producer_ip):
+    r = requests.get('http://' + producer_ip + ':9000')
+
+    return r.text
 
 @app.route('/send', methods=['POST'])
 def receive():
@@ -77,21 +89,3 @@ def receive():
         return 'Data recorded', 200
     else:
         return 'Data not recorded. Try again later', 400
-
-def fire_data_request(producer_ip):
-    requests.get('http://' + producer_ip + '/get_data')
-
-def fire_data_response(producer_data, request_ip):
-    requests.post("http://" + requests_ip + "/send_data", data=producer_data)
-
-def check_producer_response(producer_id, resquest_ip):
-    """
-    Get latest producer data, check timestamp, and then decided whether to send
-    it back to the consumer
-    """
-
-    producer_data = dbManager.getProducerData(producer_id)
-
-    # check timestamp
-
-    fire_data_response(producer_data, request_ip)

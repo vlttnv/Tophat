@@ -51,11 +51,30 @@ def addProducerData(package):
     db.session.add(data_set)
     db.session.commit()
 
-    return true
+    return True
 
 def getProducerData(producer_id):
-    # get latest producer data
-    return 'Location: St Andrews'
+    """
+    Retrieve latest producer data
+    """
+
+    datasets = models.ProducerDataSet.filter_by(producer_id=producer_id)
+
+    datasets_count = datasets.count()
+    if datasets_count == 0:
+        print 'Dataset not found'
+        return None
+
+    elif datasets_count == 1:
+        print 'Found dataset:', datasets.first().id
+
+    else:
+        print 'Found more than one producer'
+
+    # use first result for now
+    data = datasets.first().data
+
+    return data
 
 def doesProducerExist(producer_id):
     if models.Producer.query.filter_by(id=producer_id).count() > 0:
@@ -64,18 +83,19 @@ def doesProducerExist(producer_id):
         return False
 
 def getProducerIP(producer_id):
-    results = models.Producer.query.filter_by(id=producer_id)
+    producers = models.Producer.query.filter_by(id=producer_id)
 
-    if results.count() == 0:
+    if producers.count() == 0:
+        print 'Producer not found'
         return None
 
-    else if results.count() == 1:
-        print 'Found producer'
+    elif producers.count() == 1:
+        print 'Found producer:', producer_id
 
-    else
+    else:
         print 'Found more than one producer'
 
     # use first result for now
-    ip_address = results.first().ip_address
+    ip_address = producers.first().ip_address
 
     return ip_address
