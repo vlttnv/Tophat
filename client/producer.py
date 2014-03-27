@@ -34,12 +34,13 @@ json_data = {
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-a', '--address', help='Destination IP address')
+parser.add_argument('-i', '--id', help='Producer ID')
 args = parser.parse_args()
 
 def heartbeat():
 	while 1:
 		time.sleep(1)
-		payload = {'id': '29', 'location': 'value2'}
+		payload = {'id': args.id, 'location': 'value2'}
 		headers = {'content-type': 'application/json'}
 		r = requests.post("http://" + args.address + "/heartbeat", data=json.dumps(payload), headers=headers)
 		print r.text
