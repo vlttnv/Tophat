@@ -1,4 +1,5 @@
-import requests, json, argparse, time, BaseHTTPServer
+import requests, json, argparse,time, BaseHTTPServer
+import threading
 from flask import jsonify
 
 # Finals
@@ -36,9 +37,9 @@ parser.add_argument('-a', '--address', help='Destination IP address')
 args = parser.parse_args()
 
 def heartbeat():
-	#while 1:
+	while 1:
 		time.sleep(1)
-		payload = {'id': '20', 'location': 'value2'}
+		payload = {'id': '29', 'location': 'value2'}
 		headers = {'content-type': 'application/json'}
 		r = requests.post("http://" + args.address + "/heartbeat", data=json.dumps(payload), headers=headers)
 		print r.text
@@ -56,10 +57,24 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 		s.end_headers()
 		s.wfile.write(json_data)
 
+def run_server():
+	server_class = BaseHTTPServer.HTTPServer
+	httpd = server_class(('', PORT_NUMBER), MyHandler)
+	print time.asctime(), "Server Starts - %s, %s" % (HOST_NAME, PORT_NUMBER)
+	try:
+		httpd.serve_forever()
+	except KeyboardInterrupt:
+		pass
+	httpd.server_close()
+	print time.asctime(), "Server Stops - %s, %s" % (HOST_NAME, PORT_NUMBER)
+
 
 
 if __name__ == '__main__':
-	heartbeat()
+	hb = threading.Thread(target=heartbeat)
+	hb.daemon=True
+	hb.start()
+		
 	server_class = BaseHTTPServer.HTTPServer
 	httpd = server_class(('', PORT_NUMBER), MyHandler)
 	print time.asctime(), "Server Starts - %s, %s" % (HOST_NAME, PORT_NUMBER)
