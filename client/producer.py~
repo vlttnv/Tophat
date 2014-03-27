@@ -3,7 +3,7 @@ from flask import jsonify
 
 # Finals
 HOST_NAME = ""
-PORT_NUMBER = 1337
+PORT_NUMBER = 9000
 
 
 # Sample Json
@@ -27,7 +27,7 @@ json_data = {
                 }
             }
         }
-    }
+		}
 }
 
 
@@ -38,7 +38,7 @@ args = parser.parse_args()
 def heartbeat():
 	#while 1:
 		time.sleep(1)
-		payload = {'id': '2', 'location': 'value2'}
+		payload = {'id': '15', 'location': 'value2'}
 		headers = {'content-type': 'application/json'}
 		r = requests.post("http://" + args.address + "/heartbeat", data=json.dumps(payload), headers=headers)
 		print r.text
