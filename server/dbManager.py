@@ -1,8 +1,13 @@
 from server import models, db
+from sqlalchemy.exc import IntegrityError
 
 def updateHeartBeat(producer):
     """
-    producer = {
+    Update producer's information. If the producer does not exist,
+    add a new record to the database
+
+    Producer data format:
+    {
         'ip': ID address,
         'id': producer ID (mobile phone unique ID),
         'location': location,
@@ -10,48 +15,78 @@ def updateHeartBeat(producer):
     }
     """
 
-    if models.Producer.query.filter_by(id=producer['id']).count() == 0:
-        producer_model = models.Producer(
+    producers = models.Producer.query.filter_by(id=producer['id'])
+    producers_count = producers.count()
+
+    if producers_count == 0:
+        # add a new producer
+        producer_new = models.Producer(
             id = producer['id'],
             location = producer['location'],
             ip_address = producer['ip'],
             timestamp = producer['timestamp']
         )
-        db.session.add(producer_model)
-        db.session.commit()
 
-        print 'Added new producer:', producer['id']
+        try:
+            db.session.add(producer_new)
+            db.session.commit()
+            print 'Added new producer:', producer['id']
+            return True
+
+        except IntegrityError as err:
+            print 'Failed to add a new producer:', producer['id']
+            return False
+
+    elif producers_count == 1:
+        # update producer info
+        producer_old = producers.first()
+
+        try:
+            # update ip & timestamp
+            producer_old.ip_address = producer['ip']
+            producer_old.timestamp = producer['timestamp']
+            db.session.commit()
+            print 'Updated heartbeat for producer:', producer['id']
+            return True
+
+        except IntegrityError as err:
+            print 'Failed to update heartbeat for producer:', producer['id']
+            return False
 
     else:
-        producer_model = models.Producer.query.filter_by(id=producer['id']).first()
-        producer_model.timestamp = producer['timestamp']
-        db.session.commit()
+        print 'Found more than one producer with the same id:', producer['id']
+        return False
 
-        print 'Updated heartbeat for producer:', producer['id']
 
-    return True
-
-def addProducerData(package):
+def addProducerData(dataset):
     """
-     package = {
-        'id': data package ID
+    Add producer data to the database
+
+    Dataset format:
+    {
+        'id': dataset ID
         'producer_id': producer ID (mobile phone unique ID),
         'data': data,
         'timestamp': timestamp
     }
     """
 
-    data_set = models.ProducerDataSet(
-        id = package['id'],
-        producer_id = package['producer_id'],
-        data = package['data'],
-        timestamp = package['timestamp']
+    dataset_new = models.ProducerDataSet(
+        id = dataset['id'],
+        producer_id = dataset['producer_id'],
+        data = dataset['data'],
+        timestamp = dataset['timestamp']
     )
 
-    db.session.add(data_set)
-    db.session.commit()
+    try:
+        db.session.add(dataset_new)
+        db.session.commit()
+        print 'Added new dataset:', dataset['id']
+        return True
 
-    return True
+    except IntegrityError as err:
+        print 'Failed to add a new dataset:', dataset['id']
+        return False
 
 def getProducerData(producer_id):
     """
@@ -59,8 +94,8 @@ def getProducerData(producer_id):
     """
 
     datasets = models.ProducerDataSet.filter_by(producer_id=producer_id)
-
     datasets_count = datasets.count()
+
     if datasets_count == 0:
         print 'Dataset not found'
         return None
@@ -77,12 +112,20 @@ def getProducerData(producer_id):
     return data
 
 def doesProducerExist(producer_id):
+    """
+    Return true if a record of the producer exists in the database
+    """
+
     if models.Producer.query.filter_by(id=producer_id).count() > 0:
         return True
     else:
         return False
 
 def getProducerIP(producer_id):
+    """
+    Retrieve the producer IP address from the ID
+    """
+
     producers = models.Producer.query.filter_by(id=producer_id)
 
     if producers.count() == 0:
