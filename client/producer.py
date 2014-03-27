@@ -36,9 +36,9 @@ parser.add_argument('-a', '--address', help='Destination IP address')
 args = parser.parse_args()
 
 def heartbeat():
-	while 1:
+	#while 1:
 		time.sleep(1)
-		payload = {'id': '2', 'location': 'value2'}
+		payload = {'id': '15', 'location': 'value2'}
 		headers = {'content-type': 'application/json'}
 		r = requests.post("http://" + args.address + "/heartbeat", data=json.dumps(payload), headers=headers)
 		print r.text
@@ -59,6 +59,7 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
 
 if __name__ == '__main__':
+	heartbeat()
 	server_class = BaseHTTPServer.HTTPServer
 	httpd = server_class(('', PORT_NUMBER), MyHandler)
 	print time.asctime(), "Server Starts - %s, %s" % (HOST_NAME, PORT_NUMBER)

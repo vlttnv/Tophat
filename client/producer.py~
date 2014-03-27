@@ -3,7 +3,7 @@ from flask import jsonify
 
 # Finals
 HOST_NAME = ""
-PORT_NUMBER = "1337"
+PORT_NUMBER = 1337
 
 
 # Sample Json
@@ -36,7 +36,7 @@ parser.add_argument('-a', '--address', help='Destination IP address')
 args = parser.parse_args()
 
 def heartbeat():
-	while 1:
+	#while 1:
 		time.sleep(1)
 		payload = {'id': '2', 'location': 'value2'}
 		headers = {'content-type': 'application/json'}
@@ -59,6 +59,7 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
 
 if __name__ == '__main__':
+	heartbeat()
 	server_class = BaseHTTPServer.HTTPServer
 	httpd = server_class(('', PORT_NUMBER), MyHandler)
 	print time.asctime(), "Server Starts - %s, %s" % (HOST_NAME, PORT_NUMBER)
