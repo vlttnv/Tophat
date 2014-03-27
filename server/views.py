@@ -14,6 +14,10 @@ def index():
 
 @app.route('/heartbeat', methods=['POST'])
 def heartbeat():
+    """
+    Consumer registers with the broker
+    """
+    
     if not request.json or not ('id' and 'location' in request.json):
         return 'Heartbeat object not understood.', 400
     
@@ -48,9 +52,13 @@ def get_data(producer_id):
         if producer_ip is None:
             return 'Cannot find producer\'s IP address. Try again later', 400
 
-        return handleDataRequest(producer_id, producer_ip)
+        return handle_data_request(producer_id, producer_ip)
 
-def handleDataRequest(producer_id, producer_ip):
+def handle_data_request(producer_id, producer_ip):
+    """
+    Get data from the producer and return it
+    """
+
     data = get_live_data_from_producer(producer_ip)
 
     package = {
@@ -66,12 +74,20 @@ def handleDataRequest(producer_id, producer_ip):
     return data, 200
 
 def get_live_data_from_producer(producer_ip):
+    """
+    Retrieve live data from the producer
+    """
+
     r = requests.get('http://' + producer_ip + ':9000')
 
     return r.text
 
 @app.route('/send', methods=['POST'])
 def receive():
+    """
+    Receive data from the producers
+    """
+
     if not request.json or not ('producer_id' and 'data' in request.json):
         return 'Data object not understood.\n', 400
 
