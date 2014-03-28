@@ -1,7 +1,7 @@
 from server import models, db
 from sqlalchemy.exc import IntegrityError
 
-def updateHeartBeat(producer):
+def update_heartbeat(producer):
     """
     Update producer's information. If the producer does not exist,
     add a new record to the database
@@ -58,7 +58,7 @@ def updateHeartBeat(producer):
         return False
 
 
-def addProducerData(dataset):
+def add_dataset(dataset):
     """
     Add producer data to the database
 
@@ -88,9 +88,9 @@ def addProducerData(dataset):
         print 'Failed to add a new dataset:', dataset['id']
         return False
 
-def getProducerData(producer_id):
+def get_latest_dataset(producer_id):
     """
-    Retrieve latest producer data
+    Retrieve data with the most recent timestamp from the producer
     """
 
     datasets = models.ProducerDataSet.filter_by(producer_id=producer_id)
@@ -111,7 +111,11 @@ def getProducerData(producer_id):
 
     return data
 
-def doesProducerExist(producer_id):
+def generate_dataset_id(producer_id):
+    # TODO
+    return 0
+
+def exists_producer(producer_id):
     """
     Return true if a record of the producer exists in the database
     """
@@ -121,7 +125,7 @@ def doesProducerExist(producer_id):
     else:
         return False
 
-def getProducerIP(producer_id):
+def get_producer_ip(producer_id):
     """
     Retrieve the producer IP address from the ID
     """
@@ -142,3 +146,25 @@ def getProducerIP(producer_id):
     ip_address = producers.first().ip_address
 
     return ip_address
+
+def get_producer_port(producer_id):
+    """
+    Retrieve the producer port from the ID
+    """
+
+    producers = models.Producer.query.filter_by(id=producer_id)
+
+    if producers.count() == 0:
+        print 'Producer not found'
+        return None
+
+    elif producers.count() == 1:
+        print 'Found producer:', producer_id
+
+    else:
+        print 'Found more than one producer'
+
+    # use first result for now
+    port = producers.first().port
+
+    return port

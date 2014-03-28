@@ -1,5 +1,5 @@
 from flask import render_template, request, abort, jsonify, g
-from server import app, dbManager
+from server import app, db_manager, exceptions
 from datetime import datetime
 import time
 import os
@@ -15,25 +15,37 @@ def index():
 @app.route('/heartbeat', methods=['POST'])
 def heartbeat():
     """
-    Consumer registers with the broker
+    Producer registers with the broker
     """
 
-    if not request.json or not ('id' and 'location' in request.json):
+    if not request.json or not ('port' and 'id' and 'location' in request.json):
         return 'Heartbeat object not understood.', 400
     
+    producer_addr = request.remote_addr
+    producer_port = request.json['port']
+    producer_id = request.json['id']
+    producer_location = request.json['location']
+
+    print 'Request from', producer_addr, ': register a heartbeat.'
+
+    if type(producer_port) is not int:
+        return 'Producer id must be an integer.', 400
+
+    if type(producer_id) is not int:
+        return 'Producer port must be an integer.', 400
+
     producer = {
-        'ip': request.remote_addr,
-        'id': int(request.json['id']),
-        'location': request.json['location'],
+        'ip': producer_addr,
+        'port': int(producer_port),
+        'id': int(producer_id),
+        'location': producer_location,
         'timestamp': datetime.utcnow()
     }
 
-    print 'Producer', request.remote_addr, 'registering a heartbeat'
+    updated_heartbeat = db_manager.update_heartbeat(producer)
 
-    updated = dbManager.updateHeartBeat(producer)
-
-    if updated:
-        return 'Heartbeat recorded', 200
+    if updated_heartbeat:
+        return 'Heartbeat recorded.', 200
     else:
         return 'Heartbeat not recorded. Try again later.', 400
 
@@ -43,55 +55,78 @@ def get_data(producer_id):
     Consumer requests data from a producer
     """
 
-    print 'Consumer', request.remote_addr, 'looking for producer:', producer_id
+    print 'Request from', request.remote_addr, + \
+            ': retrieve data from producer', producer_id
 
-    if dbManager.doesProducerExist(producer_id) == False:
+    if db_manager.exists_producer(producer_id) == False:
         return 'Producer does not exist', 400
 
     else:
         #add consumer to the queue
 
-        producer_ip = dbManager.getProducerIP(producer_id)
+        try:
+            data = retrieve_data(producer_id)
+            return data, 200
+        except ProducerIPNotFoundException:
+            return 'Cannot find producer\'s IP address. Try again later.', 400
+        except ProducerPortNotFoundException:
+            return 'Cannot find producer\'s port number. Try again later.', 400
+        except ProducerTimeoutException:
+            return 'Request to the producer timeout\'d. Try again later.', 400
 
-        if producer_ip is None:
-            return 'Cannot find producer\'s IP address. Try again later', 400
-        else:
-            print 'Found producer IP address:', producer_ip
-            return handle_data_request(producer_id, producer_ip)
-
-def handle_data_request(producer_id, producer_ip):
+def retrieve_data(producer_id):
     """
-    Get data from the producer and return it
+    Retrieve the most recent data from the producer
     """
 
-    data = get_live_data_from_producer(producer_id, producer_ip)
+    print 'Getting live data from producer', producer_id
 
-    if data is None:
-        return 'Requests timeout', 400
+    producer_addr = db_manager.get_producer_ip(producer_id)
+    producer_port = db_manager.get_producer_port(producer_id)
 
-    dataset_new = {
-        'id': producer_id + int(time.time()),
-        'producer_id': producer_id,
-        'data': data,
-        'timestamp': datetime.utcnow()
-    }
+    if producer_addr is None:
+        raise ProducerIPNotFoundException()
 
-    # update DB
-    dbManager.addProducerData(dataset_new)
+    if producer_port is None:
+        raise ProducerPortNotFoundException()
 
-    return data, 200
+    print 'Found producer IP address:', producer_ip, + \
+            'and port number:', producer_port
 
-def get_live_data_from_producer(producer_id, producer_ip):
-    """
-    Retrieve live data from the producer
-    """
     try:
-        # timeout after 10 seconds
-        r = requests.get('http://' + producer_ip + ':9000', timeout=10)
+        data = get_live_data(producer_ip, producer_port)
+
+        dataset_new = {
+            'id': producer_id + int(time.time()),
+            'producer_id': producer_id,
+            'data': data,
+            'timestamp': datetime.utcnow()
+        }
+
+        # update DB
+        db_manager.add_dataset(dataset_new)
+
+        return data
+
+    except ProducerTimeoutException:
+        raise
+
+def get_live_data(producer_ip, producer_port):
+    """
+    Retrieve live data from the producer (id=producer_id, ip=producer_ip)
+
+    Timeout after 10 seconds
+    """
+
+    timeout = 10
+
+    try:
+        r = requests.get(
+            'http://' + producer_ip + producer_port,
+            timeout=timeout)
         return r.text
     except requests.exceptions.Timeout:
-        print 'Requests timeout from producer:', producer_id
-        return None
+        raise ProducerTimeoutException()
 
 @app.route('/send', methods=['POST'])
 def receive():
@@ -101,8 +136,9 @@ def receive():
 
     if not request.json or not ('producer_id' and 'data' in request.json):
         return 'Data object not understood.\n', 400
+    
+    print 'Request from', request.remote_addr, ': send data'
 
-    # id = custom identifier for the dataset
     dataset = {
         'id': request.json['producer_id'] + int(time.time()),
         'producer_id': request.json['producer_id'],
@@ -110,7 +146,7 @@ def receive():
         'timestamp': datetime.utcnow()
     }
 
-    updated = dbManager.addProducerData(dataset)
+    updated = db_manager.add_dataset(dataset)
 
     if updated:
         return 'Data recorded', 200
