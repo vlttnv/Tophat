@@ -33,12 +33,12 @@ json_data = {
 
 # Set up command line arguments
 parser = argparse.ArgumentParser(description='A producer that sends heartbeats to a specified server, while lsitening on a specified port for incoming GET requests.')
-parser.add_argument('-rA', '--remote-address', help='Destination IP address used for the hearbeats')
-parser.add_argument('-rP', '--remote-port', help='Destionatioon PORT number used for the heartbeat')
+parser.add_argument('remote_address', help='Destination IP address used for the hearbeats')
+parser.add_argument('remote_port', help='Destionatioon PORT number used for the heartbeat')
 parser.add_argument('-lA', '--local-address', default='',help='Host name used to listen for a GET request. Leave blank to listen on all interfaces.')
 parser.add_argument('-lP', '--local-port', default=9000, type=int, help='Local PORT port number used for the listening server. Default is 9000')
-parser.add_argument('-i', '--id', help='Producer ID')
-parser.add_argument('-hB', '--heartbeat', type=int, default=1 help='Heartbeat interval')
+parser.add_argument('id', help='Producer ID')
+parser.add_argument('-hB', '--heartbeat', type=int, default=1, help='Heartbeat interval')
 args = parser.parse_args()
 
 # Check the qreuqired command line arguments
