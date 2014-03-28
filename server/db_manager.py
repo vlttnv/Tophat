@@ -3,14 +3,18 @@ from sqlalchemy.exc import IntegrityError
 
 def update_heartbeat(producer):
     """
-    Update producer's information. If the producer does not exist,
-    add a new record to the database
+    Update the producer's IP address, port, and timestamp.
 
-    Producer data format:
+    Add a new record of the producer to the database if it does not already
+    exists.
+
+    Return True if the database has been updated, and False otherwise.
+
+    Producer format:
     {
-        'ip': ID address,
         'id': producer ID (mobile phone unique ID),
         'location': location,
+        'ip_address': ID address,
         'timestamp': timestamp,
         'port': port number
     }
@@ -24,7 +28,7 @@ def update_heartbeat(producer):
         producer_new = models.Producer(
             id = producer['id'],
             location = producer['location'],
-            ip_address = producer['ip'],
+            ip_address = producer['ip_address'],
             timestamp = producer['timestamp'],
             port = producer['port']
         )
@@ -45,7 +49,7 @@ def update_heartbeat(producer):
 
         try:
             # update ip & timestamp
-            producer_old.ip_address = producer['ip']
+            producer_old.ip_address = producer['ip_address']
             producer_old.port = producer['port']
             producer_old.timestamp = producer['timestamp']
             db.session.commit()
@@ -63,7 +67,9 @@ def update_heartbeat(producer):
 
 def add_dataset(dataset):
     """
-    Add producer data to the database
+    Add producer data to the database.
+
+    Return True if successful, and False otherwise.
 
     Dataset format:
     {
@@ -84,19 +90,23 @@ def add_dataset(dataset):
     try:
         db.session.add(dataset_new)
         db.session.commit()
-        print 'Added new dataset:', dataset['id']
+        print 'Added new dataset:', dataset['id'], \
+            '. Data: ', dataset['data']
         return True
 
     except IntegrityError as err:
-        print 'Failed to add a new dataset:', dataset['id']
+        print 'Failed to add dataset:', dataset['id'], \
+            '. Data: ', dataset['data']
         return False
 
 def get_latest_dataset(producer_id):
     """
-    Retrieve data with the most recent timestamp from the producer
+    Retrieve the most recent data uploaded from the producer.
+
+    Return None if there is no match or one than one match.
     """
 
-    datasets = models.ProducerDataSet.filter_by(producer_id=producer_id)
+    datasets = models.ProducerDataSet.query.filter_by(producer_id=producer_id)
     datasets_count = datasets.count()
 
     if datasets_count == 0:
@@ -116,7 +126,8 @@ def generate_dataset_id(producer_id):
 
 def exists_producer(producer_id):
     """
-    Return true if a record of the producer exists in the database
+    Return True if a record of the producer exists in the database,
+    and False otherwise
     """
 
     if models.Producer.query.filter_by(id=producer_id).count() > 0:
@@ -126,14 +137,16 @@ def exists_producer(producer_id):
 
 def get_producer_ip(producer_id):
     """
-    Retrieve the producer IP address from the ID
+    Retrieve the producer IP address from the ID.
+
+    Return None if there is no match or one than one match.
     """
 
     producers = models.Producer.query.filter_by(id=producer_id)
     producers_count = producers.count()
 
     if producers_count == 0:
-        print 'Producer not found'
+        print 'Producer not found.'
         return None
     elif producers_count > 1:
         print 'Found more than one producer.'
@@ -148,13 +161,15 @@ def get_producer_ip(producer_id):
 def get_producer_port(producer_id):
     """
     Retrieve the producer port from the ID
+
+    Return None if there is no match or one than one match.
     """
 
     producers = models.Producer.query.filter_by(id=producer_id)
     producers_count = producers.count()
 
     if producers_count == 0:
-        print 'Producer not found'
+        print 'Producer not found.'
         return None
     elif producers_count > 1:
         print 'Found more than one producer.'

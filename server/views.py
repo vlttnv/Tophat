@@ -1,6 +1,6 @@
 from flask import render_template, request, abort, jsonify, g
 from server import app, db_manager
-from server.exceptions import ProducerTimeoutException, \
+from server.exceptions import ProducerConnectionException, \
     ProducerIPNotFoundException, ProducerPortNotFoundException, \
     ProducerDataNotFoundException
 from datetime import datetime
@@ -18,7 +18,7 @@ def index():
 @app.route('/heartbeat', methods=['POST'])
 def heartbeat():
     """
-    Producer registers with the broker
+    Register the sender as a producer.
     """
 
     print 'Request from', request.remote_addr, ': register a heartbeat.'
@@ -27,14 +27,12 @@ def heartbeat():
         return 'Heartbeat object not understood.', 400
 
     producer = {
-        'ip': request.remote_addr,
-        'port': int(request.json['port']),
         'id': int(request.json['id']),
         'location': request.json['location'],
-        'timestamp': datetime.utcnow()
+        'ip_address': request.remote_addr,
+        'timestamp': datetime.utcnow(),
+        'port': int(request.json['port'])
     }
-
-    print 'heartbeat port:', producer['port']
 
     updated_heartbeat = db_manager.update_heartbeat(producer)
 
@@ -46,7 +44,7 @@ def heartbeat():
 @app.route('/get_data/<int:producer_id>', methods=['GET'])
 def get_data(producer_id):
     """
-    Consumer requests data from a producer
+    Request data from the producer whose ID is producer_id
     """
 
     print 'Request from', request.remote_addr, \
@@ -84,6 +82,8 @@ def retrieve_data(producer_id):
     if producer_port is None:
         raise ProducerPortNotFoundException()
 
+    have_live_data = False
+
     try:
         data = get_live_data(producer_addr, producer_port)
 
@@ -96,28 +96,24 @@ def retrieve_data(producer_id):
 
         # update DB
         db_manager.add_dataset(dataset_new)
-
         return data
+    except ProducerConnectionException:
+        pass
 
-    except ProducerTimeoutException:
-        print 'Failed to get live data, looking into the database'
-
-        data = db_manager.get_latest_dataset(producer_id)
-
-        if data is not None:
-            return data
-        else:
-            print 'Failed to get old data'
-            raise ProducerDataNotFoundException()
+    try:
+        data = get_old_data(producer_id)
+        return data
+    except ProducerDataNotFoundException:
+        raise
 
 def get_live_data(producer_addr, producer_port):
     """
-    Retrieve live data from the producer producer_addr:producer_port
+    Retrieve live data from the producer @ producer_addr:producer_port
 
     Timeout after 10 seconds
     """
 
-    print 'Asking for live data from producer:' + \
+    print 'Asking live data from producer @ ' + \
         str(producer_addr) + ':' + str(producer_port)
 
     timeout = 10
@@ -128,7 +124,26 @@ def get_live_data(producer_addr, producer_port):
             timeout=timeout)
         return r.text
     except requests.exceptions.Timeout:
-        raise ProducerTimeoutException()
+        print 'Failed to get live data - request timeout.'
+        raise ProducerConnectionException()
+    except requests.exceptions.ConnectionError:
+        print 'Failed to connect to the producer'
+        raise ProducerConnectionException()
+
+def get_old_data(producer_id):
+    """
+    Retrieve old data from the database
+    """
+
+    print 'Asking old data from the database'
+
+    data = db_manager.get_latest_dataset(producer_id)
+
+    if data is not None:
+        return data
+    else:
+        print 'Failed to get old data - not in database.'
+        raise ProducerDataNotFoundException()
 
 @app.route('/send', methods=['POST'])
 def receive():
