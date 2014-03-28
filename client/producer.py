@@ -55,7 +55,7 @@ The interval can be specified using a command line argument -hB
 def heartbeat():
 	while 1:
 		time.sleep(args.heartbeat)
-		payload = {'id': args.id, 'location': 'value2'}
+		payload = {'id': args.id, 'location': 'value2', 'port': args.local_port}
 		headers = {'content-type': 'application/json'}
 		r = requests.post("http://" + args.remote_address + args.remote_port + "/heartbeat", data=json.dumps(payload), headers=headers)
 		print r.text
