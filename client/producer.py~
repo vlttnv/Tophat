@@ -31,26 +31,37 @@ json_data = {
 		}
 }
 
-
-parser = argparse.ArgumentParser()
-parser.add_argument('-a', '--address', help='Destination IP address')
+# Set up command line arguments
+parser = argparse.ArgumentParser(description='A producer that sends heartbeats to a specified server, while lsitening on a specified port for incoming GET requests.')
+parser.add_argument('-rA', '--remote-address', help='Destination IP address used for the hearbeats')
+parser.add_argument('-rP', '--remote-port', help='Destionatioon PORT number used for the heartbeat')
+parser.add_argument('-lA', '--local-address', default='',help='Host name used to listen for a GET request. Leave blank to listen on all interfaces.')
+parser.add_argument('-lP', '--local-port', default=9000, type=int, help='Local PORT port number used for the listening server. Default is 9000')
+parser.add_argument('-i', '--id', help='Producer ID')
+parser.add_argument('-hB', '--heartbeat', type=int, help='Heartbeat interval')
 args = parser.parse_args()
 
+# Check the qreuqired command line arguments
+if not args.remote_address or not args.remote_address:
+	print 'Missing remote address or remote port.'
+	quit(1)
+
+"""
+Sending  periodic heartbeats to the main server
+
+The interval can be specified using a command line argument -hB
+"""
 def heartbeat():
 	while 1:
 		time.sleep(1)
-		payload = {'id': '29', 'location': 'value2'}
+		payload = {'id': args.id, 'location': 'value2'}
 		headers = {'content-type': 'application/json'}
-		r = requests.post("http://" + args.address + "/heartbeat", data=json.dumps(payload), headers=headers)
-		print r.text
-		print r.url
+		#r = requests.post("http://" + args.remote_address + args.remote_port + "/heartbeat", data=json.dumps(payload), headers=headers)
+		#print r.text
+		#print r.url
 
-#payload2 = {'producer_id': '1', 'data': 'd2ed2e4r3ro4j3k n324nk34'}
-#headers2 =  {'content-type': 'application/json'}
-#r2 = requests.post("http://" + args.address + "/send", data=json.dumps(payload2), headers=headers2
-#print r2.text
 
-class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
+class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
 	def do_GET(s):
 		s.send_response(200)
 		s.send_header("Content-type", "application/json")
@@ -59,28 +70,31 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
 def run_server():
 	server_class = BaseHTTPServer.HTTPServer
-	httpd = server_class(('', PORT_NUMBER), MyHandler)
-	print time.asctime(), "Server Starts - %s, %s" % (HOST_NAME, PORT_NUMBER)
+	httpd = server_class((args.local_address, args.local_port), Handler)
+	print time.asctime(), "Server Starts - %s, %s" % (args.local_address, args.local_port)
 	try:
 		httpd.serve_forever()
 	except KeyboardInterrupt:
 		pass
 	httpd.server_close()
-	print time.asctime(), "Server Stops - %s, %s" % (HOST_NAME, PORT_NUMBER)
+	print time.asctime(), "Server Stops - %s, %s" % (args.local_address, args.locale_port)
 
 
 
 if __name__ == '__main__':
+	# Make heartbeat thread and start it
 	hb = threading.Thread(target=heartbeat)
 	hb.daemon=True
 	hb.start()
-		
-	server_class = BaseHTTPServer.HTTPServer
-	httpd = server_class(('', PORT_NUMBER), MyHandler)
-	print time.asctime(), "Server Starts - %s, %s" % (HOST_NAME, PORT_NUMBER)
-	try:
-		httpd.serve_forever()
-	except KeyboardInterrupt:
-		pass
-	httpd.server_close()
-	print time.asctime(), "Server Stops - %s, %s" % (HOST_NAME, PORT_NUMBER)
+	#run_server()
+	# Set up and start server
+	# Listening on port 9000
+	#server_class = BaseHTTPServer.HTTPServer
+	#httpd = server_class((args.local_address, args.local_port), Handler)
+	#print time.asctime(), "Server Starts - %s, %s" % (args.local_address, args.local_port)
+	#try:
+	#	httpd.serve_forever()
+	#except KeyboardInterrupt:
+	#	pass
+	#httpd.server_close()
+	#print time.asctime(), "Server Stops - %s, %s" % (args.local_address, args.local_port)
