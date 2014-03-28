@@ -57,9 +57,8 @@ def heartbeat():
 		time.sleep(args.heartbeat)
 		payload = {'id': args.id, 'location': 'value2', 'port': args.local_port}
 		headers = {'content-type': 'application/json'}
-		r = requests.post("http://" + args.remote_address + args.remote_port + "/heartbeat", data=json.dumps(payload), headers=headers)
-		print r.text
-		print r.url
+		r = requests.post("http://" + args.remote_address + ":" + args.remote_port + "/heartbeat", data=json.dumps(payload), headers=headers)
+		print 'O>', r.text
 
 
 class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
@@ -88,4 +87,14 @@ if __name__ == '__main__':
 	hb = threading.Thread(target=heartbeat)
 	hb.daemon=True
 	hb.start()
-	run_server()
+	server_class = BaseHTTPServer.HTTPServer
+	httpd = server_class((args.local_address, args.local_port), Handler)
+	print 'O> Server Starts - ', time.asctime()
+	print 'O> Listening on port %s' % (args.local_port)
+	try:
+		httpd.serve_forever()
+	except KeyboardInterrupt:
+		pass
+	httpd.server_close()
+	print 'O> Server Stops - ', time.asctime()
+
