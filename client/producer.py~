@@ -43,7 +43,8 @@ args = parser.parse_args()
 
 # Check the qreuqired command line arguments
 if not args.remote_address or not args.remote_address:
-	print 'Missing remote address or remote port.'
+	print '!> Missing remote address or remote port.'
+	print '!> Use -h to for help.'
 	quit(1)
 
 """
@@ -56,9 +57,9 @@ def heartbeat():
 		time.sleep(1)
 		payload = {'id': args.id, 'location': 'value2'}
 		headers = {'content-type': 'application/json'}
-		#r = requests.post("http://" + args.remote_address + args.remote_port + "/heartbeat", data=json.dumps(payload), headers=headers)
-		#print r.text
-		#print r.url
+		r = requests.post("http://" + args.remote_address + args.remote_port + "/heartbeat", data=json.dumps(payload), headers=headers)
+		print r.text
+		print r.url
 
 
 class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
@@ -71,13 +72,14 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
 def run_server():
 	server_class = BaseHTTPServer.HTTPServer
 	httpd = server_class((args.local_address, args.local_port), Handler)
-	print time.asctime(), "Server Starts - %s, %s" % (args.local_address, args.local_port)
+	print '*> Server Starts - ', time.asctime()
+	print '*> Listening on port %s' % (args.local_port)
 	try:
 		httpd.serve_forever()
 	except KeyboardInterrupt:
 		pass
 	httpd.server_close()
-	print time.asctime(), "Server Stops - %s, %s" % (args.local_address, args.locale_port)
+	print '*> Server Stops - ', time.asctime()
 
 
 
@@ -86,15 +88,4 @@ if __name__ == '__main__':
 	hb = threading.Thread(target=heartbeat)
 	hb.daemon=True
 	hb.start()
-	#run_server()
-	# Set up and start server
-	# Listening on port 9000
-	#server_class = BaseHTTPServer.HTTPServer
-	#httpd = server_class((args.local_address, args.local_port), Handler)
-	#print time.asctime(), "Server Starts - %s, %s" % (args.local_address, args.local_port)
-	#try:
-	#	httpd.serve_forever()
-	#except KeyboardInterrupt:
-	#	pass
-	#httpd.server_close()
-	#print time.asctime(), "Server Stops - %s, %s" % (args.local_address, args.local_port)
+	run_server()

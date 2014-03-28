@@ -38,12 +38,13 @@ parser.add_argument('-rP', '--remote-port', help='Destionatioon PORT number used
 parser.add_argument('-lA', '--local-address', default='',help='Host name used to listen for a GET request. Leave blank to listen on all interfaces.')
 parser.add_argument('-lP', '--local-port', default=9000, type=int, help='Local PORT port number used for the listening server. Default is 9000')
 parser.add_argument('-i', '--id', help='Producer ID')
-parser.add_argument('-hB', '--heartbeat', type=int, help='Heartbeat interval')
+parser.add_argument('-hB', '--heartbeat', type=int, default=1 help='Heartbeat interval')
 args = parser.parse_args()
 
 # Check the qreuqired command line arguments
 if not args.remote_address or not args.remote_address:
-	print 'Missing remote address or remote port.'
+	print '!> Missing remote address or remote port.'
+	print '!> Use -h to for help.'
 	quit(1)
 
 """
@@ -53,7 +54,7 @@ The interval can be specified using a command line argument -hB
 """
 def heartbeat():
 	while 1:
-		time.sleep(1)
+		time.sleep(args.heartbeat)
 		payload = {'id': args.id, 'location': 'value2'}
 		headers = {'content-type': 'application/json'}
 		r = requests.post("http://" + args.remote_address + args.remote_port + "/heartbeat", data=json.dumps(payload), headers=headers)
@@ -71,13 +72,14 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
 def run_server():
 	server_class = BaseHTTPServer.HTTPServer
 	httpd = server_class((args.local_address, args.local_port), Handler)
-	print time.asctime(), "Server Starts - %s, %s" % (args.local_address, args.local_port)
+	print 'O> Server Starts - ', time.asctime()
+	print 'O> Listening on port %s' % (args.local_port)
 	try:
 		httpd.serve_forever()
 	except KeyboardInterrupt:
 		pass
 	httpd.server_close()
-	print time.asctime(), "Server Stops - %s, %s" % (args.local_address, args.locale_port)
+	print 'O> Server Stops - ', time.asctime()
 
 
 
