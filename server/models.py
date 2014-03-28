@@ -5,6 +5,7 @@ class Producer(db.Model):
 	location	= db.Column(db.String(120))
 	ip_address	= db.Column(db.String(120))
 	timestamp	= db.Column(db.String(120))
+	port		= db.Column(db.Integer)
 
 
 	def __repr__(self):
