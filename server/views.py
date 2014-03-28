@@ -1,5 +1,8 @@
 from flask import render_template, request, abort, jsonify, g
-from server import app, db_manager, exceptions
+from server import app, db_manager
+from server.exceptions import ProducerTimeoutException, \
+    ProducerIPNotFoundException, ProducerPortNotFoundException, \
+    ProducerDataNotFoundException
 from datetime import datetime
 import time
 import os
@@ -18,29 +21,20 @@ def heartbeat():
     Producer registers with the broker
     """
 
+    print 'Request from', request.remote_addr, ': register a heartbeat.'
+
     if not request.json or not ('port' and 'id' and 'location' in request.json):
         return 'Heartbeat object not understood.', 400
-    
-    producer_addr = request.remote_addr
-    producer_port = request.json['port']
-    producer_id = request.json['id']
-    producer_location = request.json['location']
-
-    print 'Request from', producer_addr, ': register a heartbeat.'
-
-    if type(producer_port) is not int:
-        return 'Producer id must be an integer.', 400
-
-    if type(producer_id) is not int:
-        return 'Producer port must be an integer.', 400
 
     producer = {
-        'ip': producer_addr,
-        'port': int(producer_port),
-        'id': int(producer_id),
-        'location': producer_location,
+        'ip': request.remote_addr,
+        'port': int(request.json['port']),
+        'id': int(request.json['id']),
+        'location': request.json['location'],
         'timestamp': datetime.utcnow()
     }
+
+    print 'heartbeat port:', producer['port']
 
     updated_heartbeat = db_manager.update_heartbeat(producer)
 
@@ -55,7 +49,7 @@ def get_data(producer_id):
     Consumer requests data from a producer
     """
 
-    print 'Request from', request.remote_addr, + \
+    print 'Request from', request.remote_addr, \
             ': retrieve data from producer', producer_id
 
     if db_manager.exists_producer(producer_id) == False:
@@ -71,15 +65,15 @@ def get_data(producer_id):
             return 'Cannot find producer\'s IP address. Try again later.', 400
         except ProducerPortNotFoundException:
             return 'Cannot find producer\'s port number. Try again later.', 400
-        except ProducerTimeoutException:
-            return 'Request to the producer timeout\'d. Try again later.', 400
+        except ProducerDataNotFoundException:
+            return 'Cannot retreive data. Try again later.', 400
 
 def retrieve_data(producer_id):
     """
     Retrieve the most recent data from the producer
     """
 
-    print 'Getting live data from producer', producer_id
+    print 'Retrieving data from producer:', producer_id
 
     producer_addr = db_manager.get_producer_ip(producer_id)
     producer_port = db_manager.get_producer_port(producer_id)
@@ -90,11 +84,8 @@ def retrieve_data(producer_id):
     if producer_port is None:
         raise ProducerPortNotFoundException()
 
-    print 'Found producer IP address:', producer_ip, + \
-            'and port number:', producer_port
-
     try:
-        data = get_live_data(producer_ip, producer_port)
+        data = get_live_data(producer_addr, producer_port)
 
         dataset_new = {
             'id': producer_id + int(time.time()),
@@ -109,20 +100,31 @@ def retrieve_data(producer_id):
         return data
 
     except ProducerTimeoutException:
-        raise
+        print 'Failed to get live data, looking into the database'
 
-def get_live_data(producer_ip, producer_port):
+        data = db_manager.get_latest_dataset(producer_id)
+
+        if data is not None:
+            return data
+        else:
+            print 'Failed to get old data'
+            raise ProducerDataNotFoundException()
+
+def get_live_data(producer_addr, producer_port):
     """
-    Retrieve live data from the producer (id=producer_id, ip=producer_ip)
+    Retrieve live data from the producer producer_addr:producer_port
 
     Timeout after 10 seconds
     """
+
+    print 'Asking for live data from producer:' + \
+        str(producer_addr) + ':' + str(producer_port)
 
     timeout = 10
 
     try:
         r = requests.get(
-            'http://' + producer_ip + producer_port,
+            'http://' + str(producer_addr) + ':' + str(producer_port),
             timeout=timeout)
         return r.text
     except requests.exceptions.Timeout:
@@ -134,10 +136,10 @@ def receive():
     Receive data from the producers
     """
 
+    print 'Request from', request.remote_addr, ': send data'
+
     if not request.json or not ('producer_id' and 'data' in request.json):
         return 'Data object not understood.\n', 400
-    
-    print 'Request from', request.remote_addr, ': send data'
 
     dataset = {
         'id': request.json['producer_id'] + int(time.time()),

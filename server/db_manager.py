@@ -11,7 +11,8 @@ def update_heartbeat(producer):
         'ip': ID address,
         'id': producer ID (mobile phone unique ID),
         'location': location,
-        'timestamp': timestamp
+        'timestamp': timestamp,
+        'port': port number
     }
     """
 
@@ -24,7 +25,8 @@ def update_heartbeat(producer):
             id = producer['id'],
             location = producer['location'],
             ip_address = producer['ip'],
-            timestamp = producer['timestamp']
+            timestamp = producer['timestamp'],
+            port = producer['port']
         )
 
         try:
@@ -44,6 +46,7 @@ def update_heartbeat(producer):
         try:
             # update ip & timestamp
             producer_old.ip_address = producer['ip']
+            producer_old.port = producer['port']
             producer_old.timestamp = producer['timestamp']
             db.session.commit()
             print 'Updated heartbeat for producer:', producer['id']
@@ -99,17 +102,13 @@ def get_latest_dataset(producer_id):
     if datasets_count == 0:
         print 'Dataset not found'
         return None
-
-    elif datasets_count == 1:
-        print 'Found dataset:', datasets.first().id
-
-    else:
+    elif datasets_count > 1:
         print 'Found more than one producer'
-
-    # use first result for now
-    data = datasets.first().data
-
-    return data
+        return None
+    else:
+        dataset = datasets.first()
+        print 'Found dataset:', dataset.id
+        return dataset.data
 
 def generate_dataset_id(producer_id):
     # TODO
@@ -131,21 +130,20 @@ def get_producer_ip(producer_id):
     """
 
     producers = models.Producer.query.filter_by(id=producer_id)
+    producers_count = producers.count()
 
-    if producers.count() == 0:
+    if producers_count == 0:
         print 'Producer not found'
         return None
-
-    elif producers.count() == 1:
-        print 'Found producer:', producer_id
-
+    elif producers_count > 1:
+        print 'Found more than one producer.'
+        return None
     else:
-        print 'Found more than one producer'
+        # use the first row for now
+        ip_address = producers.first().ip_address
 
-    # use first result for now
-    ip_address = producers.first().ip_address
-
-    return ip_address
+        print 'Found producer:', producer_id, 'IP address:', ip_address
+        return ip_address
 
 def get_producer_port(producer_id):
     """
@@ -153,18 +151,17 @@ def get_producer_port(producer_id):
     """
 
     producers = models.Producer.query.filter_by(id=producer_id)
+    producers_count = producers.count()
 
-    if producers.count() == 0:
+    if producers_count == 0:
         print 'Producer not found'
         return None
-
-    elif producers.count() == 1:
-        print 'Found producer:', producer_id
-
+    elif producers_count > 1:
+        print 'Found more than one producer.'
+        return None
     else:
-        print 'Found more than one producer'
+        # use the first row for now
+        port_number = producers.first().port
 
-    # use first result for now
-    port = producers.first().port
-
-    return port
+        print 'Found producer:', producer_id, 'port number:', port_number
+        return port_number
