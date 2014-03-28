@@ -39,6 +39,7 @@ parser.add_argument('-lA', '--local-address', default='',help='Host name used to
 parser.add_argument('-lP', '--local-port', default=9000, type=int, help='Local PORT port number used for the listening server. Default is 9000')
 parser.add_argument('id', help='Producer ID')
 parser.add_argument('-hB', '--heartbeat', type=int, default=1, help='Heartbeat interval')
+parser.add_argument('-s', '--silent', action='store_true', default=False, help='Enable silent mode')
 args = parser.parse_args()
 
 # Check the qreuqired command line arguments
@@ -58,7 +59,8 @@ def heartbeat():
 		payload = {'id': args.id, 'location': 'value2', 'port': args.local_port}
 		headers = {'content-type': 'application/json'}
 		r = requests.post("http://" + args.remote_address + ":" + args.remote_port + "/heartbeat", data=json.dumps(payload), headers=headers)
-		print 'O>', r.text
+		if not args.silent:
+				print 'O>', r.text
 
 
 class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
@@ -71,14 +73,16 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
 def run_server():
 	server_class = BaseHTTPServer.HTTPServer
 	httpd = server_class((args.local_address, args.local_port), Handler)
-	print 'O> Server Starts - ', time.asctime()
-	print 'O> Listening on port %s' % (args.local_port)
+	if not args.silent:
+			print 'O> Server Starts - ', time.asctime()
+			print 'O> Listening on port %s' % (args.local_port)
 	try:
 		httpd.serve_forever()
 	except KeyboardInterrupt:
 		pass
 	httpd.server_close()
-	print 'O> Server Stops - ', time.asctime()
+	if not args.silent:
+			print 'O> Server Stops - ', time.asctime()
 
 
 
@@ -89,12 +93,14 @@ if __name__ == '__main__':
 	hb.start()
 	server_class = BaseHTTPServer.HTTPServer
 	httpd = server_class((args.local_address, args.local_port), Handler)
-	print 'O> Server Starts - ', time.asctime()
-	print 'O> Listening on port %s' % (args.local_port)
+	if not args.silent:
+			print 'O> Server Starts - ', time.asctime()
+			print 'O> Listening on port %s' % (args.local_port)
 	try:
 		httpd.serve_forever()
 	except KeyboardInterrupt:
 		pass
 	httpd.server_close()
-	print 'O> Server Stops - ', time.asctime()
+	if not args.silent:
+			print 'O> Server Stops - ', time.asctime()
 
