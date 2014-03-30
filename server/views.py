@@ -11,7 +11,7 @@ import requests
 import threading
 
 ips={}
-
+queue_heartbeat = queue.Queue(100)
 
 @app.route('/')
 @app.route('/index')

@@ -18,30 +18,30 @@ class Queue:
 	def add(self, producer):
 		producer_id = producer['id']
 
-		if isFull() and (producer_id not in self.queue):
+		if self.isFull() and (producer_id not in self.queue):
 			print 'Queue is full. Flushing.'
 			self._flush()
 
 		if producer_id in self.queue:
 			print 'Updating pre-existing producer(' + str(producer_id) + \
-					')information in the queue.'
+					') information in the queue.'
 		else:
 			print 'Adding a new producer(' + str(producer_id) + \
-					')infromation to the queue.'
+					') infromation to the queue.'
 
 		self.queue[producer_id] = producer
 
 	def get(self, producer_id):
 		if producer_id in self.queue:
 			print 'Producer(' + str(producer_id) + \
-					')information is in the queue.'
+					') information is in the queue.'
 			return self.queue[producer_id]
 		else:
 			print 'Producer(' + str(producer_id) + \
-					')information is not in the queue.'
+					') information is not in the queue.'
 			return None
 
-	def _flush():
+	def _flush(self):
 		for key, value in self.queue.iteritems():
 			updated_heartbeat = db_manager.update_heartbeat(value)
 
