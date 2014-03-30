@@ -1,5 +1,6 @@
 from server import models, db
 from sqlalchemy.exc import IntegrityError
+import time
 
 def update_heartbeat(producer):
     """
@@ -121,8 +122,12 @@ def get_latest_dataset(producer_id):
         return dataset.data
 
 def generate_dataset_id(producer_id):
-    # TODO
-    return 0
+	"""
+	Generate a unique ID for a dataset
+
+	"""
+	new_id = int(producer_id) + int(time.time())
+	return new_id
 
 def exists_producer(producer_id):
     """
@@ -134,6 +139,17 @@ def exists_producer(producer_id):
         return True
     else:
         return False
+
+def exists_producer_location(producer_location):
+	"""
+	Return True if a record of the producer exists in the database,
+	based on location
+	"""
+	
+	if models.Producer.query.filter_by(location=producer_location).count() > 0:
+		return True
+	else:
+		return False
 
 def get_producer_ip(producer_id):
     """
