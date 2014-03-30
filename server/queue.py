@@ -20,7 +20,7 @@ class Queue:
 
 		if isFull() and (producer_id not in self.queue):
 			print 'Queue is full. Flushing.'
-			self.flush()
+			self._flush()
 
 		if producer_id in self.queue:
 			print 'Updating pre-existing producer(' + str(producer_id) + \
