@@ -1,5 +1,5 @@
 from flask import render_template, request, abort, jsonify, g
-from server import app, db_manager
+from server import app, queue, db_manager
 from server.exceptions import ProducerConnectionException, \
     ProducerIPNotFoundException, ProducerPortNotFoundException, \
     ProducerDataNotFoundException
@@ -10,6 +10,7 @@ import sqlite3
 import requests
 import threading
 
+<<<<<<< HEAD
 queue = {}
 ips = {}
 limit = 100
@@ -67,6 +68,9 @@ def flush():
             print 'Heartbeat recorded for producer:', key
         else:
             print 'Heartbeat not recorded for producer:', key
+=======
+queue_heartbeat = queue.Queue(100)
+>>>>>>> 7e8d60b0d3144335b90c7ea11684989391da9cf7
 
 @app.route('/')
 @app.route('/index')
@@ -97,7 +101,7 @@ def heartbeat():
         'port': int(request.json['port'])
     }
 
-    add(producer)
+    queue_heartbeat.add(producer)
 
     return 'Heartbeat added to the queue', 200
 
@@ -166,7 +170,7 @@ def retrieve_data(producer_id):
         pass
 
     # check queue
-    data_from_queue = get(producer_id)
+    data_from_queue = queue_heartbeat.get(producer_id)
 
     if data_from_queue is not None:
         return data_from_queue
