@@ -10,6 +10,8 @@ import sqlite3
 import requests
 import threading
 
+ips={}
+
 
 @app.route('/')
 @app.route('/index')
@@ -18,31 +20,25 @@ def index():
 
 @app.route('/heartbeat', methods=['POST'])
 def heartbeat():
-    """
+
+	"""
     Register the sender as a producer.
     """
+	print 'Request from', request.remote_addr, ': register a heartbeat.'
+	
+	if not request.json or not ('port' and 'id' and 'location' in request.json):
+		return 'Heartbeat object not understood.', 400
 
-    print 'Request from', request.remote_addr, ': register a heartbeat.'
-
-	if request.remote_addr in ips and time.time() - ips[request.remote_addr] < 10:
-		print "You are requesting data too often"
-	else:
-		ips[request.remote_addr] = time.time()
-
-    if not request.json or not ('port' and 'id' and 'location' in request.json):
-        return 'Heartbeat object not understood.', 400
-
-    producer = {
-        'id': int(request.json['id']),
-        'location': request.json['location'],
-        'ip_address': request.remote_addr,
-        'timestamp': datetime.utcnow(),
-        'port': int(request.json['port'])
-    }
-
-    queue_heartbeat.add(producer)
-
-    return 'Heartbeat added to the queue', 200
+	producer = {
+			'id': int(request.json['id']),
+			'location': request.json['location'],
+			'ip_address': request.remote_addr,
+			'timestamp': datetime.utcnow(),
+			'port': int(request.json['port'])
+			}
+	queue_heartbeat.add(producer)
+	
+	return 'Heartbeat added to the queue', 200
 
     # updated_heartbeat = db_manager.update_heartbeat(producer)
 
@@ -59,13 +55,19 @@ def get_data(producer_id):
 
     print 'Request from', request.remote_addr, \
             ': retrieve data from producer', producer_id
+    
+    if request.remote_addr in ips and time.time() - ips[request.remote_addr] < 1:
+        return 'Too many requsts from a single IP'
+
 
     # check db
     if db_manager.exists_producer(producer_id) == False:
+        ips[request.remote_addr] = time.time()
         return 'Producer does not exist', 400
 
     else:
         try:
+            ips[request.remote_addr] = time.time()
             data = retrieve_data(producer_id)
             return data, 200
         except ProducerIPNotFoundException as err:
