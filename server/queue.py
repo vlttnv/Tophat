@@ -49,3 +49,5 @@ class Queue:
 				print 'Heartbeat recorded for producer:', key
 			else:
 				print 'Heartbeat not recorded for producer:', key
+
+		self.queue.clear()

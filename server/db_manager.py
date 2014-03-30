@@ -100,7 +100,7 @@ def add_dataset(dataset):
 			'. Data: ', dataset['data']
 		return False
 
-def get_latest_dataset(producer_id):
+def get_dataset(producer_id):
 	"""
 	Retrieve the most recent data uploaded from the producer.
 
@@ -118,6 +118,23 @@ def get_latest_dataset(producer_id):
 		return None
 	else:
 		dataset = datasets.first()
+		print 'Found dataset:', dataset.id
+		return dataset.data
+
+def get_dateset_location(location):
+	"""
+	Retrieve the most recent data from the location.
+
+	Return None if no match found
+	"""
+
+	dataset = models.ProducerDataSet.query.filter_by(location=location) \
+				.order_by(models.ProducerDataSet.timestamp.desc()).get_first()
+
+	if dataset_latest is None:
+		print 'Dataset not found'
+		return None
+	else:
 		print 'Found dataset:', dataset.id
 		return dataset.data
 
@@ -140,13 +157,13 @@ def exists_producer(producer_id):
 	else:
 		return False
 
-def exists_producer_location(producer_location):
+def exists_location(location):
 	"""
-	Return True if a record of the producer exists in the database,
-	based on location
+	Return True if a record of the producer from the location exists in the
+	database, and False otherwise
 	"""
-	
-	if models.Producer.query.filter_by(location=producer_location).count() > 0:
+
+	if models.Producer.query.filter_by(location=location).count() > 0:
 		return True
 	else:
 		return False
