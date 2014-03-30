@@ -11,6 +11,7 @@ import requests
 import threading
 
 queue = {}
+ips = {}
 limit = 100
 
 def size():
@@ -79,6 +80,11 @@ def heartbeat():
     """
 
     print 'Request from', request.remote_addr, ': register a heartbeat.'
+
+	if request.remote_addr in ips and time.time() - ips[request.remote_addr] < 10:
+		print "You are requesting data too often"
+	else:
+		ips[request.remote_addr] = time.time()
 
     if not request.json or not ('port' and 'id' and 'location' in request.json):
         return 'Heartbeat object not understood.', 400
