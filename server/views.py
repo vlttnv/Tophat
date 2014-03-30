@@ -10,7 +10,6 @@ import sqlite3
 import requests
 import threading
 
-queue_heartbeat = queue.Queue(100)
 
 @app.route('/')
 @app.route('/index')
@@ -25,8 +24,8 @@ def heartbeat():
 
 	print 'Request from', request.remote_addr, ': register a heartbeat.'
 
-	if not request.json or not ('port' and 'id' and 'location' in request.json):
-		return 'Heartbeat object not understood.', 400
+    if not request.json or not ('port' and 'id' and 'location' in request.json):
+        return 'Heartbeat object not understood.', 400
 
 	producer = {
 		'id': int(request.json['id']),

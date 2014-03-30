@@ -48,12 +48,12 @@ if not args.remote_address or not args.remote_address:
 	print '!> Use -h to for help.'
 	quit(1)
 
-"""
-Sending  periodic heartbeats to the main server
-
-The interval can be specified using a command line argument -hB
-"""
 def heartbeat():
+	"""
+	Sending  periodic heartbeats to the main server
+
+	The interval can be specified using a command line argument -hB
+	"""
 	while 1:
 		time.sleep(args.heartbeat)
 		payload = {'id': args.id, 'location': 'value2', 'port': args.local_port}
@@ -91,16 +91,5 @@ if __name__ == '__main__':
 	hb = threading.Thread(target=heartbeat)
 	hb.daemon=True
 	hb.start()
-	server_class = BaseHTTPServer.HTTPServer
-	httpd = server_class((args.local_address, args.local_port), Handler)
-	if not args.silent:
-			print 'O> Server Starts - ', time.asctime()
-			print 'O> Listening on port %s' % (args.local_port)
-	try:
-		httpd.serve_forever()
-	except KeyboardInterrupt:
-		pass
-	httpd.server_close()
-	if not args.silent:
-			print 'O> Server Stops - ', time.asctime()
+	run_server()
 
