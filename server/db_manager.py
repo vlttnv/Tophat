@@ -1,5 +1,6 @@
 from server import models, db
 from sqlalchemy.exc import IntegrityError
+import time
 
 def update_heartbeat(producer):
     """
@@ -121,8 +122,12 @@ def get_latest_dataset(producer_id):
         return dataset.data
 
 def generate_dataset_id(producer_id):
-    # TODO
-    return 0
+	"""
+	Generate a unique ID for a dataset
+
+	"""
+	new_id = int(producer_id) + int(time.time())
+	return new_id
 
 def exists_producer(producer_id):
     """
