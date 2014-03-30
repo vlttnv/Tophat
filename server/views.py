@@ -1,5 +1,5 @@
 from flask import render_template, request, abort, jsonify, g
-from server import app, db_manager
+from server import app, queue, db_manager
 from server.exceptions import ProducerConnectionException, \
     ProducerIPNotFoundException, ProducerPortNotFoundException, \
     ProducerDataNotFoundException
@@ -10,62 +10,7 @@ import sqlite3
 import requests
 import threading
 
-queue = {}
-limit = 100
-
-def size():
-    return len(queue)
-
-def isEmpty():
-    return len(queue) == 0
-
-def isFull():
-    return len(queue) == limit
-
-def add(producer):
-    producer_id = producer['id']
-
-    if isFull() and (producer_id not in queue):
-        print 'Queue is full. Flushing.'
-        flush()
-
-    if producer_id in queue:
-        print 'Updating pre-existing producer(' + str(producer_id) + \
-                ')information in the queue.'
-    else:
-        print 'Adding a new producer(' + str(producer_id) + \
-                ')infromation to the queue.'
-
-    queue[producer_id] = producer
-
-def remove(producer):
-    if isEmpty():
-        print 'Queue is empty.'
-        return False
-    else:
-        producer_id = producer['id']
-
-        if producer_id in queue:
-            return True
-
-def get(producer_id):
-    if producer_id in queue:
-        print 'Producer(' + str(producer_id) + \
-                ')information is in the queue.'
-        return queue[producer_id]
-    else:
-        print 'Producer(' + str(producer_id) + \
-                ')information is not in the queue.'
-        return None
-
-def flush():
-    for key, value in queue_heartbeat.iteritems():
-        updated_heartbeat = db_manager.update_heartbeat(value)
-
-        if updated_heartbeat:
-            print 'Heartbeat recorded for producer:', key
-        else:
-            print 'Heartbeat not recorded for producer:', key
+queue_heartbeat = queue.Queue(100)
 
 @app.route('/')
 @app.route('/index')
@@ -91,7 +36,7 @@ def heartbeat():
         'port': int(request.json['port'])
     }
 
-    add(producer)
+    queue_heartbeat.add(producer)
 
     return 'Heartbeat added to the queue', 200
 
@@ -160,7 +105,7 @@ def retrieve_data(producer_id):
         pass
 
     # check queue
-    data_from_queue = get(producer_id)
+    data_from_queue = queue_heartbeat.get(producer_id)
 
     if data_from_queue is not None:
         return data_from_queue
