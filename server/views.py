@@ -10,6 +10,63 @@ import sqlite3
 import requests
 import threading
 
+queue = {}
+limit = 100
+
+def size():
+    return len(queue)
+
+def isEmpty():
+    return len(queue) == 0
+
+def isFull():
+    return len(queue) == limit
+
+def add(producer):
+    producer_id = producer['id']
+
+    if isFull() and (producer_id not in queue):
+        print 'Queue is full. Flushing.'
+        flush()
+
+    if producer_id in queue:
+        print 'Updating pre-existing producer(' + str(producer_id) + \
+                ')information in the queue.'
+    else:
+        print 'Adding a new producer(' + str(producer_id) + \
+                ')infromation to the queue.'
+
+    queue[producer_id] = producer
+
+def remove(producer):
+    if isEmpty():
+        print 'Queue is empty.'
+        return False
+    else:
+        producer_id = producer['id']
+
+        if producer_id in queue:
+            return True
+
+def get(producer_id):
+    if producer_id in queue:
+        print 'Producer(' + str(producer_id) + \
+                ')information is in the queue.'
+        return queue[producer_id]
+    else:
+        print 'Producer(' + str(producer_id) + \
+                ')information is not in the queue.'
+        return None
+
+def flush():
+    for key, value in queue_heartbeat.iteritems():
+        updated_heartbeat = db_manager.update_heartbeat(value)
+
+        if updated_heartbeat:
+            print 'Heartbeat recorded for producer:', key
+        else:
+            print 'Heartbeat not recorded for producer:', key
+
 @app.route('/')
 @app.route('/index')
 def index():
@@ -34,12 +91,16 @@ def heartbeat():
         'port': int(request.json['port'])
     }
 
-    updated_heartbeat = db_manager.update_heartbeat(producer)
+    add(producer)
 
-    if updated_heartbeat:
-        return 'Heartbeat recorded.', 200
-    else:
-        return 'Heartbeat not recorded. Try again later.', 400
+    return 'Heartbeat added to the queue', 200
+
+    # updated_heartbeat = db_manager.update_heartbeat(producer)
+
+    # if updated_heartbeat:
+    #     return 'Heartbeat recorded. Time: ' + str(time.time()), 200
+    # else:
+    #     return 'Heartbeat not recorded. Try again later.', 400
 
 @app.route('/get_data/<int:producer_id>', methods=['GET'])
 def get_data(producer_id):
@@ -50,21 +111,20 @@ def get_data(producer_id):
     print 'Request from', request.remote_addr, \
             ': retrieve data from producer', producer_id
 
+    # check db
     if db_manager.exists_producer(producer_id) == False:
         return 'Producer does not exist', 400
 
     else:
-        #add consumer to the queue
-
         try:
             data = retrieve_data(producer_id)
             return data, 200
-        except ProducerIPNotFoundException:
-            return 'Cannot find producer\'s IP address. Try again later.', 400
-        except ProducerPortNotFoundException:
-            return 'Cannot find producer\'s port number. Try again later.', 400
-        except ProducerDataNotFoundException:
-            return 'Cannot retreive data. Try again later.', 400
+        except ProducerIPNotFoundException as err:
+            return str(err) + 'Try again later.', 400
+        except ProducerPortNotFoundException as err:
+            return str(err) + 'Try again later.', 400
+        except ProducerDataNotFoundException as err:
+            return str(err) + 'Try again later.', 400
 
 def retrieve_data(producer_id):
     """
@@ -82,8 +142,7 @@ def retrieve_data(producer_id):
     if producer_port is None:
         raise ProducerPortNotFoundException()
 
-    have_live_data = False
-
+    # check live data
     try:
         data = get_live_data(producer_addr, producer_port)
 
@@ -100,6 +159,13 @@ def retrieve_data(producer_id):
     except ProducerConnectionException:
         pass
 
+    # check queue
+    data_from_queue = get(producer_id)
+
+    if data_from_queue is not None:
+        return data_from_queue
+
+    # check db
     try:
         data = get_old_data(producer_id)
         return data
