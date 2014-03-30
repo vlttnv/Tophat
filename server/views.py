@@ -169,3 +169,23 @@ def receive():
         return 'Data recorded', 200
     else:
         return 'Data not recorded. Try again later', 400
+
+'''
+@app.route('/get_data/<str:location>', method=['GET'])
+def get_based_on_location(location):
+	"""
+	Get data based on location
+	
+	Match the requested location based on string and 
+	lastest time stamp
+	"""
+
+	print 'Request from', request.remote_addr, \
+			': retrieve data from producer', producer_id
+	if db_manager.exists_producer_location(location) == False:
+		return 'No data for specified location', 400
+
+		else:
+			try:
+				data = models.ProducerDataSet.query.filter_by(location=location).order_by(models.ProducerDataSet.timestamp.desc()).get_first()
+'''

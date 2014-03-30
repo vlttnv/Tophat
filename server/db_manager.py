@@ -140,6 +140,17 @@ def exists_producer(producer_id):
     else:
         return False
 
+def exists_producer_location(producer_location):
+	"""
+	Return True if a record of the producer exists in the database,
+	based on location
+	"""
+	
+	if models.Producer.query.filter_by(location=producer_location).count() > 0:
+		return True
+	else:
+		return False
+
 def get_producer_ip(producer_id):
     """
     Retrieve the producer IP address from the ID.
