@@ -71,39 +71,49 @@ def get_dateset(producer_id):
 	Return None if there is no match found.
 	"""
 
-	if exists_producer(producer_id) == False:
+	if _exists_producer(producer_id) == False:
 		'Failed to find producer:', producer_id
 		return None
 
 	heartbeat = models.Producer.query.filter_by(id=producer_id) \
 				.order_by(models.Producer.timestamp.desc()).first()
-	print 'Found heartbeat of producer:', producer_id
+	print 'Found heartbeat for the given producer:', producer_id
 	return heartbeat.data	
 
 def get_dateset_location(location):
 	"""
 	Retrieve the most recent data from the location.
 
-	Return None if no match found
+	Return None if no match found.
 	"""
 
-	dataset = models.ProducerDataSet.query.filter_by(location=location) \
-				.order_by(models.ProducerDataSet.timestamp.desc()).first()
-
-	if dataset is None:
-		print 'Dataset not found'
+	if _exists_location(location) == False:
+		'Failed to find location:', location
 		return None
-	else:
-		print 'Found dataset:', dataset.id
-		return dataset.data
 
-def exists_producer(producer_id):
+	heartbeat = models.Producer.query.filter_by(location=location) \
+				.order_by(models.Producer.timestamp.desc()).first()
+	print 'Found heartbeat for the given location:', location
+	return heartbeat.data
+
+def _exists_producer(producer_id):
 	"""
 	Return True if a record of the producer exists in the database,
 	and False otherwise
 	"""
 
 	if models.Producer.query.filter_by(id=producer_id).count() > 0:
+		return True
+	else:
+		return False
+
+def _exists_location(location):
+	"""
+	Return True if a record of the producer from the location exists in the
+	database, and False otherwise
+	"""
+
+	if models.Producer.query.filter_by(location=location).count() > 0:
 		return True
 	else:
 		return False

@@ -7,12 +7,5 @@ class Producer(db.Model):
 	timestamp	= db.Column(db.String(120))
 	data		= db.Column(db.LargeBinary)
 
-
 	def __repr__(self):
 		return '<Producer %r>' % (self.id)
-
-class ProducerDataSet(db.Model):
-	id		= db.Column(db.Integer, primary_key = True)
-	producer_id	= db.Column(db.Integer, db.ForeignKey('producer.id'))
-	data		= db.Column(db.LargeBinary)
-	timestamp	= db.Column(db.String(120))
