@@ -53,38 +53,18 @@ def heartbeat():
 
 	The interval can be specified using a command line argument -hB
 	"""
+	adr = requests.get('http://' + args.remote_address + ':' + args.remote_port + '/register')
+	print 'Registered'
+
+
+
 	while 1:
 		time.sleep(args.heartbeat)
 		payload = {'id': args.id, 'location': 'value2', 'data': json.dumps(json_data)}
 		headers = {'content-type': 'application/json'}
-		r = requests.post("http://" + args.remote_address + ":" + args.remote_port + "/heartbeat", data=json.dumps(payload), headers=headers)
+		r = requests.post(adr.text + "/heartbeat", data=json.dumps(payload), headers=headers)
 		if not args.silent:
 				print 'O>', r.text
-
-"""
-class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
-	def do_GET(s):
-		s.send_response(200)
-		s.send_header("Content-type", "application/json")
-		s.end_headers()
-		s.wfile.write(json_data)
-"""
-
-"""
-def run_server():
-	server_class = BaseHTTPServer.HTTPServer
-	httpd = server_class((args.local_address, args.local_port), Handler)
-	if not args.silent:
-			print 'O> Server Starts - ', time.asctime()
-			print 'O> Listening on port %s' % (args.local_port)
-	try:
-		httpd.serve_forever()
-	except KeyboardInterrupt:
-		pass
-	httpd.server_close()
-	if not args.silent:
-			print 'O> Server Stops - ', time.asctime()
-"""
 
 
 if __name__ == '__main__':
@@ -93,5 +73,8 @@ if __name__ == '__main__':
 	#hb.daemon=True
 	#hb.start()
 	#run_server()
-	heartbeat()
+	try:
+		heartbeat()
+	except KeyboardInterrupt:
+		quit()
 

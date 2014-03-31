@@ -19,26 +19,17 @@ def index(id):
 	print len(workers)
 	return redirect(url, code=302)
 
-@app.route('/heartbeat', methods=['POST'])
-def heartbeat():
+@app.route('/register')
+def register():
 	"""
 
 	"""
 
-	print 'Request from', request.remote_addr, ': redirect to: '
-
-	if not request.json:
-		return 'Hearbeat object must be in json format.', 400
-
-	if not ('port' and 'id' and 'location' and 'data' in request.json):
-		return 'Heartbeat object not udnerstood.', 400
-
+	print 'Request from', request.remote_addr, ': registering.'
 	global ptr
-	headers = {'content-type': 'application/json'}
-	url = workers[ptr] + "/hearbeat"
 	if ptr == len(workers) - 1:
 		ptr = 0
 	else:
 		ptr = ptr + 1
 
-	return redirect(url, code=302)
+	return workers[ptr] 
