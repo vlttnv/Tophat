@@ -100,7 +100,7 @@ def retrieve_data(producer_id):
 	# check db
 	print 'Retrieve old data from the database'
 
-	data = db_manager.get_heartbeat(producer_id)
+	data = db_manager.get_dateset(producer_id)
 
 	if data is not None:
 		return data
