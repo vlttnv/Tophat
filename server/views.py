@@ -37,7 +37,7 @@ def heartbeat():
 		'location': request.json['location'],
 		'ip_address': request.remote_addr,
 		'timestamp': datetime.utcnow(),
-		'data', request.json['data']
+		'data': request.json['data']
 	}
 
 	queue_heartbeat.add(producer)
