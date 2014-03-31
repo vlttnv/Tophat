@@ -5,7 +5,7 @@ class Producer(db.Model):
 	location	= db.Column(db.String(120))
 	ip_address	= db.Column(db.String(120))
 	timestamp	= db.Column(db.String(120))
-	port		= db.Column(db.Integer)
+	data		= db.Column(db.LargeBinary)
 
 
 	def __repr__(self):

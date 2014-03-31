@@ -1,7 +1,8 @@
 from balancer import app
 from flask import redirect
+from server import db_manager
 
-workers = ['http://138.251.207.92:5000','http://138.251.207.92:5001','http://138.251.207.92:5003']
+workers = ['http://138.251.207.92:5001','http://138.251.207.92:5002','http://138.251.207.92:5003']
 
 ptr = 0
 

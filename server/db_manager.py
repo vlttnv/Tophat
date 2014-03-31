@@ -17,7 +17,7 @@ def update_heartbeat(producer):
 		'location': location,
 		'ip_address': ID address,
 		'timestamp': timestamp,
-		'port': port number
+		'data': data
 	}
 	"""
 
@@ -31,7 +31,7 @@ def update_heartbeat(producer):
 			location = producer['location'],
 			ip_address = producer['ip_address'],
 			timestamp = producer['timestamp'],
-			port = producer['port']
+			data = producer['data']
 		)
 
 		try:
@@ -51,7 +51,6 @@ def update_heartbeat(producer):
 		try:
 			# update ip & timestamp
 			producer_old.ip_address = producer['ip_address']
-			producer_old.port = producer['port']
 			producer_old.timestamp = producer['timestamp']
 			db.session.commit()
 			print 'Updated heartbeat for producer:', producer['id']
@@ -99,6 +98,23 @@ def add_dataset(dataset):
 		print 'Failed to add dataset:', dataset['id'], \
 			'. Data: ', dataset['data']
 		return False
+
+def get_heartbeat(producer_id):
+	"""
+	Retrieve heartbeat information from the producer.
+
+	Return None if there is no match found.
+	"""
+
+	heartbeat = models.Producer.query.filter_by(id=producer_id) \
+				.order_by(models.Producer.timestamp.desc()).first()
+
+	if heartbeat is None:
+		print 'Failed to find heartbeat of producer:', producer_id
+		return None
+	else:
+		print 'Found heartbeat of producer:', producer_id
+		return heartbeat.data
 
 def get_dataset(producer_id):
 	"""

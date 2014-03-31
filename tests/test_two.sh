@@ -1,3 +1,3 @@
 #!/bin/bash
 
-echo 'Hello 2'
+echo 'Hello Test 2'

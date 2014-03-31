@@ -25,7 +25,11 @@ def heartbeat():
 	"""
 
 	print 'Request from', request.remote_addr, ': register a heartbeat.'
-	if not request.json or not ('port' and 'id' and 'location' in request.json):
+
+	if not request.json:
+		return 'Heartbeat object must be in json format.', 400
+
+	if not ('port' and 'id' and 'location' and 'data' in request.json):
 		return 'Heartbeat object not understood.', 400
 
 	producer = {
@@ -33,7 +37,7 @@ def heartbeat():
 		'location': request.json['location'],
 		'ip_address': request.remote_addr,
 		'timestamp': datetime.utcnow(),
-		'port': int(request.json['port'])
+		'data', request.json['data']
 	}
 
 	queue_heartbeat.add(producer)
@@ -84,99 +88,22 @@ def retrieve_data(producer_id):
 	Retrieve the most recent data from the producer
 	"""
 
-	print 'Retrieving data from producer:', producer_id
+	print 'Retrieve data from the queue.'
 
 	# check queue
 	producer_info = queue_heartbeat.get(producer_id)
 
 	# make a live connection
 	if producer_info is not None:
-		producer_addr = producer_info['ip_address']
-		producer_port = producer_info['port']
-
-		try:
-			data = get_live_data(producer_addr, producer_port)
-
-			dataset_new = {
-				'id': producer_id + int(time.time()),
-				'producer_id': producer_id,
-				'data': data,
-				'timestamp': datetime.utcnow()
-			}
-
-			# update DB
-			db_manager.add_dataset(dataset_new)
-			return data
-		except ProducerConnectionException:
-			pass
+		return producer_info['data']
 
 	# check db
-	try:
-		data = get_old_data(producer_id)
-		return data
-	except ProducerDataNotFoundException:
-		raise
+	print 'Retrieve old data from the database'
 
-def get_live_data(producer_addr, producer_port):
-	"""
-	Retrieve live data from the producer @ producer_addr:producer_port
-
-	Timeout after 10 seconds
-	"""
-
-	print 'Asking live data from producer @ ' + \
-		str(producer_addr) + ':' + str(producer_port)
-
-	timeout = 10
-
-	try:
-		r = requests.get(
-			'http://' + str(producer_addr) + ':' + str(producer_port),
-			timeout=timeout)
-		return r.text
-	except requests.exceptions.Timeout:
-		print 'Failed to get live data - request timeout.'
-		raise ProducerConnectionException()
-	except requests.exceptions.ConnectionError:
-		print 'Failed to connect to the producer'
-		raise ProducerConnectionException()
-
-def get_old_data(producer_id):
-	"""
-	Retrieve old data from the database
-	"""
-
-	print 'Asking old data from the database'
-
-	data = db_manager.get_dataset(producer_id)
+	data = db_manager.get_heartbeat(producer_id)
 
 	if data is not None:
 		return data
 	else:
-		print 'Failed to get old data'
+		print 'Failed to retrieve old data'
 		raise ProducerDataNotFoundException()
-
-# @app.route('/send', methods=['POST'])
-# def receive():
-# 	"""
-# 	Receive data from the producers
-# 	"""
-
-# 	print 'Request from', request.remote_addr, ': send data'
-
-# 	if not request.json or not ('producer_id' and 'data' in request.json):
-# 		return 'Data object not understood.\n', 400
-
-# 	dataset = {
-# 		'id': request.json['producer_id'] + int(time.time()),
-# 		'producer_id': request.json['producer_id'],
-# 		'data': request.json['data'],
-# 		'timestamp': datetime.utcnow()
-# 	}
-
-# 	updated = db_manager.add_dataset(dataset)
-
-# 	if updated:
-# 		return 'Data recorded', 200
-# 	else:
-# 		return 'Data not recorded. Try again later', 400
