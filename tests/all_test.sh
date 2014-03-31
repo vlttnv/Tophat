@@ -12,6 +12,6 @@ chmod a+x test_one.sh
 chmod a+x test_two.sh
 
 printf 'Run all test scripts.\n'
-printf 'Make requests to the balancer @ $1:$2'
+printf 'Make requests to the balancer @ %s:%s.\n' "$1" "$2"
 ./test_one.sh $1 $2
 ./test_two.sh $1 $2
