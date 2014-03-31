@@ -40,17 +40,10 @@ def heartbeat():
 
 	return 'Heartbeat added to the queue', 200
 
-	# updated_heartbeat = db_manager.update_heartbeat(producer)
-
-	# if updated_heartbeat:
-	#     return 'Heartbeat recorded. Time: ' + str(time.time()), 200
-	# else:
-	#     return 'Heartbeat not recorded. Try again later.', 400
-
 @app.route('/get_data/<int:producer_id>', methods=['GET'])
-def get_data(producer_id):
+def get_data_producerID(producer_id):
     """
-    Request data from the producer whose ID is producer_id
+    Request data from the producer whose ID is producer_id.
     """
 
     print 'Request from', request.remote_addr, \
@@ -59,23 +52,38 @@ def get_data(producer_id):
     if request.remote_addr in ips and time.time() - ips[request.remote_addr] < 1:
         return 'Too many requsts from a single IP'
 
-
-    # check db
-    if db_manager.exists_producer(producer_id) == False:
+    # if db_manager.exists_producer(producer_id) == False:
+    #     ips[request.remote_addr] = time.time()
+    #     return 'Producer does not exist.', 400
+    # else:
+    
+    # try to get live data, or old data otherwise
+    try:
         ips[request.remote_addr] = time.time()
-        return 'Producer does not exist', 400
+        data = retrieve_data(producer_id)
+        return data, 200
+    except ProducerDataNotFoundException as err:
+        return str(err) + 'Try again later.', 400
 
-    else:
-        try:
-            ips[request.remote_addr] = time.time()
-            data = retrieve_data(producer_id)
-            return data, 200
-        except ProducerIPNotFoundException as err:
-            return str(err) + 'Try again later.', 400
-        except ProducerPortNotFoundException as err:
-            return str(err) + 'Try again later.', 400
-        except ProducerDataNotFoundException as err:
-            return str(err) + 'Try again later.', 400
+@app.route('/get_data_location/<location>', methods=['GET'])
+def get_data_location(location):
+	"""
+	Request data from the location given. Match the requested location with
+	the lastest timestamp.
+	"""
+
+	print 'Request from', request.remote_addr, \
+			': retrieve data from location', location
+
+	if db_manager.exists_location(location) == False:
+		return 'No producer within the location.', 400
+	else:
+		data = db_manager.get_dataset_location(location)
+
+		if data is not None:
+			return data, 200
+		else:
+			return 'Dataset not found. Try again later.', 400
 
 def retrieve_data(producer_id):
 	"""
@@ -84,37 +92,29 @@ def retrieve_data(producer_id):
 
 	print 'Retrieving data from producer:', producer_id
 
-	producer_addr = db_manager.get_producer_ip(producer_id)
-	producer_port = db_manager.get_producer_port(producer_id)
-
-	if producer_addr is None:
-		raise ProducerIPNotFoundException()
-
-	if producer_port is None:
-		raise ProducerPortNotFoundException()
-
-	# check live data
-	try:
-		data = get_live_data(producer_addr, producer_port)
-
-		dataset_new = {
-			'id': producer_id + int(time.time()),
-			'producer_id': producer_id,
-			'data': data,
-			'timestamp': datetime.utcnow()
-		}
-
-		# update DB
-		db_manager.add_dataset(dataset_new)
-		return data
-	except ProducerConnectionException:
-		pass
-
 	# check queue
-	data_from_queue = queue_heartbeat.get(producer_id)
+	producer_info = queue_heartbeat.get(producer_id)
 
-	if data_from_queue is not None:
-		return data_from_queue
+	# make a live connection
+	if producer_info is not None:
+		producer_addr = producer_info['ip_address']
+		producer_port = producer_info['port']
+
+		try:
+			data = get_live_data(producer_addr, producer_port)
+
+			dataset_new = {
+				'id': producer_id + int(time.time()),
+				'producer_id': producer_id,
+				'data': data,
+				'timestamp': datetime.utcnow()
+			}
+
+			# update DB
+			db_manager.add_dataset(dataset_new)
+			return data
+		except ProducerConnectionException:
+			pass
 
 	# check db
 	try:
@@ -154,12 +154,12 @@ def get_old_data(producer_id):
 
 	print 'Asking old data from the database'
 
-	data = db_manager.get_latest_dataset(producer_id)
+	data = db_manager.get_dataset(producer_id)
 
 	if data is not None:
 		return data
 	else:
-		print 'Failed to get old data - not in database.'
+		print 'Failed to get old data'
 		raise ProducerDataNotFoundException()
 
 @app.route('/send', methods=['POST'])
@@ -186,23 +186,3 @@ def receive():
 		return 'Data recorded', 200
 	else:
 		return 'Data not recorded. Try again later', 400
-
-'''
-@app.route('/get_data/<str:location>', method=['GET'])
-def get_based_on_location(location):
-	"""
-	Get data based on location
-	
-	Match the requested location based on string and 
-	lastest time stamp
-	"""
-
-	print 'Request from', request.remote_addr, \
-			': retrieve data from producer', producer_id
-	if db_manager.exists_producer_location(location) == False:
-		return 'No data for specified location', 400
-
-		else:
-			try:
-				data = models.ProducerDataSet.query.filter_by(location=location).order_by(models.ProducerDataSet.timestamp.desc()).get_first()
-'''
