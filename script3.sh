@@ -1,5 +1,5 @@
 #!/bin/bash
-for i in {9000..9030}
+for i in {9000..9200}
 do
 		../bin/python client/producer.py -lP $i 138.251.207.92 5000 $i &
 done
