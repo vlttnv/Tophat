@@ -14,6 +14,5 @@ def index(id):
 	else:
 		ptr = ptr + 1
 
-	print hello
 	print len(workers)
 	return redirect(url, code=302)
