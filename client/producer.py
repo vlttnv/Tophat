@@ -53,7 +53,7 @@ def heartbeat():
 
 	The interval can be specified using a command line argument -hB
 	"""
-	adr = requests.get('http://' + args.remote_address + ':' + args.remote_port + '/register')
+	adr = requests.get('http://' + args.remote_address + ':' + args.remote_port + '/register/' + str(args.id))
 	print 'Registered'
 
 

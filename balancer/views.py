@@ -5,22 +5,20 @@ import json
 
 workers = ['http://138.251.212.25:5000','http://138.251.212.25:5000','http://138.251.212.25:5000']
 
+list_workers = {}
+
+
+
 ptr = 0
 
 @app.route('/get_data/<int:id>')
 def index(id):
-	global ptr
-	url = workers[ptr] + "/get_data/" + str(id)
-	if ptr == len(workers) - 1:
-		ptr = 0
-	else:
-		ptr = ptr + 1
-
-	print len(workers)
+	ip = list_workers[id]
+	url = ip + '/get_data/' + str(id)
 	return redirect(url, code=302)
 
-@app.route('/register')
-def register():
+@app.route('/register/<int:id>', methods=['GET'])
+def register(id):
 	"""
 
 	"""
@@ -31,5 +29,8 @@ def register():
 		ptr = 0
 	else:
 		ptr = ptr + 1
+	
+	list_workers[id] = workers[ptr]
+	print list_workers
 
 	return workers[ptr] 
