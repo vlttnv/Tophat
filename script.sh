@@ -1,7 +1,7 @@
 #!/bin/bash
 for i in {9000..9300}
 do
-		python client/producer.py -lP $i 138.251.207.92 5000 $i &
+	python client/producer.py -lP $i 138.251.207.92 5000 $i &
 done
 
 # The magic line

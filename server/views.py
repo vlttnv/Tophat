@@ -10,7 +10,7 @@ import sqlite3
 import requests
 import threading
 
-ips={}
+ips = {}
 queue_heartbeat = queue.Queue(100)
 
 @app.route('/')
@@ -52,12 +52,6 @@ def get_data_producerID(producer_id):
     if request.remote_addr in ips and time.time() - ips[request.remote_addr] < 1:
         return 'Too many requsts from a single IP'
 
-    # if db_manager.exists_producer(producer_id) == False:
-    #     ips[request.remote_addr] = time.time()
-    #     return 'Producer does not exist.', 400
-    # else:
-    
-    # try to get live data, or old data otherwise
     try:
         ips[request.remote_addr] = time.time()
         data = retrieve_data(producer_id)
@@ -162,27 +156,27 @@ def get_old_data(producer_id):
 		print 'Failed to get old data'
 		raise ProducerDataNotFoundException()
 
-@app.route('/send', methods=['POST'])
-def receive():
-	"""
-	Receive data from the producers
-	"""
+# @app.route('/send', methods=['POST'])
+# def receive():
+# 	"""
+# 	Receive data from the producers
+# 	"""
 
-	print 'Request from', request.remote_addr, ': send data'
+# 	print 'Request from', request.remote_addr, ': send data'
 
-	if not request.json or not ('producer_id' and 'data' in request.json):
-		return 'Data object not understood.\n', 400
+# 	if not request.json or not ('producer_id' and 'data' in request.json):
+# 		return 'Data object not understood.\n', 400
 
-	dataset = {
-		'id': request.json['producer_id'] + int(time.time()),
-		'producer_id': request.json['producer_id'],
-		'data': request.json['data'],
-		'timestamp': datetime.utcnow()
-	}
+# 	dataset = {
+# 		'id': request.json['producer_id'] + int(time.time()),
+# 		'producer_id': request.json['producer_id'],
+# 		'data': request.json['data'],
+# 		'timestamp': datetime.utcnow()
+# 	}
 
-	updated = db_manager.add_dataset(dataset)
+# 	updated = db_manager.add_dataset(dataset)
 
-	if updated:
-		return 'Data recorded', 200
-	else:
-		return 'Data not recorded. Try again later', 400
+# 	if updated:
+# 		return 'Data recorded', 200
+# 	else:
+# 		return 'Data not recorded. Try again later', 400
