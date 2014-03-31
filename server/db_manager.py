@@ -104,20 +104,16 @@ def get_dataset(producer_id):
 	"""
 	Retrieve the most recent data uploaded from the producer.
 
-	Return None if there is no match or one than one match.
+	Return None if there is no match found.
 	"""
 
-	datasets = models.ProducerDataSet.query.filter_by(producer_id=producer_id)
-	datasets_count = datasets.count()
+	dataset = models.ProducerDataSet.query.filter_by(producer_id=producer_id) \
+				.order_by(models.ProducerDataSet.timestamp.desc()).first()
 
-	if datasets_count == 0:
+	if dataset is None:
 		print 'Dataset not found'
 		return None
-	elif datasets_count > 1:
-		print 'Found more than one producer'
-		return None
 	else:
-		dataset = datasets.first()
 		print 'Found dataset:', dataset.id
 		return dataset.data
 
@@ -129,9 +125,9 @@ def get_dateset_location(location):
 	"""
 
 	dataset = models.ProducerDataSet.query.filter_by(location=location) \
-				.order_by(models.ProducerDataSet.timestamp.desc()).get_first()
+				.order_by(models.ProducerDataSet.timestamp.desc()).first()
 
-	if dataset_latest is None:
+	if dataset is None:
 		print 'Dataset not found'
 		return None
 	else:

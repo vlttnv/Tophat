@@ -1,10 +1,10 @@
 from server import db_manager
 
 class Queue:
-	queue = {}
 
 	def __init__(self, limit):
 		self.limit = limit
+		self.queue = {}
 
 	def size(self):
 		return len(self.queue)
