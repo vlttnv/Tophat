@@ -1,6 +1,5 @@
 import requests, json, argparse,time, BaseHTTPServer
 import threading
-from flask import jsonify
 
 # Finals
 HOST_NAME = ""
@@ -35,8 +34,8 @@ json_data = {
 parser = argparse.ArgumentParser(description='A producer that sends heartbeats to a specified server, while lsitening on a specified port for incoming GET requests.')
 parser.add_argument('remote_address', help='Destination IP address used for the hearbeats')
 parser.add_argument('remote_port', help='Destionatioon PORT number used for the heartbeat')
-parser.add_argument('-lA', '--local-address', default='',help='Host name used to listen for a GET request. Leave blank to listen on all interfaces.')
-parser.add_argument('-lP', '--local-port', default=9000, type=int, help='Local PORT port number used for the listening server. Default is 9000')
+#parser.add_argument('-lA', '--local-address', default='',help='Host name used to listen for a GET request. Leave blank to listen on all interfaces.')
+#parser.add_argument('-lP', '--local-port', default=9000, type=int, help='Local PORT port number used for the listening server. Default is 9000')
 parser.add_argument('id', help='Producer ID')
 parser.add_argument('-hB', '--heartbeat', type=int, default=1, help='Heartbeat interval')
 parser.add_argument('-s', '--silent', action='store_true', default=False, help='Enable silent mode')
@@ -56,20 +55,22 @@ def heartbeat():
 	"""
 	while 1:
 		time.sleep(args.heartbeat)
-		payload = {'id': args.id, 'location': 'value2', 'port': args.local_port}
+		payload = {'id': args.id, 'location': 'value2', 'data': json.dumps(json_data)}
 		headers = {'content-type': 'application/json'}
 		r = requests.post("http://" + args.remote_address + ":" + args.remote_port + "/heartbeat", data=json.dumps(payload), headers=headers)
 		if not args.silent:
 				print 'O>', r.text
 
-
+"""
 class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
 	def do_GET(s):
 		s.send_response(200)
 		s.send_header("Content-type", "application/json")
 		s.end_headers()
 		s.wfile.write(json_data)
+"""
 
+"""
 def run_server():
 	server_class = BaseHTTPServer.HTTPServer
 	httpd = server_class((args.local_address, args.local_port), Handler)
@@ -83,13 +84,14 @@ def run_server():
 	httpd.server_close()
 	if not args.silent:
 			print 'O> Server Stops - ', time.asctime()
-
+"""
 
 
 if __name__ == '__main__':
 	# Make heartbeat thread and start it
-	hb = threading.Thread(target=heartbeat)
-	hb.daemon=True
-	hb.start()
-	run_server()
+	#hb = threading.Thread(target=heartbeat)
+	#hb.daemon=True
+	#hb.start()
+	#run_server()
+	heartbeat()
 
