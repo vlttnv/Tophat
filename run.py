@@ -2,6 +2,7 @@
 
 import argparse
 import requests
+import sys
 from server import app
 
 parser = argparse.ArgumentParser(description='To be added')
@@ -25,4 +26,7 @@ def register_with_balancer():
 		print 'Not Connected to the balancer. Trying again.'
 		register_with_balancer()
 
-register_with_balancer()
+try:
+	register_with_balancer()
+except requests.ConnectionError:
+	sys.exit('Balancer is offline or incorrect address/port')
