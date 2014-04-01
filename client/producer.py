@@ -3,29 +3,7 @@ import threading, sys
 
 MAX_RETRIES = 10
 
-# Sample Json
-json_data = {
-    "glossary": {
-        "title": "example glossary",
-		"GlossDiv": {
-            "title": "S",
-			"GlossList": {
-                "GlossEntry": {
-                    "ID": "SGML",
-					"SortAs": "SGML",
-					"GlossTerm": "Standard Generalized Markup Language",
-					"Acronym": "SGML",
-					"Abbrev": "ISO 8879:1986",
-					"GlossDef": {
-                        "para": "A meta-markup language, used to create markup languages such as DocBook.",
-						"GlossSeeAlso": ["GML", "XML"]
-                    },
-					"GlossSee": "markup"
-                }
-            }
-        }
-		}
-}
+
 
 # Set up command line arguments
 parser = argparse.ArgumentParser(description='A producer that sends heartbeats to a specified server, including data.')
@@ -35,6 +13,13 @@ parser.add_argument('id', help='Producer ID')
 parser.add_argument('-hB', '--heartbeat', type=int, default=1, help='Heartbeat interval')
 parser.add_argument('-s', '--silent', action='store_true', default=False, help='Enable silent mode')
 args = parser.parse_args()
+
+# Sample Json
+json_data = {
+    "id":args.id,
+	"data": "jdhdhdahsjdhjdsajdkadasjkdjakkj"}
+}
+
 
 def heartbeat():
 	"""
