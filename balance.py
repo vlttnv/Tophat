@@ -3,7 +3,8 @@
 import argparse
 from balancer import app
 
-parser = argparse.ArgumentParser(description='To be added')
+parser = argparse.ArgumentParser(description='Manages comunication between \
+				Producers, Consumers and Wokers. Balances load.')
 parser.add_argument('port', type=int, help='Port number to bind to')
 args = parser.parse_args()
 
