@@ -1,10 +1,7 @@
 import requests, json, argparse,time, BaseHTTPServer
-import threading
+import threading, sys
 
-# Finals
-HOST_NAME = ""
-PORT_NUMBER = 9000
-
+MAX_RETRIES = 10
 
 # Sample Json
 json_data = {
@@ -41,20 +38,24 @@ parser.add_argument('-hB', '--heartbeat', type=int, default=1, help='Heartbeat i
 parser.add_argument('-s', '--silent', action='store_true', default=False, help='Enable silent mode')
 args = parser.parse_args()
 
-# Check the qreuqired command line arguments
-if not args.remote_address or not args.remote_address:
-	print '!> Missing remote address or remote port.'
-	print '!> Use -h to for help.'
-	quit(1)
-
 def heartbeat():
 	"""
 	Sending  periodic heartbeats to the main server
 
 	The interval can be specified using a command line argument -hB
 	"""
-	adr = requests.get('http://' + args.remote_address + ':' + args.remote_port + '/register/' + str(args.id))
-	print 'Registered'
+	global MAX_RETRIES
+
+	if MAX_RETRIES == 0:
+		sys.exit('Maximum retries reached.')
+
+	try:
+		adr = requests.get('http://' + args.remote_address + ':' + args.remote_port + '/register/' + str(args.id))
+		if adr.status_code == 400:
+			sys.exit(adr.text)
+		print 'Registered'
+	except requests.ConnectionError:
+		sys.exit('Incorrect address/port or main server is offline.')
 
 
 
@@ -62,7 +63,13 @@ def heartbeat():
 		time.sleep(args.heartbeat)
 		payload = {'id': args.id, 'location': 'value2', 'data': json.dumps(json_data)}
 		headers = {'content-type': 'application/json'}
-		r = requests.post(adr.text + "/heartbeat", data=json.dumps(payload), headers=headers)
+
+		try:
+			r = requests.post(adr.text + "/heartbeat", data=json.dumps(payload), headers=headers)
+		except requests.ConnectionError:
+			MAX_RETRIES = MAX_RETRIES - 1
+			print 'Retrying...', str(MAX_RETRIES) + ' left.'
+			heartbeat()
 		if not args.silent:
 				print 'O>', r.text
 
@@ -76,5 +83,4 @@ if __name__ == '__main__':
 	try:
 		heartbeat()
 	except KeyboardInterrupt:
-		quit()
-
+		sys.exit('Exiting.')
