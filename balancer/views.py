@@ -51,7 +51,9 @@ def balancer(port):
 	"""
 	Register a worker
 	"""
-	url = request.remote_addr + ':' +  str(port)
+	url = 'http://' + request.remote_addr + ':' +  str(port)
 	print 'Request from', request.remote_addr, ': registering worker'
 	if url not in workers:
 		workers.append(url)
+	
+	return 'Cool', 200

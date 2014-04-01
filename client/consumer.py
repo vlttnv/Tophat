@@ -1,4 +1,4 @@
-import requests, json, argparse
+import requests, json, argparse, sys
 
 # Set up command line arguments
 parser = argparse.ArgumentParser(description='A consumer which makes requests to the broker.')
@@ -13,5 +13,8 @@ if not args.address or not args.port:
 		print '!> Use -h for help'
 		quit(1)
 
-r = requests.get('http://' + args.address  + ':' + args.port + '/get_data/' + args.id)
-print r.text
+try:
+	r = requests.get('http://' + args.address  + ':' + args.port + '/get_data/' + args.id)
+	print r.text
+except requests.ConnectionError:
+	sys.exit('Server offline or incorrect address/port.')
