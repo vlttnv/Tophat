@@ -19,6 +19,9 @@ def index(id):
 	redirects the consumer to the coresponding producer
 	"""
 
+	if id not in list_workers:
+		return 'Producer does not exist', 400
+
 	ip = list_workers[id]
 	url = ip + '/get_data/' + str(id)
 	return redirect(url, code=302)
