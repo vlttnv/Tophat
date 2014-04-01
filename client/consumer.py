@@ -1,4 +1,4 @@
-import requests, json, argparse, sys
+import requests, json, argparse, sys, time
 
 # Set up command line arguments
 parser = argparse.ArgumentParser(description='A consumer which makes requests to the broker.')
@@ -8,7 +8,11 @@ parser.add_argument('id', help='Producer ID')
 args = parser.parse_args()
 
 try:
+	start = time.time()
 	r = requests.get('http://' + args.address  + ':' + args.port + '/get_data/' + args.id)
+	end = time.time()
+
+	print end - start
 	print r.text
 except requests.ConnectionError:
 	sys.exit('Server offline or incorrect address/port.')
