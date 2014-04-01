@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#!/bin/bash
-
 # To run the script:
 #	chmod a+x test_one.sh
 #	./test_one.sh

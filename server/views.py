@@ -1,5 +1,5 @@
 from flask import render_template, request, abort, jsonify, g
-from server import app, queue, db_manager
+from server import app, cache, db_manager
 from server.exceptions import ProducerConnectionException, \
 	ProducerIPNotFoundException, ProducerPortNotFoundException, \
 	ProducerDataNotFoundException
@@ -10,7 +10,7 @@ import sqlite3
 import requests
 import threading
 
-queue_heartbeat = queue.Queue(10)
+cache_heartbeat = cache.Cache(10)
 
 @app.route('/')
 @app.route('/index')
@@ -39,9 +39,9 @@ def heartbeat():
 		'data': request.json['data']
 	}
 
-	queue_heartbeat.add(producer)
+	cache_heartbeat.add(producer)
 
-	return 'Heartbeat added to the queue', 200
+	return 'Heartbeat added to the cache', 200
 
 @app.route('/get_data/<int:producer_id>', methods=['GET'])
 def get_data_producerID(producer_id):
@@ -83,10 +83,10 @@ def retrieve_data(producer_id):
 	Retrieve the most recent data from the producer
 	"""
 
-	print 'Retrieve data from the queue.'
+	print 'Retrieve data from the cache.'
 
-	# check queue
-	producer_info = queue_heartbeat.get(producer_id)
+	# check cache
+	producer_info = cache_heartbeat.get(producer_id)
 
 	if producer_info is not None:
 		return producer_info['data']

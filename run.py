@@ -29,4 +29,4 @@ try:
 except requests.ConnectionError:
 	sys.exit('Balancer is offline or incorrect address/port')
 
-app.run(host='0.0.0.0', port=int(args.port), debug=True)
+app.run(host='0.0.0.0', port=int(args.port), debug=True, use_reloader=False)

@@ -32,7 +32,7 @@ def register(id):
 	Registers the producer and returns a worker address
 	"""
 
-	print 'Request from', request.remote_addr, ': registering producer'
+	print 'Request from', request.remote_addr, ': register producer', id
 	global ptr
 
 	if len(workers) == 0:
@@ -53,8 +53,9 @@ def balancer(port):
 	"""
 	Register a worker and add it to the list
 	"""
-	url = 'http://' + request.remote_addr + ':' +  str(port)
-	print 'Request from', request.remote_addr, ': registering worker'
+	
+	url = 'http://' + request.remote_addr + ':' + str(port)
+	print 'Request from', request.remote_addr, ': register worker'
 	if url not in workers:
 		workers.append(url)
 	
