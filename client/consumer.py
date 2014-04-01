@@ -7,12 +7,6 @@ parser.add_argument('port', help='Destionation PORT number')
 parser.add_argument('id', help='Producer ID')
 args = parser.parse_args()
 
-# Check required command line arguments
-if not args.address or not args.port:
-		print '!> Missing addres or port'
-		print '!> Use -h for help'
-		quit(1)
-
 try:
 	r = requests.get('http://' + args.address  + ':' + args.port + '/get_data/' + args.id)
 	print r.text

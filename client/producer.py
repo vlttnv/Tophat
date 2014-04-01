@@ -28,11 +28,9 @@ json_data = {
 }
 
 # Set up command line arguments
-parser = argparse.ArgumentParser(description='A producer that sends heartbeats to a specified server, while lsitening on a specified port for incoming GET requests.')
+parser = argparse.ArgumentParser(description='A producer that sends heartbeats to a specified server, including data.')
 parser.add_argument('remote_address', help='Destination IP address used for the hearbeats')
 parser.add_argument('remote_port', help='Destionatioon PORT number used for the heartbeat')
-#parser.add_argument('-lA', '--local-address', default='',help='Host name used to listen for a GET request. Leave blank to listen on all interfaces.')
-#parser.add_argument('-lP', '--local-port', default=9000, type=int, help='Local PORT port number used for the listening server. Default is 9000')
 parser.add_argument('id', help='Producer ID')
 parser.add_argument('-hB', '--heartbeat', type=int, default=1, help='Heartbeat interval')
 parser.add_argument('-s', '--silent', action='store_true', default=False, help='Enable silent mode')
@@ -48,7 +46,8 @@ def heartbeat():
 
 	if MAX_RETRIES == 0:
 		sys.exit('Maximum retries reached.')
-
+	
+	# Register first
 	try:
 		adr = requests.get('http://' + args.remote_address + ':' + args.remote_port + '/register/' + str(args.id))
 		if adr.status_code == 400:
@@ -57,8 +56,7 @@ def heartbeat():
 	except requests.ConnectionError:
 		sys.exit('Incorrect address/port or main server is offline.')
 
-
-
+	# Hearbeat forever
 	while 1:
 		time.sleep(args.heartbeat)
 		payload = {'id': args.id, 'location': 'value2', 'data': json.dumps(json_data)}
@@ -75,11 +73,6 @@ def heartbeat():
 
 
 if __name__ == '__main__':
-	# Make heartbeat thread and start it
-	#hb = threading.Thread(target=heartbeat)
-	#hb.daemon=True
-	#hb.start()
-	#run_server()
 	try:
 		heartbeat()
 	except KeyboardInterrupt:
