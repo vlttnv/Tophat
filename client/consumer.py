@@ -15,6 +15,11 @@ if not args.address or not args.port:
 
 try:
 	r = requests.get('http://' + args.address  + ':' + args.port + '/get_data/' + args.id)
+
+	if r.status_code == 200:
+		print 'Received data.'
+	else:
+		print 'Did not receive data.'
 	print r.text
 except requests.ConnectionError:
 	sys.exit('Server offline or incorrect address/port.')

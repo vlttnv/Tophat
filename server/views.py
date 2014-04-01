@@ -93,7 +93,6 @@ def retrieve_data(producer_id):
 	# check queue
 	producer_info = queue_heartbeat.get(producer_id)
 
-	# make a live connection
 	if producer_info is not None:
 		return producer_info['data']
 

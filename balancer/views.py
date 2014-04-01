@@ -10,8 +10,6 @@ workers = []
 
 list_workers = {}
 
-
-
 ptr = 0
 
 @app.route('/get_data/<int:id>')
@@ -19,6 +17,7 @@ def index(id):
 	"""
 	Redirects the consumer to the coresponding producer
 	"""
+
 	ip = list_workers[id]
 	url = ip + '/get_data/' + str(id)
 	return redirect(url, code=302)
