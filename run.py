@@ -11,8 +11,6 @@ parser.add_argument('balancer_addr', help='Balancer IP address')
 parser.add_argument('balancer_port', type=int, help='Balancer port number')
 args = parser.parse_args()
 
-app.run(host='0.0.0.0', port=int(args.port), debug=True)
-
 def register_with_balancer():
 	print 'Registering with the balancer.'
 
@@ -23,10 +21,12 @@ def register_with_balancer():
 	if r.status_code == 200:
 		print 'Connected to the balancer.'
 	else:
-		print 'Not Connected to the balancer. Trying again.'
+		print 'Cannot connect to the balancer. Trying again.'
 		register_with_balancer()
 
 try:
 	register_with_balancer()
 except requests.ConnectionError:
 	sys.exit('Balancer is offline or incorrect address/port')
+
+app.run(host='0.0.0.0', port=int(args.port), debug=True)
