@@ -10,8 +10,7 @@ import sqlite3
 import requests
 import threading
 
-ips = {}
-queue_heartbeat = queue.Queue(2)
+queue_heartbeat = queue.Queue(10)
 
 @app.route('/')
 @app.route('/index')
@@ -46,22 +45,18 @@ def heartbeat():
 
 @app.route('/get_data/<int:producer_id>', methods=['GET'])
 def get_data_producerID(producer_id):
-    """
-    Request data from the producer whose ID is producer_id.
-    """
+	"""
+	Request data from the producer whose ID is producer_id.
+	"""
 
-    print 'Request from', request.remote_addr, \
-            ': retrieve data from producer', producer_id
-    
-    if request.remote_addr in ips and time.time() - ips[request.remote_addr] < 1:
-        return 'Too many requsts from a single IP'
+	print 'Request from', request.remote_addr, \
+			': retrieve data from producer', producer_id
 
-    try:
-        ips[request.remote_addr] = time.time()
-        data = retrieve_data(producer_id)
-        return data, 200
-    except ProducerDataNotFoundException as err:
-        return str(err) + 'Try again later.', 400
+	try:
+		data = retrieve_data(producer_id)
+		return data, 200
+	except ProducerDataNotFoundException as err:
+		return str(err) + 'Try again later.', 400
 
 @app.route('/get_data_location/<location>', methods=['GET'])
 def get_data_location(location):
@@ -93,7 +88,6 @@ def retrieve_data(producer_id):
 	# check queue
 	producer_info = queue_heartbeat.get(producer_id)
 
-	# make a live connection
 	if producer_info is not None:
 		return producer_info['data']
 

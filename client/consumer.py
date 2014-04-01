@@ -10,9 +10,15 @@ args = parser.parse_args()
 try:
 	start = time.time()
 	r = requests.get('http://' + args.address  + ':' + args.port + '/get_data/' + args.id)
+
 	end = time.time()
 
 	print end - start
+
+	if r.status_code == 200:
+		print 'Received data.'
+	else:
+		print 'Did not receive data.'
 	print r.text
 except requests.ConnectionError:
 	sys.exit('Server offline or incorrect address/port.')
