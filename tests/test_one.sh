@@ -5,7 +5,7 @@
 #	./test_one.sh
 
 balancer_addr=localhost
-balancer_port=1337
+balancer_port=6000
 
 worker_addr=localhost
 worker_port=5000
@@ -15,24 +15,25 @@ producer_id=1
 printf '\n=========\n'
 printf 'Test Case 1: 1 producer and 1 consumer.\n'
 
-printf 'Running balancer @ %s:%s.\n' "$balancer_addr" "$balancer_port"
-./start_balancer.sh $balancer_port &
-
-printf 'Running worker @ %s:%s.\n' "$worker_addr" "$worker_port"
-./start_worker.sh $worker_port $balancer_addr $balancer_port &
-
-printf 'Running producer: 1.\n'
-./start_producer.sh $balancer_addr, $balancer_port $producer_id &
-PID_PRODUCER=$!
+printf '\nRunning balancer @ %s:%s.\n' "$balancer_addr" "$balancer_port"
+python ../balance.py $balancer_port &
 sleep 3
 
-printf 'Running consumer: Ask data from producer 1.\n'
-./start_consumer.sh $balancer_addr $balancer_port $producer_id &
+printf '\nRunning worker @ %s:%s.\n' "$worker_addr" "$worker_port"
+python ../run.py $worker_port $balancer_addr $balancer_port &sleep 3
 
-printf 'Killing producer: 1.\n'
-kill $PID_PRODUCER
+printf '\nRunning producer: 1.\n'
+python ../client/producer.py $balancer_addr $balancer_port $producer_id &
+sleep 3
+
+printf '\nRunning consumer: Ask data from producer 1.\n'
+python ../client/consumer.py $balancer_addr $balancer_port $producer_id &
+sleep 3
+
+printf '\nKill all background processes.\n'
+kill $(ps aux | grep '[p]ython ../client/producer.py' | awk '{print $2}')
+kill $(ps aux | grep '[p]ython ../run.py' | awk '{print $2}')
+kill $(ps aux | grep '[p]ython ../balance.py' | awk '{print $2}')
 
 printf '\nTest Case 1: Completed.\n'
 printf '=========\n\n'
-
-exit

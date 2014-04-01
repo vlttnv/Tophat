@@ -10,8 +10,6 @@ parser.add_argument('balancer_addr', help='Balancer IP address')
 parser.add_argument('balancer_port', type=int, help='Balancer port number')
 args = parser.parse_args()
 
-app.run(host='0.0.0.0', port=int(args.port), debug=True)
-
 def register_with_balancer():
 	print 'Registering with the balancer.'
 
@@ -26,3 +24,5 @@ def register_with_balancer():
 		register_with_balancer()
 
 register_with_balancer()
+
+app.run(host='0.0.0.0', port=int(args.port), debug=True)
