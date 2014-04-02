@@ -16,10 +16,10 @@ python run_worker.py $worker_port $balancer_addr $balancer_port
 
 Tests
 =======
-(This will take a long time)
-cd tests/
-chmod a+x all_tests.sh
-./all_tests.sh
+This will take a long time
+    cd tests/
+    chmod a+x all_tests.sh
+    ./all_tests.sh
 
 Producer
 =======
