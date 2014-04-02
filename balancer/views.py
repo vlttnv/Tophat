@@ -59,3 +59,13 @@ def balancer(port):
 		workers.append(url)
 	
 	return 'Successful rgistration', 200
+
+@balancer_app.route('/worker/quiti/<int:port>')
+def worker_quit(port):
+	"""
+
+	"""
+	url = 'http://' + request.addr + ':' +str(port)
+	if url in workers:
+		workers.remove(url)
+
