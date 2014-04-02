@@ -31,14 +31,14 @@ do
 	for i in $(seq $min $max)
 	do
 		printf 'Running consumer - Request data from producer %s.\n' "$i"
-		python ../client/consumer.py $balancer_addr $balancer_port $i &
+		python client/consumer.py $balancer_addr $balancer_port $i &
 		sleep 0.5
 	done
 done
 
 kill_all()
 {
-	kill $(ps aux | grep '[p]ython ../client/consumer.py' | awk '{print $2}')
+	kill $(ps aux | grep '[p]ython client/consumer.py' | awk '{print $2}')
 }
 
 trap "kill_all" SIGINT

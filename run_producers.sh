@@ -28,12 +28,12 @@ printf '\nRunning producers: %s - %s.\n' "$min" "$max"
 for i in $(seq $min $max)
 do
 	printf 'Running producer %s.\n' "$i"
-	python ../client/producer.py $balancer_addr $balancer_port $i &
+	python client/producer.py $balancer_addr $balancer_port $i &
 done
 
 kill_all()
 {
-	kill $(ps aux | grep '[p]ython ../client/producer.py' | awk '{print $2}')
+	kill $(ps aux | grep '[p]ython client/producer.py' | awk '{print $2}')
 }
 
 trap "kill_all" SIGINT
