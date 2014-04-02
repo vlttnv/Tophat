@@ -59,3 +59,16 @@ def balancer(port):
 		workers.append(url)
 	
 	return 'Successful rgistration', 200
+
+@balancer_app.route('/worker/quit/<int:port>')
+def worker_quit(port):
+	"""
+
+	"""
+	url = 'http://' + request.addr + ':' +str(port)
+	if url in workers:
+		workers.remove(url)
+		return 'Acknowledged quit', 200
+
+	return 'Quit not accepted', 400
+
