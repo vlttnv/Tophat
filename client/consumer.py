@@ -22,3 +22,5 @@ try:
 	print r.text
 except requests.ConnectionError:
 	sys.exit('Server offline or incorrect address/port.')
+except KeyboardInterrupt:
+	sys.exit('Exiting...')
