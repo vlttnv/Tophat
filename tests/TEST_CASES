@@ -1,0 +1,5 @@
+TEST
+
+1 balancer
+3 workers, 5 consumers
+15 producers
