@@ -1,5 +1,8 @@
 #!/usr/bin/python
 
+from tornado.wsgi import WSGIContainer
+from tornado.httpserver import HTTPServer
+from tornado.ioloop import IOLoop
 import argparse
 import requests
 import sys
@@ -31,7 +34,10 @@ except requests.ConnectionError:
 	sys.exit('Balancer is offline or incorrect address/port')
 
 try:
-	worker_app.run(host='0.0.0.0', port=int(args.port), debug=True, use_reloader=False)
+	#worker_app.run(host='0.0.0.0', port=int(args.port), debug=True, use_reloader=False)
+	http_server = HTTPServer(WSGIContainer(worker_app))
+	http_server.listen(args.port)
+	IOLoop.instance().start()
 except KeyboardInterrupt:
 	r1 = request.get(
 			'http://' + str(args.balancer_addr) + ':' + str(args.balancer_port) + \

@@ -12,7 +12,7 @@ parser.add_argument('port', type=int, help='Port number to bind to')
 args = parser.parse_args()
 
 http_server = HTTPServer(WSGIContainer(balancer_app))
-http_server.listen(5000)
+http_server.listen(args.port)
 IOLoop.instance().start()
 
 #balancer_app.run(host='0.0.0.0', port=int(args.port), debug=True, use_reloader=False)
