@@ -1,0 +1,124 @@
+\documentclass{sigchi}
+
+\toappear{CS3052: Matrix Multiplication}
+
+\pagenumbering{arabic}
+
+\usepackage{balance} 
+\usepackage{graphics}
+\usepackage{times}
+\usepackage{url}
+\usepackage{amsmath}
+\newcommand{\BigO}[1]{\ensuremath{\operatorname{O}\bigl(#1\bigr)}}
+
+\makeatletter
+\def\url@leostyle{%
+  \@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\small\bf\ttfamily}}}
+\makeatother
+\urlstyle{leo}
+
+\def\pprw{8.5in}
+\def\pprh{11in}
+\special{papersize=\pprw,\pprh}
+\setlength{\paperwidth}{\pprw}
+\setlength{\paperheight}{\pprh}
+\setlength{\pdfpagewidth}{\pprw}
+\setlength{\pdfpageheight}{\pprh}
+
+\usepackage[pdftex]{hyperref}
+\hypersetup{
+pdftitle={SIGCHI Conference Proceedings Format},
+pdfauthor={LaTeX},
+pdfkeywords={SIGCHI, proceedings, archival format},
+bookmarksnumbered,
+pdfstartview={FitH},
+colorlinks,
+citecolor=black,
+filecolor=black,
+linkcolor=black,
+urlcolor=black,
+breaklinks=true,
+}
+\providecommand*{\lstnumberautorefname}{line} 
+\newcommand\tabhead[1]{\small\textbf{#1}}
+
+\usepackage{color}
+\usepackage{listings}
+\lstset{ %
+basicstyle=\footnotesize,       % the size of the fonts that are used for the code
+numbers=left,                   % where to put the line-numbers
+numberstyle=\footnotesize,      % the size of the fonts that are used for the line-numbers
+stepnumber=1,                   % the step between two line-numbers. If it is 1 each line will be numbered
+numbersep=5pt,                  % how far the line-numbers are from the code
+backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+showspaces=false,               % show spaces adding particular underscores
+showstringspaces=false,         % underline spaces within strings
+showtabs=false,                 % show tabs within strings adding particular underscores
+frame=single,           % adds a frame around the code
+tabsize=2,          % sets default tabsize to 2 spaces
+captionpos=b,           % sets the caption-position to bottom
+breaklines=true,        % sets automatic line breaking
+breakatwhitespace=false,    % sets if automatic breaks should only happen at whitespace
+escapeinside={\%*}{*)}          % if you want to add a comment within your code
+}
+\renewcommand\lstlistingname{Code Fragment}
+
+\usepackage[english]{babel}
+\usepackage[autostyle]{csquotes}
+
+\begin{document}
+
+\title{Component Technology}
+
+\numberofauthors{2}
+\author{
+  \alignauthor 110011264\\
+    \affaddr{School of Computer Science}\\
+    \affaddr{University of St Andrews}\\
+  \alignauthor xxxxxxxxx\\
+    \affaddr{School of Computer Science}\\
+    \affaddr{University of St Andrews}\\
+}
+
+\maketitle
+
+\begin{abstract}
+Abstract
+\end{abstract}
+
+\section{REPORT}
+
+\subsection{Design}
+
+\subsubsection{Planning}
+
+Initially, the team implemented a simple server. The server receives heartbeats, in the form of POST request, from the producers. Each heartbeat consisted of an unique identifier of the mobile phone device and its current location. The sender advertises itself as a producer to the server. When a consumer asks the server for sensor data from that particular producer, the server will send a request to the producer, and then pass on the results back to the producer. However, this approach requires the producers listening on some ports to handle data requests from the server. As a result, the consumer will spend significant time waiting for the server to retrieve data from the producer. The solution will create too much overhead on the server side, and it is unlikely that the server can deal with increasing consumer requests.
+
+Later on, the team arrived to a more elegant solution. On each heartbeat, the producer sends sensor data to the server. The server caches the data, and flushes them to a persistent database on occasion. Now, when a consumer requests sensor data from a particular producer, the server can respond quickly, since the sensor data are cached. A more detailed description of the overall setup is explained in the next
+
+\subsubsection{Final Solution}
+
+Worker - cache and database
+
+On each heartbeat POST request, the worker extracts the \enquote{id}, \enquote{location}, and \enquote{data}. In addition, it takes note of the remote IP address of the request origin as well as the current time ().
+
+\subsubsection{Why Flask?}
+
+Because
+
+\subsubsection{Why RESTful?}
+
+Because
+
+\subsubsection{Why SQLite3?}
+
+Premature optimization is the root of all evil.
+
+\subsection{Evaluation}
+
+
+\subsection{Testing}
+
+
+
+\end{document}
