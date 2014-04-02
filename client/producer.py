@@ -35,7 +35,7 @@ def heartbeat():
 		adr = requests.get('http://' + args.remote_address + ':' + args.remote_port + '/register/' + str(args.id))
 		if adr.status_code == 400:
 			sys.exit(adr.text)
-		print 'Registered'
+		print 'O> Registered with balancer, witing for assigned worker.'
 	except requests.ConnectionError:
 		sys.exit('Incorrect address/port or main server is offline.')
 
@@ -49,10 +49,10 @@ def heartbeat():
 			r = requests.post(adr.text + "/heartbeat", data=json.dumps(payload), headers=headers)
 		except requests.ConnectionError:
 			MAX_RETRIES = MAX_RETRIES - 1
-			print 'Retrying...', str(MAX_RETRIES) + ' left.'
+			print 'O> Worker unreachable. Retrying...', str(MAX_RETRIES) + ' retries left.'
 			heartbeat()
 		if not args.silent:
-				print 'O>', r.text
+				print 'O> ', r.text
 
 
 if __name__ == '__main__':
