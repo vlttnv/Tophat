@@ -15,20 +15,16 @@ Worker
 python run_worker.py $worker_port $balancer_addr $balancer_port
 
 ## Tests
-### All tests
+### All test cases descriptions
+	cd tests/
+	sublime(or any text editor) TEST_CASES
+
+### Run all tests
 	cd tests/
 	chmod a+x all_tests.sh
 	./all_tests.sh
 
-Producer
-=======
-Generate its own id
-Register with consumer
-
-Broker
-=======
-
-
-Consumer
-=======
-
+### Run individual tests
+	cd tests/
+	chmod a+x test_number.sh
+	./test_number.sh
