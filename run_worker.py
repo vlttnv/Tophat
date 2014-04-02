@@ -39,7 +39,4 @@ try:
 	http_server.listen(args.port)
 	IOLoop.instance().start()
 except KeyboardInterrupt:
-	r1 = request.get(
-			'http://' + str(args.balancer_addr) + ':' + str(args.balancer_port) + \
-			'/worker/quit/' + str(args.port))
-	print r1.text
+	sys.exit('Exiting...')
