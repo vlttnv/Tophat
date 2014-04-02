@@ -12,7 +12,7 @@ def update_DB():
 		print 'Update Database'
 		cache_heartbeat.flush()
 		# every hour
-		thread = threading.Timer(3600, update_DB)
+		thread = threading.Timer(20, update_DB)
 		thread.daemon = True
 		thread.start()
 	except KeyboardInterrupt, SystemExit:
