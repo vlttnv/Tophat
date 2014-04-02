@@ -3,7 +3,7 @@
 import argparse
 import requests
 import sys
-from server import worker_app
+from worker import worker_app
 
 parser = argparse.ArgumentParser(description='To be added')
 parser.add_argument('port', type=int, help='Port number to bind to')

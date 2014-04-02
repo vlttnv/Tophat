@@ -1,6 +1,6 @@
 from balancer import balancer_app
 from flask import redirect, request
-from server import db_manager
+from worker import db_manager
 import json, argparse
 
 parser = argparse.ArgumentParser(description='Manages comunication between \

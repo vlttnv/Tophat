@@ -14,7 +14,7 @@ args = parser.parse_args()
 
 # Sample Json
 json_data = {
-    "id":args.id,
+    "id": args.id,
 	"data": "jdhdhdahsjdhjdsajdkadasjkdjakkj"
 }
 

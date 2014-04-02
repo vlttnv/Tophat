@@ -1,8 +1,5 @@
 from flask import request
-from server import worker_app, cache, db_manager
-from server.exceptions import ProducerConnectionException, \
-	ProducerIPNotFoundException, ProducerPortNotFoundException, \
-	ProducerDataNotFoundException
+from worker import worker_app, cache, db_manager
 from datetime import datetime
 import threading
 import time
@@ -13,7 +10,7 @@ def update_DB():
 	try:
 		print 'why why why'
 		cache_heartbeat.flush()
-		# every hour
+		# every 2 second just for testing purposes
 		thread = threading.Timer(2, update_DB)
 		thread.daemon = True
 		thread.start()
@@ -28,9 +25,9 @@ def index():
 	return 'Hello world, I am a worker.'
 
 @worker_app.route('/heartbeat', methods=['POST'])
-def heartbeat():
+def post_heartbeat():
 	"""
-	Register the sender as a producer.
+	Receive a heartbeat from a producer.
 	"""
 
 	print 'Request from', request.remote_addr, ': register a heartbeat.'
@@ -39,9 +36,10 @@ def heartbeat():
 		return 'Heartbeat object must be in json format.', 400
 
 	if not ('port' and 'id' and 'location' and 'data' in request.json):
-		return 'Heartbeat object not understood.', 400
+		return 'Heartbeat object must contain ' + \
+					'\'id\', \'location\', and \'data\'.', 400
 
-	producer = {
+	heartbeat = {
 		'id': int(request.json['id']),
 		'location': request.json['location'],
 		'ip_address': request.remote_addr,
@@ -49,24 +47,25 @@ def heartbeat():
 		'data': request.json['data']
 	}
 
-	cache_heartbeat.add(producer)
+	cache_heartbeat.add(heartbeat)
 
-	return 'Heartbeat added to the cache', 200
+	return 'Producer(' + str(heartbeat['id']) + ') heartbeat updated', 200
 
 @worker_app.route('/get_data/<int:producer_id>', methods=['GET'])
 def get_data_producerID(producer_id):
 	"""
-	Request data from the producer whose ID is producer_id.
+	Send producer data to the consumer.
 	"""
 
 	print 'Request from', request.remote_addr, \
 			': retrieve data from producer', producer_id
 
-	try:
-		data = retrieve_data(producer_id)
+	data = _retrieve_data(producer_id)
+
+	if data is not None:
 		return data, 200
-	except ProducerDataNotFoundException as err:
-		return str(err) + 'Try again later.', 400
+	else:
+		return 'Error - Data not found. Try again later.', 400
 
 @worker_app.route('/get_data_location/<location>', methods=['GET'])
 def get_data_location(location):
@@ -78,36 +77,30 @@ def get_data_location(location):
 	print 'Request from', request.remote_addr, \
 			': retrieve data from location', location
 
-	if db_manager.exists_location(location) == False:
-		return 'No producer within the location.', 400
+	data = db_manager.get_dataset_location(location)
+
+	if data is not None:
+		return data, 200
 	else:
-		data = db_manager.get_dataset_location(location)
+		return 'Error - Data not found. Try again later.', 400
 
-		if data is not None:
-			return data, 200
-		else:
-			return 'Dataset not found. Try again later.', 400
-
-def retrieve_data(producer_id):
+def _retrieve_data(producer_id):
 	"""
-	Retrieve the most recent data from the producer
+	Retrieve the most recent data from the producer.
 	"""
 
 	print 'Retrieve data from the cache.'
 
 	# check cache
-	producer_info = cache_heartbeat.get(producer_id)
-
-	if producer_info is not None:
-		return producer_info['data']
+	heartbeat = cache_heartbeat.get(producer_id)
+	if heartbeat is not None:
+		return heartbeat['data']
 
 	# check db
-	print 'Retrieve old data from the database'
+	print 'Retrieve data from the database.'
 
 	data = db_manager.get_dateset(producer_id)
-
 	if data is not None:
 		return data
-	else:
-		print 'Failed to retrieve old data'
-		raise ProducerDataNotFoundException()
+
+	return None

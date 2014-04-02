@@ -14,11 +14,11 @@ printf '\n=========\n'
 printf 'Test Case 4: 15 producers and 1 consumer. Validate the server database and cache.\n'
 
 printf '\nRunning balancer @ %s:%s.\n' "$balancer_addr" "$balancer_port"
-python ../balance.py $balancer_port &
+python ../run_balancer.py $balancer_port &
 sleep 3
 
 printf '\nRunning worker @ %s:%s.\n' "$worker_addr" "$worker_port"
-python ../run.py $worker_port $balancer_addr $balancer_port &
+python ../run_worker.py $worker_port $balancer_addr $balancer_port &
 sleep 3
 
 printf '\nRunning producers: 3000 - 3015.\n'
@@ -40,8 +40,8 @@ do
 done
 
 printf '\nStop all background processes.\n'
-kill $(ps aux | grep '[p]ython ../run.py' | awk '{print $2}')
-kill $(ps aux | grep '[p]ython ../balance.py' | awk '{print $2}')
+kill $(ps aux | grep '[p]ython ../run_worker.py' | awk '{print $2}')
+kill $(ps aux | grep '[p]ython ../run_balancer.py' | awk '{print $2}')
 
 printf '\nTest Case 4: Completed.\n'
 printf '=========\n\n'

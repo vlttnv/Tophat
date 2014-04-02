@@ -6,4 +6,4 @@ worker_app.config.from_object('config')
 
 db = SQLAlchemy(worker_app)
 
-from server import views, models
+from worker import views, models
