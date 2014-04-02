@@ -14,8 +14,4 @@ printf 'Run all test scripts.\n'
 ./test_one.sh
 ./test_two.sh
 ./test_three.sh
-<<<<<<< HEAD
 ./test_four.sh
-=======
-./test_four.sh
->>>>>>> 4c491669f52a688c13280ff4dcb52184f9ce6b61
