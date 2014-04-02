@@ -3,6 +3,7 @@
 import argparse
 import requests
 import sys
+import signal
 from worker import worker_app
 
 parser = argparse.ArgumentParser(description='To be added')
@@ -32,6 +33,13 @@ try:
 	worker_app.run(host='0.0.0.0', port=int(args.port), debug=True, use_reloader=False)
 except KeyboardInterrupt:
 	r1 = request.get(
-			'http://' + str(args.balancer_addr) + ':' str(args.balancer_port) + \
-			'/worker/quit/' + str(args.port))i
+			'http://' + str(args.balancer_addr) + ':' + str(args.balancer_port) + \
+			'/worker/quit/' + str(args.port))
 	print r1.text
+
+
+#def signal_handler(signal, frame):
+#	print('You')
+#	sys.exit(0)
+
+#signal.signal(signal.SIGINT, signal_handler)
