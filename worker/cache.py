@@ -55,5 +55,7 @@ class Cache:
 
 		# clear half of the cache
 		if self.isFull():
+			print 'Cache size before: ', len(self.cache)
 			cache_new = dict(self.cache.items()[len(self.cache)/2:])
 			self.cache = cache_new
+			print 'Cache size after: ', len(self.cache)

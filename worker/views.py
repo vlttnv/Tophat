@@ -5,14 +5,14 @@ import threading
 import time
 import requests
 
-cache_heartbeat = cache.Cache(10)
+cache_heartbeat = cache.Cache(100)
 
 def update_DB():
 	try:
 		print 'Update Database'
 		cache_heartbeat.flush()
 		# every hour
-		thread = threading.Timer(3600, update_DB)
+		thread = threading.Timer(20, update_DB)
 		thread.daemon = True
 		thread.start()
 	except KeyboardInterrupt, SystemExit:
