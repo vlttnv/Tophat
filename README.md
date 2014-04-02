@@ -1,10 +1,13 @@
 Requirements
 =======
-pip install sqlalchemy  
-pip install sqlalchemy-migrate  
-pip install flask-sqlalchemy  
-pip install flask  
-pip install requests
+	python 2.x
+
+	pip install sqlalchemy
+	pip install sqlalchemy-migrate
+	pip install flask-sqlalchemy
+	pip install flask
+	pip install requests
+	pip install tornado
 
 Balancer
 =======
