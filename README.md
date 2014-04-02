@@ -11,13 +11,25 @@ Requirements
 
 Balancer
 =======
-python run_balancer.py $balancer_port
+	python run_balancer.py $balancer_port
 
 Worker
 =======
-python run_worker.py $worker_port $balancer_addr $balancer_port
+	python run_worker.py $worker_port $balancer_addr $balancer_port
 
-## Tests
+Producer
+=======
+	chmod a+x run_producers.sh
+	./run_producers.sh $balancer_addr $balancer_port $start_producer_id $num_producer
+	
+Consumer
+=======
+	chmod a+x run_consumers.sh
+	./run_consumers.sh $balancer_addr $balancer_port $start_producer_id $num_producer
+
+
+Tests
+=======
 ### All test cases descriptions
 	cd tests/
 	sublime(or any text editor) TEST_CASES
