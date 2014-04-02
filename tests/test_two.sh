@@ -16,21 +16,21 @@ printf '\n=========\n'
 printf 'Test Case 2: 1 producer and 1 consumer. Validate data persistency when the producer is offline.\n'
 
 printf '\nRunning balancer @ %s:%s.\n' "$balancer_addr" "$balancer_port"
-../venv/bin/python ../run_balancer.py $balancer_port &
+python ../run_balancer.py $balancer_port &
 sleep 3
 
 printf '\nRunning worker @ %s:%s.\n' "$worker_addr" "$worker_port"
-../venv/bin/python ../run_worker.py $worker_port $balancer_addr $balancer_port &sleep 3
+python ../run_worker.py $worker_port $balancer_addr $balancer_port &sleep 3
 
 printf '\nRunning producer: 1.\n'
-../venv/bin/python ../client/producer.py $balancer_addr $balancer_port $producer_id &
+python ../client/producer.py $balancer_addr $balancer_port $producer_id &
 sleep 3
 
 printf '\nKill the producer.\n'
 kill $(ps aux | grep '[p]ython ../client/producer.py' | awk '{print $2}')
 
 printf '\nRunning consumer: Ask data from producer 1.\n'
-../venv/bin/python ../client/consumer.py $balancer_addr $balancer_port $producer_id &
+python ../client/consumer.py $balancer_addr $balancer_port $producer_id &
 sleep 3
 
 printf '\nKill all background processes.\n'

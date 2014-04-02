@@ -1,6 +1,5 @@
 Requirements
 =======
-(All installed in venv)
 pip install sqlalchemy  
 pip install sqlalchemy-migrate  
 pip install flask-sqlalchemy  
@@ -9,11 +8,11 @@ pip install requests
 
 Balancer
 =======
-venv/bin/python run_balancer.py $port
+python run_balancer.py $balancer_port
 
 Worker
 =======
-venv/bin/python run_worker.py $port $balancer_addr $balancer_port
+python run_worker.py $worker_port $balancer_addr $balancer_port
 
 Producer
 =======
