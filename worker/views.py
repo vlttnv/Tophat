@@ -3,20 +3,21 @@ from worker import worker_app, cache, db_manager
 from datetime import datetime
 import threading
 import time
+import requests
 
 cache_heartbeat = cache.Cache(10)
 
 def update_DB():
 	try:
-		print 'why why why'
+		print 'Update Database'
 		cache_heartbeat.flush()
-		# every 2 second just for testing purposes
-		thread = threading.Timer(2, update_DB)
+		# every hour
+		thread = threading.Timer(3600, update_DB)
 		thread.daemon = True
 		thread.start()
 	except KeyboardInterrupt, SystemExit:
-		print "lol"
-		raise
+
+		pass
 
 update_DB()
 

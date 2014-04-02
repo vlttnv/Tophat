@@ -29,6 +29,7 @@ try:
 	register_with_balancer()
 except requests.ConnectionError:
 	sys.exit('Balancer is offline or incorrect address/port')
+
 try:
 	worker_app.run(host='0.0.0.0', port=int(args.port), debug=True, use_reloader=False)
 except KeyboardInterrupt:
@@ -36,10 +37,3 @@ except KeyboardInterrupt:
 			'http://' + str(args.balancer_addr) + ':' + str(args.balancer_port) + \
 			'/worker/quit/' + str(args.port))
 	print r1.text
-
-
-#def signal_handler(signal, frame):
-#	print('You')
-#	sys.exit(0)
-
-#signal.signal(signal.SIGINT, signal_handler)

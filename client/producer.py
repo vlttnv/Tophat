@@ -55,7 +55,6 @@ def heartbeat():
 		if not args.silent:
 				print 'O> ', r.text
 
-
 if __name__ == '__main__':
 	try:
 		heartbeat()
