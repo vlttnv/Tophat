@@ -29,10 +29,9 @@ do
 done
 
 sleep 3
-printf '\nKill the producers.\n'
+printf '\nStop the producers.\n'
 kill $(ps aux | grep '[p]ython ../client/producer.py' | awk '{print $2}')
 
-printf '\nRunning consumer: Ask data from producer 3214214.\n'
 for i in {3000..3015}
 do
 	printf 'Running consumer: Ask data from producer %s.\n' "$i"
@@ -40,7 +39,7 @@ do
 	sleep 3
 done
 
-printf '\nKill all background processes.\n'
+printf '\nStop all background processes.\n'
 kill $(ps aux | grep '[p]ython ../run.py' | awk '{print $2}')
 kill $(ps aux | grep '[p]ython ../balance.py' | awk '{print $2}')
 

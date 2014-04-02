@@ -3,7 +3,7 @@
 import argparse
 import requests
 import sys
-from server import app
+from server import worker_app
 
 parser = argparse.ArgumentParser(description='To be added')
 parser.add_argument('port', type=int, help='Port number to bind to')
@@ -29,4 +29,4 @@ try:
 except requests.ConnectionError:
 	sys.exit('Balancer is offline or incorrect address/port')
 
-app.run(host='0.0.0.0', port=int(args.port), debug=True, use_reloader=False)
+worker_app.run(host='0.0.0.0', port=int(args.port), debug=True, use_reloader=False)

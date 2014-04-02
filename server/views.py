@@ -1,23 +1,33 @@
-from flask import render_template, request, abort, jsonify, g
-from server import app, cache, db_manager
+from flask import request
+from server import worker_app, cache, db_manager
 from server.exceptions import ProducerConnectionException, \
 	ProducerIPNotFoundException, ProducerPortNotFoundException, \
 	ProducerDataNotFoundException
 from datetime import datetime
-import time
-import os
-import sqlite3
-import requests
 import threading
+import time
 
 cache_heartbeat = cache.Cache(10)
 
-@app.route('/')
-@app.route('/index')
-def index():
-	return 'Hello World'
+def update_DB():
+	try:
+		print 'why why why'
+		cache_heartbeat.flush()
+		# every hour
+		thread = threading.Timer(2, update_DB)
+		thread.daemon = True
+		thread.start()
+	except KeyboardInterrupt, SystemExit:
+		pass
 
-@app.route('/heartbeat', methods=['POST'])
+update_DB()
+
+@worker_app.route('/')
+@worker_app.route('/index')
+def index():
+	return 'Hello world, I am a worker.'
+
+@worker_app.route('/heartbeat', methods=['POST'])
 def heartbeat():
 	"""
 	Register the sender as a producer.
@@ -43,7 +53,7 @@ def heartbeat():
 
 	return 'Heartbeat added to the cache', 200
 
-@app.route('/get_data/<int:producer_id>', methods=['GET'])
+@worker_app.route('/get_data/<int:producer_id>', methods=['GET'])
 def get_data_producerID(producer_id):
 	"""
 	Request data from the producer whose ID is producer_id.
@@ -58,7 +68,7 @@ def get_data_producerID(producer_id):
 	except ProducerDataNotFoundException as err:
 		return str(err) + 'Try again later.', 400
 
-@app.route('/get_data_location/<location>', methods=['GET'])
+@worker_app.route('/get_data_location/<location>', methods=['GET'])
 def get_data_location(location):
 	"""
 	Request data from the location given. Match the requested location with

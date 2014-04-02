@@ -17,11 +17,7 @@ class Cache:
 
 	def add(self, producer):
 		producer_id = producer['id']
-
-		if self.size == limit / 2:
-			print 'Cache is half full. Flushing.'
-			self.flush()
-
+		
 		if self.isFull() and (producer_id not in self.cache):
 			print 'Cache is full. Flushing.'
 			self.flush()

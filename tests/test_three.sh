@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # To run the script:
-#	chmod a+x test_one.sh
-#	./test_one.sh
+#	chmod a+x test_three.sh
+#	./test_three.sh
 
 balancer_addr=localhost
 balancer_port=6000
