@@ -80,7 +80,7 @@ def heartbeat():
 			heartbeat()
 
 		if not args.silent and r.status_code == 200:
-			print 'O> ', r.text
+			print 'Response> ', r.text
 
 if __name__ == '__main__':
 	try:
