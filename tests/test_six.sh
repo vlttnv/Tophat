@@ -11,7 +11,7 @@ worker_addr=localhost
 worker_port=5000
 
 printf '\n=========\n'
-printf 'Test Case 4: 15 producers and 1 consumer. Validate the server database and cache.\n'
+printf 'Test Case 6: 5 producers. Balancer handles producers going offline.\n'
 
 printf '\nRunning balancer @ %s:%s.\n' "$balancer_addr" "$balancer_port"
 python ../run_balancer.py $balancer_port &
@@ -22,7 +22,7 @@ python ../run_worker.py $worker_port $balancer_addr $balancer_port &
 sleep 3
 
 printf '\nRunning producers: 3000 - 3015.\n'
-for i in {3000..3015}
+for i in {7000..7015}
 do
 	printf 'Running producer %s.\n' "$i"
 	python ../client/producer.py $balancer_addr $balancer_port $i &
