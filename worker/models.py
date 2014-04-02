@@ -1,4 +1,4 @@
-from server import db
+from worker import db
 
 class Producer(db.Model):
 	id		= db.Column(db.Integer, primary_key = True)

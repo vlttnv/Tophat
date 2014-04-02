@@ -1,4 +1,5 @@
 from flask import Flask
 
-app = Flask(__name__)
+balancer_app = Flask('balancer')
+
 from balancer import views

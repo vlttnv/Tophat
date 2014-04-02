@@ -3,8 +3,6 @@ import threading, sys
 
 MAX_RETRIES = 10
 
-
-
 # Set up command line arguments
 parser = argparse.ArgumentParser(description='A producer that sends heartbeats to a specified server, including data.')
 parser.add_argument('remote_address', help='Destination IP address used for the hearbeats')
@@ -16,8 +14,8 @@ args = parser.parse_args()
 
 # Sample Json
 json_data = {
-	"data": "jdhdhdahsjdhjdsajdkadasjkdjakkj",
-	"id":args.id,
+    "id": args.id,
+	"data": "jdhdhdahsjdhjdsajdkadasjkdjakkj"
 }
 
 

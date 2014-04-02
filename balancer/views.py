@@ -1,8 +1,7 @@
-from balancer import app
+from balancer import balancer_app
 from flask import redirect, request
-from server import db_manager
+from worker import db_manager
 import json, argparse
-
 
 parser = argparse.ArgumentParser(description='Manages comunication between \
 		Producers, Consumers and Wokers. Balances load.')
@@ -12,8 +11,8 @@ list_workers = {}
 # Round robin
 ptr = 0
 
-@app.route('/get_data/<int:id>')
-def index(id):
+@balancer_app.route('/get_data/<int:id>')
+def get_data(id):
 	"""
 	Bulds the url and
 	redirects the consumer to the coresponding producer
@@ -26,13 +25,13 @@ def index(id):
 	url = ip + '/get_data/' + str(id)
 	return redirect(url, code=302)
 
-@app.route('/register/<int:id>', methods=['GET'])
+@balancer_app.route('/register/<int:id>', methods=['GET'])
 def register(id):
 	"""
 	Registers the producer and returns a worker address
 	"""
 
-	print 'Request from', request.remote_addr, ': registering producer'
+	print 'Request from', request.remote_addr, ': register producer', id
 	global ptr
 
 	if len(workers) == 0:
@@ -48,13 +47,14 @@ def register(id):
 
 	return workers[ptr]
 
-@app.route('/balancer/<int:port>')
+@balancer_app.route('/balancer/<int:port>')
 def balancer(port):
 	"""
 	Register a worker and add it to the list
 	"""
-	url = 'http://' + request.remote_addr + ':' +  str(port)
-	print 'Request from', request.remote_addr, ': registering worker'
+	
+	url = 'http://' + request.remote_addr + ':' + str(port)
+	print 'Request from', request.remote_addr, ': register worker'
 	if url not in workers:
 		workers.append(url)
 	
