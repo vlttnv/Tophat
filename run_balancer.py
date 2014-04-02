@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/venv/bin/python
 
 import argparse
 from balancer import balancer_app

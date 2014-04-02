@@ -16,18 +16,18 @@ printf '\n=========\n'
 printf 'Test Case 1: 1 producer and 1 consumer.\n'
 
 printf '\nRunning balancer @ %s:%s.\n' "$balancer_addr" "$balancer_port"
-python ../run_balancer.py $balancer_port &
+../venv/bin/python ../run_balancer.py $balancer_port &
 sleep 3
 
 printf '\nRunning worker @ %s:%s.\n' "$worker_addr" "$worker_port"
-python ../run_worker.py $worker_port $balancer_addr $balancer_port &sleep 3
+../venv/bin/python ../run_worker.py $worker_port $balancer_addr $balancer_port &sleep 3
 
 printf '\nRunning producer: 1.\n'
-python ../client/producer.py $balancer_addr $balancer_port $producer_id &
+../venv/bin/python ../client/producer.py $balancer_addr $balancer_port $producer_id &
 sleep 3
 
 printf '\nRunning consumer: Ask data from producer 1.\n'
-python ../client/consumer.py $balancer_addr $balancer_port $producer_id &
+../venv/bin/python ../client/consumer.py $balancer_addr $balancer_port $producer_id &
 sleep 3
 
 printf '\nKill all background processes.\n'
