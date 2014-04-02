@@ -10,7 +10,6 @@ args = parser.parse_args()
 try:
 	start = time.time()
 	r = requests.get('http://' + args.address  + ':' + args.port + '/get_data/' + args.id)
-
 	end = time.time()
 
 	print end - start
@@ -19,8 +18,9 @@ try:
 		print 'Received data.'
 	else:
 		print 'Did not receive data.'
+		
 	print r.text
 except requests.ConnectionError:
-	sys.exit('Server offline or incorrect address/port.')
+	sys.exit('Consumer exits: Balancer server offline or incorrect address/port.')
 except KeyboardInterrupt:
-	sys.exit('Exiting...')
+	sys.exit('Consumer exits: KeyboardInterrupt')

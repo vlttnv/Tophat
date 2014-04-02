@@ -45,6 +45,8 @@ class Cache:
 		Flush producer heartbeats to the database.
 		"""
 
+		print 'Flushing heartbeat cache to the database.'
+
 		for key, value in self.cache.iteritems():
 			updated_heartbeat = db_manager.update_heartbeat(value)
 

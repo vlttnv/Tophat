@@ -27,7 +27,6 @@ sleep 3
 
 printf '\nRunning worker 2 @ %s:%s.\n' "$worker_addr" "$worker_two_port"
 python ../run_worker.py $worker_two_port $balancer_addr $balancer_port &
-PID_WORKER=$!
 sleep 3
 
 printf '\nRunning worker 3 @ %s:%s.\n' "$worker_addr" "$worker_three_port"
@@ -40,12 +39,24 @@ do
 	printf 'Running producer %s.\n' "$i"
 	python ../client/producer.py $balancer_addr $balancer_port $i &
 done
-
 sleep 3
-printf '\nStop worker 2.\n'
-kill $PID_WORKER
 
+printf '\nStop workers.\n'
+kill $(ps aux | grep '[p]ython ../run_worker.py' | awk '{print $2}')
 sleep 3
+
+printf '\nRestart workers.\n'
+
+printf '\nRunning worker 1 @ %s:%s.\n' "$worker_addr" "$worker_one_port"
+python ../run_worker.py $worker_one_port $balancer_addr $balancer_port &
+
+printf '\nRunning worker 2 @ %s:%s.\n' "$worker_addr" "$worker_two_port"
+python ../run_worker.py $worker_two_port $balancer_addr $balancer_port &
+
+printf '\nRunning worker 3 @ %s:%s.\n' "$worker_addr" "$worker_three_port"
+python ../run_worker.py $worker_three_port $balancer_addr $balancer_port &
+
+sleep 5
 
 printf '\nStop all background processes.\n'
 kill $(ps aux | grep '[p]ython ../client/producer.py' | awk '{print $2}')

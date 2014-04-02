@@ -9,14 +9,14 @@ cache_heartbeat = cache.Cache(100)
 
 def update_DB():
 	try:
-		print 'Update Database'
+		print 'Server: Update Database'
 		cache_heartbeat.flush()
+		
 		# every 20 seconds
 		thread = threading.Timer(20, update_DB)
 		thread.daemon = True
 		thread.start()
 	except KeyboardInterrupt, SystemExit:
-
 		pass
 
 update_DB()

@@ -1,5 +1,6 @@
-TEST
-
-1 balancer
-3 workers, 5 consumers
-15 producers
+test_one.sh: '1 producer and 1 consumer'
+test_two.sh: '1 producer and 1 consumer. Then, the producer goes offline.'
+test_three.sh: '1 consumer. Ask non-existent data.'
+test_four.sh: '15 producers and 1 consumer.'
+test_five.sh: '15 producers and 3 workers. Handle worker failure.'
+test_six.sh: '15 producers, 3 workers, and 15 consumers. Handle worker failure.'

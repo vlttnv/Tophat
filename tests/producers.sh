@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# The script runs multiple producers
+
 # To run the script:
 #	chmod a+x producers.sh
 #	./producers.sh balancer_addr balancer_port producer_id num_producer

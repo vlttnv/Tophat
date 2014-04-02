@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#
+# The script runs multiple consumers
 
 # To run the script:
 #	chmod a+x producers.sh
