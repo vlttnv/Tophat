@@ -51,8 +51,8 @@ def heartbeat():
 		adr = requests.get('http://' + args.remote_address + ':' + args.remote_port + '/register/' + str(args.id))
 		if adr.status_code == 400:
 			sys.exit(adr.text)
-		print 'O> Registered with balancer, waiting for assigned worker.'
-		print '0> Assigned worker is ' + adr.text
+		print 'Producer(' + args.id +')> Registered with balancer, waiting for assigned worker.'
+		print 'Producer(' + args.id +')> Assigned worker is ' + adr.text
 	except requests.ConnectionError:
 		sys.exit('Incorrect address/port or main server is offline.')
 
@@ -63,22 +63,22 @@ def heartbeat():
 		headers = {'content-type': 'application/json'}
 
 		try:
-			print 'Send heartbeat.'
+			print 'Producer(' + args.id +')> Send heartbeat.'
 			# timeout in 10 seconds
 			r = requests.post(adr.text + "/heartbeat", data=json.dumps(payload), headers=headers, timeout=10)
 
-			if r.status_code != 200
-				print 'Request failed. Sending heartbeat again.'
+			if r.status_code != 200:
+				print 'Producer(' + args.id +')> Request failed. Sending heartbeat again.'
 		except requests.exceptions.ConnectionError:
 			MAX_RETRIES = MAX_RETRIES - 1
-			print 'O> Worker unreachable. Retrying...', str(MAX_RETRIES) + ' retries left.'
+			print 'Producer(' + args.id +')> Worker unreachable. Retrying...', str(MAX_RETRIES) + ' retries left.'
 			heartbeat()
 		except requests.exceptions.Timeout:
 			MAX_RETRIES = MAX_RETRIES - 1
-			print 'O> Worker unreachable. Retrying...', str(MAX_RETRIES) + ' retries left.'
+			print 'Producer(' + args.id +')> Worker unreachable. Retrying...', str(MAX_RETRIES) + ' retries left.'
 			heartbeat()
 
-		if not args.silent:
+		if not args.silent and r.status_code == 200:
 			print 'O> ', r.text
 
 if __name__ == '__main__':

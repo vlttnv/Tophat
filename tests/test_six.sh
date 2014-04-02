@@ -8,9 +8,10 @@ do
 	python ../client/producer.py $balancer_addr $balancer_port $i &
 done
 
-kill_all() {
+kill_all()
+{
 	kill $(ps aux | grep '[p]ython ../client/producer.py' | awk '{print $2}')
 }
 
-trap "kill_all()" SIGINT
+trap "kill_all" SIGINT
 wait

@@ -18,10 +18,9 @@ def update_heartbeat(heartbeat):
 	"""
 
 	records = models.Producer.query.filter_by(id=heartbeat['id'])
-	match = records.count()
 
 	# new producer
-	if match == 0:
+	if records is None || records.count() == 0:
 		producer_new = models.Producer(
 			id = heartbeat['id'],
 			location = heartbeat['location'],
@@ -40,7 +39,7 @@ def update_heartbeat(heartbeat):
 			return False
 
 	# update old heartbeat
-	elif match == 1:
+	elif records.count() == 1:
 		old_record = records.first()
 
 		try:
@@ -95,10 +94,12 @@ def _exists_producer(producer_id):
 	and False otherwise
 	"""
 
-	if models.Producer.query.filter_by(id=producer_id).count() > 0:
-		return True
-	else:
+	result = models.Producer.query.filter_by(id=producer_id)
+
+	if result is None || result.count() == 0:
 		return False
+	else:
+		return True
 
 def _exists_location(location):
 	"""
@@ -106,7 +107,9 @@ def _exists_location(location):
 	and False otherwise
 	"""
 
-	if models.Producer.query.filter_by(location=location).count() > 0:
-		return True
-	else:
+	result = models.Producer.query.filter_by(location=location)
+
+	if result is None || result.count() == 0:
 		return False
+	else:
+		return True
