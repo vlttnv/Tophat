@@ -5,7 +5,7 @@ import threading
 import time
 import requests
 
-cache_heartbeat = cache.Cache(10)
+cache_heartbeat = cache.Cache(100)
 
 def update_DB():
 	try:
