@@ -8,7 +8,7 @@ do
 	python ../client/producer.py $balancer_addr $balancer_port $i &
 done
 
-function kill_all() {
+kill_all() {
 	kill $(ps aux | grep '[p]ython ../client/producer.py' | awk '{print $2}')
 }
 

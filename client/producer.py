@@ -64,8 +64,16 @@ def heartbeat():
 
 		try:
 			print 'Send heartbeat.'
-			r = requests.post(adr.text + "/heartbeat", data=json.dumps(payload), headers=headers)
-		except requests.ConnectionError:
+			# timeout in 10 seconds
+			r = requests.post(adr.text + "/heartbeat", data=json.dumps(payload), headers=headers, timeout=10)
+
+			if r.status_code != 200
+				print 'Request failed. Sending heartbeat again.'
+		except requests.exceptions.ConnectionError:
+			MAX_RETRIES = MAX_RETRIES - 1
+			print 'O> Worker unreachable. Retrying...', str(MAX_RETRIES) + ' retries left.'
+			heartbeat()
+		except requests.exceptions.Timeout:
 			MAX_RETRIES = MAX_RETRIES - 1
 			print 'O> Worker unreachable. Retrying...', str(MAX_RETRIES) + ' retries left.'
 			heartbeat()
