@@ -1,12 +1,22 @@
 test_one.sh: '1 producer and 1 consumer'
+This test provides  basic working setup with 1 isntance of every component runing.
+The test shows that the basic system components are communicating correctly.
 
 
 test_two.sh: '1 producer and 1 consumer. Then, the producer goes offline.'
-After the producer is disconnected the worker detects the crash and starts serving data either from the cash or the database. In case there is no data in the cache older data is returned from the database.
+After the producer is disconnected the worker detects the crash and starts serving data either from the cache or the database. In case there is no data in the cache older data is returned from the database.
 The test demonstrates that producer crashes are handled gracefully without service interruption..
 
 
 test_three.sh: '1 consumer. Ask non-existent data.'
+This test show what will happen if a consumer asks for data from a non existing producer. The request is handle and the worker informs the consumer that no data exists.
+
 test_four.sh: '15 producers and 1 consumer.'
+This test spawns a number of producer to populate the cache and database. The data is then obtained by the consumers.
+The test shows that data i succesfully flushed out of the cache into the database.
+
 test_five.sh: '15 producers and 3 workers. Handle worker failure.'
+After intentionaly shutting down 2 of the 3 workers, the affected producers successfully re-register through the balancer and get redirected to the only working producer. The consumer do not get affected and transition smoothly.
+This test demonstrates that load can be shifted dynamically in case of worker failures without service interruption.
+
 test_six.sh: '15 producers, 3 workers, and 15 consumers. Handle worker failure.'
