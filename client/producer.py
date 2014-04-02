@@ -64,7 +64,8 @@ def heartbeat():
 		headers = {'content-type': 'application/json'}
 
 		try:
-			print producer + 'Send heartbeat.'
+			print producer + 'Send heartbeat to worker @ ', adr.text
+
 			# timeout in 10 seconds
 			r = requests.post(adr.text + "/heartbeat", data=json.dumps(payload), headers=headers, timeout=10)
 

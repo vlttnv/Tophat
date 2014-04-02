@@ -4,6 +4,8 @@
 #	chmod a+x all_test.sh
 #	./all_test.sh
 
+# Note: ports 6000, 5000, 5001, 5002 will be used
+
 printf 'Make all test scripts executable.\n'
 chmod a+x test_one.sh
 chmod a+x test_two.sh

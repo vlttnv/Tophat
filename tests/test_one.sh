@@ -4,6 +4,8 @@
 #	chmod a+x test_one.sh
 #	./test_one.sh
 
+# ports 6000 and 5000 will be used
+
 balancer_addr=localhost
 balancer_port=6000
 

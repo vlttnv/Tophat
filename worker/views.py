@@ -11,7 +11,7 @@ def update_DB():
 	try:
 		print 'Update Database'
 		cache_heartbeat.flush()
-		# every hour
+		# every 20 seconds
 		thread = threading.Timer(20, update_DB)
 		thread.daemon = True
 		thread.start()
