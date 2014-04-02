@@ -1,0 +1,20 @@
+
+=========
+Test Case 3: 1 consumer. Ask data from a producer that does not exist in the database.
+
+Running balancer @ localhost:6000.
+
+Running worker @ localhost:5000.
+
+Running consumer: Ask data from producer 3214214.
+WARNING:tornado.access:400 GET /get_data/3214214 (127.0.0.1) 0.46ms
+0.00923705101013
+Did not receive data.
+Producer does not exist
+
+Kill all background processes.
+./test_three.sh: line 35: 29927 Terminated              python ../run_worker.py $worker_port $balancer_addr $balancer_port
+
+Test Case 3: Completed.
+=========
+

@@ -1,0 +1,22 @@
+
+=========
+Test Case 1: 1 producer and 1 consumer.
+
+Running balancer @ localhost:6000.
+
+Running worker @ localhost:5000.
+
+Running producer: 1.
+
+Running consumer: Ask data from producer 1.
+0.0273420810699
+Received data.
+{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \t\t\t\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \t\t\t\tvarius viverra facilisis. Quisque quis imperdiet augue, et \t\t\t\tullamcorper justo. Maecenas a risus erat. Curabitur non \t\t\t\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \t\t\t\tVivamus urna arcu, convallis feugiat justo ut, fermentum \t\t\t\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \t\t\t\tFusce nec enim eu nisl ultrices ultrices.", "id": "1"}
+
+Kill all background processes.
+./test_one.sh: line 38: 29854 Terminated              python ../client/producer.py $balancer_addr $balancer_port $producer_id
+./test_one.sh: line 39: 29847 Terminated              python ../run_worker.py $worker_port $balancer_addr $balancer_port
+
+Test Case 1: Completed.
+=========
+

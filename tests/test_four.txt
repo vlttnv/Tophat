@@ -1,0 +1,279 @@
+
+=========
+Test Case 4: 15 producers and 1 consumer. Validate the server database and cache.
+
+Running balancer @ localhost:6000.
+
+Running worker @ localhost:5000.
+
+Running producers: 3000 - 3015.
+Running producer 3000.
+Running producer 3001.
+Running producer 3002.
+Running producer 3003.
+Running producer 3004.
+Running producer 3005.
+Running producer 3006.
+Running producer 3007.
+Running producer 3008.
+Running producer 3009.
+Running producer 3010.
+Running producer 3011.
+Running producer 3012.
+Running producer 3013.
+Running producer 3014.
+Running producer 3015.
+
+Stop the producers.
+Running consumer: Ask data from producer 3000.
+0.0140330791473
+Received data.
+{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \t\t\t\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \t\t\t\tvarius viverra facilisis. Quisque quis imperdiet augue, et \t\t\t\tullamcorper justo. Maecenas a risus erat. Curabitur non \t\t\t\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \t\t\t\tVivamus urna arcu, convallis feugiat justo ut, fermentum \t\t\t\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \t\t\t\tFusce nec enim eu nisl ultrices ultrices.", "id": "3000"}
+./test_four.sh: line 37: 29970 Terminated              python ../client/producer.py $balancer_addr $balancer_port $i
+./test_four.sh: line 37: 29971 Terminated              python ../client/producer.py $balancer_addr $balancer_port $i
+./test_four.sh: line 37: 29972 Terminated              python ../client/producer.py $balancer_addr $balancer_port $i
+./test_four.sh: line 37: 29973 Terminated              python ../client/producer.py $balancer_addr $balancer_port $i
+./test_four.sh: line 37: 29974 Terminated              python ../client/producer.py $balancer_addr $balancer_port $i
+./test_four.sh: line 37: 29975 Terminated              python ../client/producer.py $balancer_addr $balancer_port $i
+./test_four.sh: line 37: 29976 Terminated              python ../client/producer.py $balancer_addr $balancer_port $i
+./test_four.sh: line 37: 29977 Terminated              python ../client/producer.py $balancer_addr $balancer_port $i
+./test_four.sh: line 37: 29978 Terminated              python ../client/producer.py $balancer_addr $balancer_port $i
+./test_four.sh: line 37: 29979 Terminated              python ../client/producer.py $balancer_addr $balancer_port $i
+./test_four.sh: line 37: 29980 Terminated              python ../client/producer.py $balancer_addr $balancer_port $i
+./test_four.sh: line 37: 29981 Terminated              python ../client/producer.py $balancer_addr $balancer_port $i
+./test_four.sh: line 37: 29982 Terminated              python ../client/producer.py $balancer_addr $balancer_port $i
+./test_four.sh: line 37: 29983 Terminated              python ../client/producer.py $balancer_addr $balancer_port $i
+./test_four.sh: line 37: 29984 Terminated              python ../client/producer.py $balancer_addr $balancer_port $i
+./test_four.sh: line 37: 29985 Terminated              python ../client/producer.py $balancer_addr $balancer_port $i
+Running consumer: Ask data from producer 3001.
+0.0121209621429
+Received data.
+{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \t\t\t\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \t\t\t\tvarius viverra facilisis. Quisque quis imperdiet augue, et \t\t\t\tullamcorper justo. Maecenas a risus erat. Curabitur non \t\t\t\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \t\t\t\tVivamus urna arcu, convallis feugiat justo ut, fermentum \t\t\t\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \t\t\t\tFusce nec enim eu nisl ultrices ultrices.", "id": "3001"}
+Running consumer: Ask data from producer 3002.
+0.0235910415649
+Received data.
+{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \t\t\t\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \t\t\t\tvarius viverra facilisis. Quisque quis imperdiet augue, et \t\t\t\tullamcorper justo. Maecenas a risus erat. Curabitur non \t\t\t\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \t\t\t\tVivamus urna arcu, convallis feugiat justo ut, fermentum \t\t\t\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \t\t\t\tFusce nec enim eu nisl ultrices ultrices.", "id": "3002"}
+Running consumer: Ask data from producer 3003.
+0.0141880512238
+Received data.
+{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \t\t\t\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \t\t\t\tvarius viverra facilisis. Quisque quis imperdiet augue, et \t\t\t\tullamcorper justo. Maecenas a risus erat. Curabitur non \t\t\t\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \t\t\t\tVivamus urna arcu, convallis feugiat justo ut, fermentum \t\t\t\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \t\t\t\tFusce nec enim eu nisl ultrices ultrices.", "id": "3003"}
+Running consumer: Ask data from producer 3004.
+0.0118968486786
+Received data.
+{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \t\t\t\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \t\t\t\tvarius viverra facilisis. Quisque quis imperdiet augue, et \t\t\t\tullamcorper justo. Maecenas a risus erat. Curabitur non \t\t\t\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \t\t\t\tVivamus urna arcu, convallis feugiat justo ut, fermentum \t\t\t\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \t\t\t\tFusce nec enim eu nisl ultrices ultrices.", "id": "3004"}
+Server: Update Database
+Server: Flush heartbeat cache to the database.
+Registering with the balancer.
+Connected to the balancer.
+Request from 127.0.0.1 : register a heartbeat.
+Cache update - Producer(New): 3015
+Request from 127.0.0.1 : register a heartbeat.
+Cache update - Producer(New): 3003
+Request from 127.0.0.1 : register a heartbeat.
+Cache update - Producer(New): 3012
+Request from 127.0.0.1 : register a heartbeat.
+Cache update - Producer(New): 3010
+Request from 127.0.0.1 : register a heartbeat.
+Cache update - Producer(New): 3007
+Request from 127.0.0.1 : register a heartbeat.
+Cache update - Producer(New): 3001
+Request from 127.0.0.1 : register a heartbeat.
+Cache update - Producer(New): 3002
+Request from 127.0.0.1 : register a heartbeat.
+Cache update - Producer(New): 3006
+Request from 127.0.0.1 : register a heartbeat.
+Cache update - Producer(New): 3011
+Request from 127.0.0.1 : register a heartbeat.
+Cache update - Producer(New): 3005
+Request from 127.0.0.1 : register a heartbeat.
+Cache update - Producer(New): 3014
+Request from 127.0.0.1 : register a heartbeat.
+Cache update - Producer(New): 3009
+Request from 127.0.0.1 : register a heartbeat.
+Cache update - Producer(New): 3004
+Request from 127.0.0.1 : register a heartbeat.
+Cache update - Producer(New): 3008
+Request from 127.0.0.1 : register a heartbeat.
+Cache update - Producer(New): 3013
+Request from 127.0.0.1 : register a heartbeat.
+Cache update - Producer(New): 3000
+Request from 127.0.0.1 : register a heartbeat.
+Cache update - Producer: 3015
+Request from 127.0.0.1 : register a heartbeat.
+Cache update - Producer: 3003
+Request from 127.0.0.1 : register a heartbeat.
+Cache update - Producer: 3012
+Request from 127.0.0.1 : register a heartbeat.
+Cache update - Producer: 3010
+Request from 127.0.0.1 : register a heartbeat.
+Cache update - Producer: 3007
+Request from 127.0.0.1 : register a heartbeat.
+Cache update - Producer: 3001
+Request from 127.0.0.1 : register a heartbeat.
+Cache update - Producer: 3002
+Request from 127.0.0.1 : register a heartbeat.
+Cache update - Producer: 3006
+Request from 127.0.0.1 : register a heartbeat.
+Cache update - Producer: 3011
+Request from 127.0.0.1 : register a heartbeat.
+Cache update - Producer: 3005
+Request from 127.0.0.1 : register a heartbeat.
+Cache update - Producer: 3014
+Request from 127.0.0.1 : register a heartbeat.
+Cache update - Producer: 3008
+Request from 127.0.0.1 : register a heartbeat.
+Cache update - Producer: 3009
+Request from 127.0.0.1 : register a heartbeat.
+Cache update - Producer: 3004
+Request from 127.0.0.1 : register a heartbeat.
+Cache update - Producer: 3013
+Request from 127.0.0.1 : register a heartbeat.
+Cache update - Producer: 3000
+Request from 127.0.0.1 : retrieve data from producer 3000
+Retrieve data from the cache.
+Request from 127.0.0.1 : retrieve data from producer 3001
+Retrieve data from the cache.
+Request from 127.0.0.1 : retrieve data from producer 3002
+Retrieve data from the cache.
+Request from 127.0.0.1 : retrieve data from producer 3003
+Retrieve data from the cache.
+Request from 127.0.0.1 : retrieve data from producer 3004
+Retrieve data from the cache.
+Server: Update Database
+Server: Flush heartbeat cache to the database.
+Database update - Producer: 3008
+Database update - Heartbeat: {'timestamp': datetime.datetime(2014, 4, 2, 21, 17, 10, 841851), 'ip_address': '127.0.0.1', 'id': 3008, 'data': u'{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \\t\\t\\t\\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \\t\\t\\t\\tvarius viverra facilisis. Quisque quis imperdiet augue, et \\t\\t\\t\\tullamcorper justo. Maecenas a risus erat. Curabitur non \\t\\t\\t\\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \\t\\t\\t\\tVivamus urna arcu, convallis feugiat justo ut, fermentum \\t\\t\\t\\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \\t\\t\\t\\tFusce nec enim eu nisl ultrices ultrices.", "id": "3008"}', 'location': u'value2'}
+Database update - Producer: 3009
+Database update - Heartbeat: {'timestamp': datetime.datetime(2014, 4, 2, 21, 17, 10, 842356), 'ip_address': '127.0.0.1', 'id': 3009, 'data': u'{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \\t\\t\\t\\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \\t\\t\\t\\tvarius viverra facilisis. Quisque quis imperdiet augue, et \\t\\t\\t\\tullamcorper justo. Maecenas a risus erat. Curabitur non \\t\\t\\t\\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \\t\\t\\t\\tVivamus urna arcu, convallis feugiat justo ut, fermentum \\t\\t\\t\\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \\t\\t\\t\\tFusce nec enim eu nisl ultrices ultrices.", "id": "3009"}', 'location': u'value2'}
+Database update - Producer: 3010
+Database update - Heartbeat: {'timestamp': datetime.datetime(2014, 4, 2, 21, 17, 10, 819623), 'ip_address': '127.0.0.1', 'id': 3010, 'data': u'{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \\t\\t\\t\\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \\t\\t\\t\\tvarius viverra facilisis. Quisque quis imperdiet augue, et \\t\\t\\t\\tullamcorper justo. Maecenas a risus erat. Curabitur non \\t\\t\\t\\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \\t\\t\\t\\tVivamus urna arcu, convallis feugiat justo ut, fermentum \\t\\t\\t\\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \\t\\t\\t\\tFusce nec enim eu nisl ultrices ultrices.", "id": "3010"}', 'location': u'value2'}
+Database update - Producer: 3011
+Database update - Heartbeat: {'timestamp': datetime.datetime(2014, 4, 2, 21, 17, 10, 839726), 'ip_address': '127.0.0.1', 'id': 3011, 'data': u'{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \\t\\t\\t\\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \\t\\t\\t\\tvarius viverra facilisis. Quisque quis imperdiet augue, et \\t\\t\\t\\tullamcorper justo. Maecenas a risus erat. Curabitur non \\t\\t\\t\\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \\t\\t\\t\\tVivamus urna arcu, convallis feugiat justo ut, fermentum \\t\\t\\t\\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \\t\\t\\t\\tFusce nec enim eu nisl ultrices ultrices.", "id": "3011"}', 'location': u'value2'}
+Database update - Producer: 3012
+Database update - Heartbeat: {'timestamp': datetime.datetime(2014, 4, 2, 21, 17, 10, 817101), 'ip_address': '127.0.0.1', 'id': 3012, 'data': u'{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \\t\\t\\t\\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \\t\\t\\t\\tvarius viverra facilisis. Quisque quis imperdiet augue, et \\t\\t\\t\\tullamcorper justo. Maecenas a risus erat. Curabitur non \\t\\t\\t\\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \\t\\t\\t\\tVivamus urna arcu, convallis feugiat justo ut, fermentum \\t\\t\\t\\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \\t\\t\\t\\tFusce nec enim eu nisl ultrices ultrices.", "id": "3012"}', 'location': u'value2'}
+Database update - Producer: 3013
+Database update - Heartbeat: {'timestamp': datetime.datetime(2014, 4, 2, 21, 17, 10, 852526), 'ip_address': '127.0.0.1', 'id': 3013, 'data': u'{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \\t\\t\\t\\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \\t\\t\\t\\tvarius viverra facilisis. Quisque quis imperdiet augue, et \\t\\t\\t\\tullamcorper justo. Maecenas a risus erat. Curabitur non \\t\\t\\t\\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \\t\\t\\t\\tVivamus urna arcu, convallis feugiat justo ut, fermentum \\t\\t\\t\\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \\t\\t\\t\\tFusce nec enim eu nisl ultrices ultrices.", "id": "3013"}', 'location': u'value2'}
+Database update - Producer: 3014
+Database update - Heartbeat: {'timestamp': datetime.datetime(2014, 4, 2, 21, 17, 10, 841315), 'ip_address': '127.0.0.1', 'id': 3014, 'data': u'{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \\t\\t\\t\\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \\t\\t\\t\\tvarius viverra facilisis. Quisque quis imperdiet augue, et \\t\\t\\t\\tullRunning consumer: Ask data from producer 3005.
+0.0149149894714
+Received data.
+{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \t\t\t\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \t\t\t\tvarius viverra facilisis. Quisque quis imperdiet augue, et \t\t\t\tullamcorper justo. Maecenas a risus erat. Curabitur non \t\t\t\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \t\t\t\tVivamus urna arcu, convallis feugiat justo ut, fermentum \t\t\t\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \t\t\t\tFusce nec enim eu nisl ultrices ultrices.", "id": "3005"}
+amcorper justo. Maecenas a risus erat. Curabitur non \\t\\t\\t\\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \\t\\t\\t\\tVivamus urna arcu, convallis feugiat justo ut, fermentum \\t\\t\\t\\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \\t\\t\\t\\tFusce nec enim eu nisl ultrices ultrices.", "id": "3014"}', 'location': u'value2'}
+Request from 127.0.0.1 : retrieve data from producer 3005
+Retrieve data from the cache.
+Database update - Producer: 3015
+Database update - Heartbeat: {'timestamp': datetime.datetime(2014, 4, 2, 21, 17, 10, 785280), 'ip_address': '127.0.0.1', 'id': 3015, 'data': u'{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \\t\\t\\t\\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \\t\\t\\t\\tvarius viverra facilisis. Quisque quis imperdiet augue, et \\t\\t\\t\\tullamcorper justo. Maecenas a risus erat. Curabitur non \\t\\t\\t\\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \\t\\t\\t\\tVivamus urna arcu, convallis feugiat justo ut, fermentum \\t\\t\\t\\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \\t\\t\\t\\tFusce nec enim eu nisl ultrices ultrices.", "id": "3015"}', 'location': u'value2'}
+Database update - Producer: 3000
+Database update - Heartbeat: {'timestamp': datetime.datetime(2014, 4, 2, 21, 17, 10, 860482), 'ip_address': '127.0.0.1', 'id': 3000, 'data': u'{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \\t\\t\\t\\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \\t\\t\\t\\tvarius viverra facilisis. Quisque quis imperdiet augue, et \\t\\t\\t\\tullamcorper justo. Maecenas a risus erat. Curabitur non \\t\\t\\t\\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \\t\\t\\t\\tVivamus urna arcu, convallis feugiat justo ut, fermentum \\t\\t\\t\\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \\t\\t\\t\\tFusce nec enim eu nisl ultrices ultrices.", "id": "3000"}', 'location': u'value2'}
+Database update - Producer: 3001
+Database update - Heartbeat: {'timestamp': datetime.datetime(2014, 4, 2, 21, 17, 10, 829525), 'ip_address': '127.0.0.1', 'id': 3001, 'data': u'{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \\t\\t\\t\\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \\t\\t\\t\\tvarius viverra facilisis. Quisque quis imperdiet augue, et \\t\\t\\t\\tullamcorper justo. Maecenas a risus erat. Curabitur non \\t\\t\\t\\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \\t\\t\\t\\tVivamus urna arcu, convallis feugiat justo ut, fermentum \\t\\t\\t\\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \\t\\t\\t\\tFusce nec enim eu nisl ultrices ultrices.", "id": "3001"}', 'location': u'value2'}
+Database update - Producer: 3002
+Database update - Heartbeat: {'timestamp': datetime.datetime(2014, 4, 2, 21, 17, 10, 833440), 'ip_address': '127.0.0.1', 'id': 3002, 'data': u'{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \\t\\t\\t\\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \\t\\t\\t\\tvarius viverra facilisis. Quisque quis imperdiet augue, et \\t\\t\\t\\tullamcorper justo. Maecenas a risus erat. Curabitur non \\t\\t\\t\\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \\t\\t\\t\\tVivamus urna arcu, convallis feugiat justo ut, fermentum \\t\\t\\t\\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \\t\\t\\t\\tFusce nec enim eu nisl ultrices ultrices.", "id": "3002"}', 'location': u'value2'}
+Database update - Producer: 3003
+Database update - Heartbeat: {'timestamp': datetime.datetime(2014, 4, 2, 21, 17, 10, 815062), 'ip_address': '127.0.0.1', 'id': 3003, 'data': u'{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \\t\\t\\t\\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \\t\\t\\t\\tvarius viverra facilisis. Quisque quis imperdiet augue, et \\t\\t\\t\\tullamcorper justo. Maecenas a risus erat. Curabitur non \\t\\t\\t\\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \\t\\t\\t\\tVivamus urna arcu, convallis feugiat Running consumer: Ask data from producer 3006.
+0.0200769901276
+Received data.
+{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \t\t\t\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \t\t\t\tvarius viverra facilisis. Quisque quis imperdiet augue, et \t\t\t\tullamcorper justo. Maecenas a risus erat. Curabitur non \t\t\t\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \t\t\t\tVivamus urna arcu, convallis feugiat justo ut, fermentum \t\t\t\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \t\t\t\tFusce nec enim eu nisl ultrices ultrices.", "id": "3006"}
+Running consumer: Ask data from producer 3007.
+0.0149700641632
+Received data.
+{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \t\t\t\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \t\t\t\tvarius viverra facilisis. Quisque quis imperdiet augue, et \t\t\t\tullamcorper justo. Maecenas a risus erat. Curabitur non \t\t\t\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \t\t\t\tVivamus urna arcu, convallis feugiat justo ut, fermentum \t\t\t\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \t\t\t\tFusce nec enim eu nisl ultrices ultrices.", "id": "3007"}
+Running consumer: Ask data from producer 3008.
+0.0115439891815
+Received data.
+{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \t\t\t\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \t\t\t\tvarius viverra facilisis. Quisque quis imperdiet augue, et \t\t\t\tullamcorper justo. Maecenas a risus erat. Curabitur non \t\t\t\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \t\t\t\tVivamus urna arcu, convallis feugiat justo ut, fermentum \t\t\t\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \t\t\t\tFusce nec enim eu nisl ultrices ultrices.", "id": "3008"}
+Running consumer: Ask data from producer 3009.
+0.0141179561615
+Received data.
+{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \t\t\t\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \t\t\t\tvarius viverra facilisis. Quisque quis imperdiet augue, et \t\t\t\tullamcorper justo. Maecenas a risus erat. Curabitur non \t\t\t\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \t\t\t\tVivamus urna arcu, convallis feugiat justo ut, fermentum \t\t\t\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \t\t\t\tFusce nec enim eu nisl ultrices ultrices.", "id": "3009"}
+Running consumer: Ask data from producer 3010.
+0.0150849819183
+Received data.
+{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \t\t\t\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \t\t\t\tvarius viverra facilisis. Quisque quis imperdiet augue, et \t\t\t\tullamcorper justo. Maecenas a risus erat. Curabitur non \t\t\t\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \t\t\t\tVivamus urna arcu, convallis feugiat justo ut, fermentum \t\t\t\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \t\t\t\tFusce nec enim eu nisl ultrices ultrices.", "id": "3010"}
+Running consumer: Ask data from producer 3011.
+0.01136302948
+Received data.
+{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \t\t\t\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \t\t\t\tvarius viverra facilisis. Quisque quis imperdiet augue, et \t\t\t\tullamcorper justo. Maecenas a risus erat. Curabitur non \t\t\t\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \t\t\t\tVivamus urna arcu, convallis feugiat justo ut, fermentum \t\t\t\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \t\t\t\tFusce nec enim eu nisl ultrices ultrices.", "id": "3011"}
+Running consumer: Ask data from producer 3012.
+0.0173308849335
+Received data.
+{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \t\t\t\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \t\t\t\tvarius viverra facilisis. Quisque quis imperdiet augue, et \t\t\t\tullamcorper justo. Maecenas a risus erat. Curabitur non \t\t\t\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \t\t\t\tVivamus urna arcu, convallis feugiat justo ut, fermentum \t\t\t\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \t\t\t\tFusce nec enim eu nisl ultrices ultrices.", "id": "3012"}
+justo ut, fermentum \\t\\t\\t\\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \\t\\t\\t\\tFusce nec enim eu nisl ultrices ultrices.", "id": "3003"}', 'location': u'value2'}
+Database update - Producer: 3004
+Database update - Heartbeat: {'timestamp': datetime.datetime(2014, 4, 2, 21, 17, 10, 842848), 'ip_address': '127.0.0.1', 'id': 3004, 'data': u'{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \\t\\t\\t\\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \\t\\t\\t\\tvarius viverra facilisis. Quisque quis imperdiet augue, et \\t\\t\\t\\tullamcorper justo. Maecenas a risus erat. Curabitur non \\t\\t\\t\\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \\t\\t\\t\\tVivamus urna arcu, convallis feugiat justo ut, fermentum \\t\\t\\t\\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \\t\\t\\t\\tFusce nec enim eu nisl ultrices ultrices.", "id": "3004"}', 'location': u'value2'}
+Database update - Producer: 3005
+Database update - Heartbeat: {'timestamp': datetime.datetime(2014, 4, 2, 21, 17, 10, 840206), 'ip_address': '127.0.0.1', 'id': 3005, 'data': u'{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \\t\\t\\t\\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \\t\\t\\t\\tvarius viverra facilisis. Quisque quis imperdiet augue, et \\t\\t\\t\\tullamcorper justo. Maecenas a risus erat. Curabitur non \\t\\t\\t\\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \\t\\t\\t\\tVivamus urna arcu, convallis feugiat justo ut, fermentum \\t\\t\\t\\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \\t\\t\\t\\tFusce nec enim eu nisl ultrices ultrices.", "id": "3005"}', 'location': u'value2'}
+Database update - Producer: 3006
+Database update - Heartbeat: {'timestamp': datetime.datetime(2014, 4, 2, 21, 17, 10, 838532), 'ip_address': '127.0.0.1', 'id': 3006, 'data': u'{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \\t\\t\\t\\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \\t\\t\\t\\tvarius viverra facilisis. Quisque quis imperdiet augue, et \\t\\t\\t\\tullamcorper justo. Maecenas a risus erat. Curabitur non \\t\\t\\t\\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \\t\\t\\t\\tVivamus urna arcu, convallis feugiat justo ut, fermentum \\t\\t\\t\\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \\t\\t\\t\\tFusce nec enim eu nisl ultrices ultrices.", "id": "3006"}', 'location': u'value2'}
+Database update - Producer: 3007
+Database update - Heartbeat: {'timestamp': datetime.datetime(2014, 4, 2, 21, 17, 10, 826621), 'ip_address': '127.0.0.1', 'id': 3007, 'data': u'{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \\t\\t\\t\\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \\t\\t\\t\\tvarius viverra facilisis. Quisque quis imperdiet augue, et \\t\\t\\t\\tullamcorper justo. Maecenas a risus erat. Curabitur non \\t\\t\\t\\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \\t\\t\\t\\tVivamus urna arcu, convallis feugiat justo ut, fermentum \\t\\t\\t\\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \\t\\t\\t\\tFusce nec enim eu nisl ultrices ultrices.", "id": "3007"}', 'location': u'value2'}
+Request from 127.0.0.1 : retrieve data from producer 3006
+Retrieve data from the cache.
+Request from 127.0.0.1 : retrieve data from producer 3007
+Retrieve data from the cache.
+Request from 127.0.0.1 : retrieve data from producer 3008
+Retrieve data from the cache.
+Request from 127.0.0.1 : retrieve data from producer 3009
+Retrieve data from the cache.
+Request from 127.0.0.1 : retrieve data from producer 3010
+Retrieve data from the cache.
+Request from 127.0.0.1 : retrieve data from producer 3011
+Retrieve data from the cache.
+Server: Update Database
+Server: Flush heartbeat cache to the database.
+Request from 127.0.0.1 : retrieve data from producer 3012
+Retrieve data from the cache.
+Database update - Producer: 3008
+Database update - Heartbeat: {'timestamp': datetime.datetime(2014, 4, 2, 21, 17, 10, 841851), 'ip_address': '127.0.0.1', 'id': 3008, 'data': u'{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \\t\\t\\t\\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \\t\\t\\t\\tvarius viverra facilisis. Quisque quis imperdiet augue, et \\t\\t\\t\\tullamcorper justo. Maecenas a risus erat. Curabitur non \\t\\t\\t\\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \\t\\t\\t\\tVivamus urna arcu, convallis feugiat justo ut, fermentum \\t\\t\\t\\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \\t\\t\\t\\tFusce nec enim eu nisl ultrices ultrices.", "id": "3008"}', 'location': u'value2'}
+Database update - Producer: 3009
+Database update - Heartbeat: {'timestamp': datetime.datetime(2014, 4, 2, 21, 17, 10, 842356), 'ip_address': '127.0.0.1', 'id': 3009, 'data': u'{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \\t\\t\\t\\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \\t\\t\\t\\tvarius viverra facilisis. Quisque quis imperdiet augue, et \\t\\t\\t\\tullamcorper justo. Maecenas a risus erat. Curabitur non \\t\\t\\t\\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \\t\\t\\t\\tVivamus urna arcu, convallis feugiat justo ut, fermentum \\t\\t\\t\\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \\t\\t\\t\\tFusce nec enim eu nisl ultrices ultrices.", "id": "3009"}', 'location': u'value2'}
+Database update - Producer: 3010
+Database update - Heartbeat: {'timestamp': datetime.datetime(2014, 4, 2, 21, 17, 10, 819623), 'ip_address': '127.0.0.1', 'id': 3010, 'data': u'{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \\t\\t\\t\\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \\t\\t\\t\\tvarius viverra facilisis. Quisque quis imperdiet augue, et \\t\\t\\t\\tullamcorper justo. Maecenas a risus erat. Curabitur non \\t\\t\\t\\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \\t\\t\\t\\tVivamus urna arcu, convallis feugiat justo ut, fermentum \\t\\t\\t\\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \\t\\t\\t\\tFusce nec enim eu nisl ultrices ultrices.", "id": "3010"}', 'location': u'value2'}
+Database update - Producer: 3011
+Database update - Heartbeat: {'timestamp': datetime.datetime(2014, 4, 2, 21, 17, 10, 839726), 'ip_address': '127.0.0.1', 'id': 3011, 'data': u'{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \\t\\t\\t\\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \\t\\t\\t\\tvarius viverra facilisis. Quisque quis imperdiet augue, et \\t\\t\\t\\tullamcorper justo. Maecenas a risus erat. Curabitur non \\t\\t\\t\\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \\t\\t\\t\\tVivamus urna arcu, convallis feugiat justo ut, fermentum \\t\\t\\t\\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \\t\\t\\t\\tFusce nec enim eu nisl ultrices ultrices.", "id": "3011"}', 'location': u'value2'}
+Database update - Producer: 3012
+Database update - Heartbeat: {'timestamp': datetime.datetime(2014, 4, 2, 21, 17, 10, 817101), 'ip_address': '127.0.0.1', 'id': 3012, 'data': u'{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \\t\\t\\t\\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \\t\\t\\t\\tvarius viverra facilisis. Quisque quis imperdiet augue, et \\t\\t\\t\\tullamcorper justo. Maecenas a risus erat. Curabitur non \\t\\t\\t\\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \\t\\t\\t\\tVivamus urna arcu, convallis feugiat justo ut, fermentum \\t\\t\\t\\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \\t\\t\\t\\tFusce nec enim eu nisl ultrices ultrices.", "id": "3012"}', 'location': u'value2'}
+Database update - Producer: 3013
+Database update - Heartbeat: {'timestamp': datetime.datetime(2014, 4, 2, 21, 17, 10, 852526), 'ip_address': '127.0.0.1', 'id': 3013, 'data': u'{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \\t\\t\\t\\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \\t\\t\\t\\tvarius viverra facilisis. Quisque quis imperdiet augue, et \\t\\t\\t\\tullamcorper justo. Maecenas a risus erat. Curabitur non \\t\\t\\t\\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \\t\\t\\t\\tVivamus urna arcu, convallis feugiat justo ut, fermentum \\t\\t\\t\\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \\t\\t\\t\\tFusce nec enim eu nisl ultrices ultrices.", "id": "3013"}', 'location': u'value2'}
+Database update - Producer: 3014
+Database update - Heartbeat: {'timestamp': datetime.datetime(2014, 4, 2, 21, 17, 10, 841315), 'ip_address': '127.0.0.1', 'id': 3014, 'data': u'{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \\t\\t\\t\\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \\t\\t\\t\\tvarius viverra facilisis. Quisque quis imperdiet augue, et \\t\\t\\t\\tullamcorper justo. Maecenas a risus erat. Curabitur non \\t\\t\\t\\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \\t\\t\\t\\tVivamus urna arcu, convallis feugiat justo ut, fermentum \\t\\t\\t\\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \\t\\t\\t\\tFusce nec enim eu nisl ultrices ultrices.", "id": "3014"}', 'location': u'value2'}
+Database update - Producer: 3015
+Database update - Heartbeat: {'timestamp': datetime.datetime(2014, 4, 2, 21, 17, 10, 785280), 'ip_address': '127.0.0.1', 'id': 3015, 'data': u'{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \\t\\t\\t\\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \\t\\t\\t\\tvarius viverra facilisis. Quisque quis imperdiet augue, et \\t\\t\\t\\tullamcorper justo. Maecenas a risus erat. Curabitur non \\t\\t\\t\\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \\t\\t\\t\\tVivamus urna arcu, convallis feugiat justo ut, fermentum \\t\\t\\t\\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \\t\\t\\t\\tFusce nec enim eu nisl ultrices ultrices.", "id": "3015"}', 'location': u'value2'}
+Database update - Producer: 3000
+Database update - Heartbeat: {'timestamp': datetime.datetime(2014, 4, 2, 21, 17, 10, 860482), 'ip_address': '127.0.0.1', 'id': 3000, 'data': u'{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \\t\\t\\t\\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \\t\\t\\t\\tvarius viverra facilisis. Quisque quis imperdiet augue, et \\t\\t\\t\\tullamcorper justo. Maecenas a risus erat. Curabitur non \\t\\t\\t\\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \\t\\t\\t\\tVivamus urna arcu, convallis feugiat justo ut, fermentum \\t\\t\\t\\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \\t\\t\\t\\tFusce nec enim eu nisl ultrices ultrices.", "id": "3000"}', 'location': u'value2'}
+Database update - Producer: 3001
+Database update - Heartbeat: {'timestamp': datetime.datetime(2014, 4, 2, 21, 17, 10, 829525), 'ip_address': '127.0.0.1', 'id': 3001, 'data': u'{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \\t\\t\\t\\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \\t\\t\\t\\tvarius viverra facilisis. Quisque quis imperdiet augue, et \\t\\t\\t\\tullamcorper justo. Maecenas a risus erat. Curabitur non \\t\\t\\t\\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \\t\\t\\t\\tVivamus urna arcu, convallis feugiat justo ut, fermentum \\t\\t\\t\\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \\t\\t\\t\\tFusce nec enim eu nisl ultrices ultrices.", "id": "3001"}', 'location': u'value2'}
+Database update - Producer: 3002
+Database update - Heartbeat: {'timestamp': datetime.datetime(2014, 4, 2, 21, 17, 10, 833440), 'ip_address': '127.0.0.1', 'id': 3002, 'data': u'{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \\t\\t\\t\\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \\t\\t\\t\\tvarius viverra facilisis. Quisque quis imperdiet augue, et \\t\\t\\t\\tullamcorper justo. Maecenas a risus erat. Curabitur non \\t\\t\\t\\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \\t\\t\\t\\tVivamus urna arcu, convallis feugiat justo ut, fermentum \\t\\t\\t\\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \\tRunning consumer: Ask data from producer 3013.
+0.0127580165863
+Received data.
+{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \t\t\t\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \t\t\t\tvarius viverra facilisis. Quisque quis imperdiet augue, et \t\t\t\tullamcorper justo. Maecenas a risus erat. Curabitur non \t\t\t\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \t\t\t\tVivamus urna arcu, convallis feugiat justo ut, fermentum \t\t\t\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \t\t\t\tFusce nec enim eu nisl ultrices ultrices.", "id": "3013"}
+Running consumer: Ask data from producer 3014.
+\\t\\t\\tFusce nec enim eu nisl ultrices ultrices.", "id": "3002"}', 'location': u'value2'}
+Database update - Producer: 3003
+Database update - Heartbeat: {'timestamp': datetime.datetime(2014, 4, 2, 21, 17, 10, 815062), 'ip_address': '127.0.0.1', 'id': 3003, 'data': u'{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \\t\\t\\t\\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \\t\\t\\t\\tvarius viverra facilisis. Quisque quis imperdiet augue, et \\t\\t\\t\\tullamcorper justo. Maecenas a risus erat. Curabitur non \\t\\t\\t\\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \\t\\t\\t\\tVivamus urna arcu, convallis feugiat justo ut, fermentum \\t\\t\\t\\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \\t\\t\\t\\tFusce nec enim eu nisl ultrices ultrices.", "id": "3003"}', 'location': u'value2'}
+Database update - Producer: 3004
+Database update - Heartbeat: {'timestamp': datetime.datetime(2014, 4, 2, 21, 17, 10, 842848), 'ip_address': '127.0.0.1', 'id': 3004, 'data': u'{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \\t\\t\\t\\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \\t\\t\\t\\tvarius viverra facilisis. Quisque quis imperdiet augue, et \\t\\t\\t\\tullamcorper justo. Maecenas a risus erat. Curabitur non \\t\\t\\t\\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \\t\\t\\t\\tVivamus urna arcu, convallis feugiat justo ut, fermentum \\t\\t\\t\\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \\t\\t\\t\\tFusce nec enim eu nisl ultrices ultrices.", "id": "3004"}', 'location': u'value2'}
+Database update - Producer: 3005
+Database update - Heartbeat: {'timestamp': datetime.datetime(2014, 4, 2, 21, 17, 10, 840206), 'ip_address': '127.0.0.1', 'id': 3005, 'data': u'{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \\t\\t\\t\\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \\t\\t\\t\\tvarius viverra facilisis. Quisque quis imperdiet augue, et \\t\\t\\t\\tullamcorper justo. Maecenas a risus erat. Curabitur non \\t\\t\\t\\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \\t\\t\\t\\tVivamus urna arcu, convallis feugiat justo ut, fermentum \\t\\t\\t\\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \\t\\t\\t\\tFusce nec enim eu nisl ultrices ultrices.", "id": "3005"}', 'location': u'value2'}
+Database update - Producer: 3006
+Database update - Heartbeat: {'timestamp': datetime.datetime(2014, 4, 2, 21, 17, 10, 838532), 'ip_address': '127.0.0.1', 'id': 3006, 'data': u'{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \\t\\t\\t\\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \\t\\t\\t\\tvarius viverra facilisis. Quisque quis imperdiet augue, et \\t\\t\\t\\tullamcorper justo. Maecenas a risus erat. Curabitur non \\t\\t\\t\\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \\t\\t\\t\\tVivamus urna arcu, convallis feugiat justo ut, fermentum \\t\\t\\t\\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \\t\\t\\t\\tFusce nec enim eu nisl ultrices ultrices.", "id": "3006"}', 'location': u'value2'}
+Database update - Producer: 3007
+Database update - Heartbeat: {'timestamp': datetime.datetime(2014, 4, 2, 21, 17, 10, 826621), 'ip_address': '127.0.0.1', 'id': 3007, 'data': u'{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \\t\\t\\t\\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \\t\\t\\t\\tvarius viverra facilisis. Quisque quis imperdiet augue, et \\t\\t\\t\\tullamcorper justo. Maecenas a risus erat. Curabitur non \\t\\t\\t\\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \\t\\t\\t\\tVivamus urna arcu, convallis feugiat justo ut, fermentum \\t\\t\\t\\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \\t\\t\\t\\tFusce nec enim eu nisl ultrices ultrices.", "id": "3007"}', 'location': u'value2'}
+Request from 127.0.0.1 : retrieve data from producer 3013
+Retrieve data from the cache.
+Request from 127.0.0.1 : retrieve data from producer 3014
+Retrieve data from the 0.0238189697266
+Received data.
+{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \t\t\t\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \t\t\t\tvarius viverra facilisis. Quisque quis imperdiet augue, et \t\t\t\tullamcorper justo. Maecenas a risus erat. Curabitur non \t\t\t\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \t\t\t\tVivamus urna arcu, convallis feugiat justo ut, fermentum \t\t\t\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \t\t\t\tFusce nec enim eu nisl ultrices ultrices.", "id": "3014"}
+Running consumer: Ask data from producer 3015.
+0.0120949745178
+Received data.
+{"data": "Phasellus consectetur tortor eu risus pretium consectetur eu \t\t\t\tfaucibus tellus. Fusce imperdiet sed urna at ultrices. Etiam \t\t\t\tvarius viverra facilisis. Quisque quis imperdiet augue, et \t\t\t\tullamcorper justo. Maecenas a risus erat. Curabitur non \t\t\t\tadipiscing leo. Phasellus ultrices cursus dolor ac tempus. \t\t\t\tVivamus urna arcu, convallis feugiat justo ut, fermentum \t\t\t\tmattis lacus. Nunc laoreet lorem sit amet rhoncus malesuada. \t\t\t\tFusce nec enim eu nisl ultrices ultrices.", "id": "3015"}
+
+Stop all background processes.
+./test_four.sh: line 47: 29963 Terminated              python ../run_worker.py $worker_port $balancer_addr $balancer_port
+
+Test Case 4: Completed.
+=========
+

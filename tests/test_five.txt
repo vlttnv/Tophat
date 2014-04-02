@@ -1,0 +1,67 @@
+
+=========
+Test Case 5: 15 producers and 3 workers. Handle worker failure. 
+
+Running balancer @ localhost:6000.
+
+Running worker 1 @ localhost:5000.
+
+Running worker 2 @ localhost:5001.
+
+Running worker 3 @ localhost:5002.
+
+Running producers: 4000 - 4015.
+Running producer 4000.
+Running producer 4001.
+Running producer 4002.
+Running producer 4003.
+Running producer 4004.
+Running producer 4005.
+Running producer 4006.
+Running producer 4007.
+Running producer 4008.
+Running producer 4009.
+Running producer 4010.
+Running producer 4011.
+Running producer 4012.
+Running producer 4013.
+Running producer 4014.
+Running producer 4015.
+
+Stop workers.
+./test_five.sh: line 46: 30239 Terminated              python ../run_worker.py $worker_one_port $balancer_addr $balancer_port
+./test_five.sh: line 46: 30246 Terminated              python ../run_worker.py $worker_two_port $balancer_addr $balancer_port
+./test_five.sh: line 46: 30254 Terminated              python ../run_worker.py $worker_three_port $balancer_addr $balancer_port
+
+Restart workers.
+
+Running worker 1 @ localhost:5000.
+
+Running worker 2 @ localhost:5001.
+
+Running worker 3 @ localhost:5002.
+
+Stop all background processes.
+./test_five.sh: line 64: 30261 Terminated              python ../client/producer.py $balancer_addr $balancer_port $i
+./test_five.sh: line 64: 30262 Terminated              python ../client/producer.py $balancer_addr $balancer_port $i
+./test_five.sh: line 64: 30263 Terminated              python ../client/producer.py $balancer_addr $balancer_port $i
+./test_five.sh: line 64: 30264 Terminated              python ../client/producer.py $balancer_addr $balancer_port $i
+./test_five.sh: line 64: 30265 Terminated              python ../client/producer.py $balancer_addr $balancer_port $i
+./test_five.sh: line 64: 30266 Terminated              python ../client/producer.py $balancer_addr $balancer_port $i
+./test_five.sh: line 64: 30267 Terminated              python ../client/producer.py $balancer_addr $balancer_port $i
+./test_five.sh: line 64: 30268 Terminated              python ../client/producer.py $balancer_addr $balancer_port $i
+./test_five.sh: line 64: 30269 Terminated              python ../client/producer.py $balancer_addr $balancer_port $i
+./test_five.sh: line 64: 30270 Terminated              python ../client/producer.py $balancer_addr $balancer_port $i
+./test_five.sh: line 64: 30271 Terminated              python ../client/producer.py $balancer_addr $balancer_port $i
+./test_five.sh: line 64: 30272 Terminated              python ../client/producer.py $balancer_addr $balancer_port $i
+./test_five.sh: line 64: 30273 Terminated              python ../client/producer.py $balancer_addr $balancer_port $i
+./test_five.sh: line 64: 30274 Terminated              python ../client/producer.py $balancer_addr $balancer_port $i
+./test_five.sh: line 64: 30275 Terminated              python ../client/producer.py $balancer_addr $balancer_port $i
+./test_five.sh: line 64: 30276 Terminated              python ../client/producer.py $balancer_addr $balancer_port $i
+./test_five.sh: line 65: 30349 Terminated              python ../run_worker.py $worker_one_port $balancer_addr $balancer_port
+./test_five.sh: line 65: 30350 Terminated              python ../run_worker.py $worker_two_port $balancer_addr $balancer_port
+./test_five.sh: line 65: 30351 Terminated              python ../run_worker.py $worker_three_port $balancer_addr $balancer_port
+
+Test Case 5: Completed.
+=========
+
