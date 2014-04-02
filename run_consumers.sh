@@ -32,7 +32,7 @@ do
 	do
 		printf 'Running consumer - Request data from producer %s.\n' "$i"
 		python client/consumer.py $balancer_addr $balancer_port $i &
-		sleep 0.5
+		sleep 0.1
 	done
 done
 

@@ -27,7 +27,6 @@ Consumer
 	chmod a+x run_consumers.sh
 	./run_consumers.sh $balancer_addr $balancer_port $start_producer_id $num_producer
 
-
 Tests
 =======
 ### All test cases descriptions
