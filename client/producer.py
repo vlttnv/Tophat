@@ -35,7 +35,8 @@ def heartbeat():
 		adr = requests.get('http://' + args.remote_address + ':' + args.remote_port + '/register/' + str(args.id))
 		if adr.status_code == 400:
 			sys.exit(adr.text)
-		print 'O> Registered with balancer, witing for assigned worker.'
+		print 'O> Registered with balancer, waiting for assigned worker.'
+		print '0> Assigned worker is ' + adr.text
 	except requests.ConnectionError:
 		sys.exit('Incorrect address/port or main server is offline.')
 
