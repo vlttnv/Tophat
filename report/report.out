@@ -1,9 +1,15 @@
 \BOOKMARK [1][-]{section*.2}{REPORT}{}% 1
-\BOOKMARK [2][-]{section*.3}{Design}{section*.2}% 2
-\BOOKMARK [3][-]{section*.4}{Planning}{section*.3}% 3
-\BOOKMARK [3][-]{section*.5}{Final Solution}{section*.3}% 4
-\BOOKMARK [3][-]{section*.6}{Why Flask?}{section*.3}% 5
-\BOOKMARK [3][-]{section*.7}{Why RESTful?}{section*.3}% 6
-\BOOKMARK [3][-]{section*.8}{Why SQLite3?}{section*.3}% 7
-\BOOKMARK [2][-]{section*.9}{Evaluation}{section*.2}% 8
-\BOOKMARK [2][-]{section*.10}{Testing}{section*.2}% 9
+\BOOKMARK [2][-]{section*.3}{Planning}{section*.2}% 2
+\BOOKMARK [2][-]{section*.4}{Instructions}{section*.2}% 3
+\BOOKMARK [2][-]{section*.5}{Design}{section*.2}% 4
+\BOOKMARK [3][-]{section*.6}{System components}{section*.5}% 5
+\BOOKMARK [3][-]{section*.7}{Load balancer and workers}{section*.5}% 6
+\BOOKMARK [3][-]{section*.8}{Load balancer and producers}{section*.5}% 7
+\BOOKMARK [3][-]{section*.9}{Workers and producers: heartbeats}{section*.5}% 8
+\BOOKMARK [3][-]{section*.10}{Load balancer and consumers: redirection}{section*.5}% 9
+\BOOKMARK [3][-]{section*.11}{Workers and consumers}{section*.5}% 10
+\BOOKMARK [3][-]{section*.12}{Why Flask?}{section*.5}% 11
+\BOOKMARK [3][-]{section*.13}{Why RESTful?}{section*.5}% 12
+\BOOKMARK [3][-]{section*.14}{Why SQLite3?}{section*.5}% 13
+\BOOKMARK [2][-]{section*.15}{Evaluation}{section*.2}% 14
+\BOOKMARK [2][-]{section*.16}{Testing}{section*.2}% 15

@@ -11,7 +11,7 @@ list_workers = {}
 # Round robin
 ptr = 0
 
-@balancer_app.route('/get_data/<int:id>')
+@balancer_app.route('/get_data/<int:id>', methods=['GET'])
 def get_data(id):
 	"""
 	Bulds the url and
@@ -26,7 +26,7 @@ def get_data(id):
 	return redirect(url, code=302)
 
 @balancer_app.route('/register/<int:id>', methods=['GET'])
-def register(id):
+def get_register(id):
 	"""
 	Registers the producer and returns a worker address
 	"""
@@ -47,8 +47,8 @@ def register(id):
 
 	return workers[ptr]
 
-@balancer_app.route('/balancer/<int:port>')
-def balancer(port):
+@balancer_app.route('/balancer/<int:port>', methods=['GET'])
+def get_balancer(port):
 	"""
 	Register a worker and add it to the list
 	"""
@@ -60,8 +60,8 @@ def balancer(port):
 	
 	return 'Successful rgistration', 200
 
-@balancer_app.route('/worker/quit/<int:port>')
-def worker_quit(port):
+@balancer_app.route('/worker/quit/<int:port>', methods=['GET'])
+def get_worker_quit(port):
 	"""
 
 	"""
