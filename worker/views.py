@@ -15,7 +15,7 @@ def update_DB():
 		thread.daemon = True
 		thread.start()
 	except KeyboardInterrupt, SystemExit:
-		pass
+		raise
 
 update_DB()
 
