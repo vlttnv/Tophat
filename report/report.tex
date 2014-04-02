@@ -70,7 +70,7 @@ escapeinside={\%*}{*)}          % if you want to add a comment within your code
 
 \begin{document}
 
-\title{Component Technology - Middleware}
+\title{Component Technology - TopHat, A Middleware for Sensor Data}
 
 \numberofauthors{2}
 \author{
@@ -85,7 +85,7 @@ escapeinside={\%*}{*)}          % if you want to add a comment within your code
 \maketitle
 
 \begin{abstract}
-Abstract
+The report describes the design, implementation, and evaluation of TopHat, a message oriented middleware that handles the transmission of mobile sensor data. The concepts of producers and consumers are used. The load balancer behind the middleware is also discussed.
 \end{abstract}
 
 \section{REPORT}
@@ -94,11 +94,11 @@ Abstract
 
 Initially, the team implemented a simple server. The server receives heartbeats, in the form of POST request, from the producers. Each heartbeat consisted of an unique identifier of the mobile phone device and its current location. The sender advertises itself as a producer to the server. When a consumer asks the server for sensor data from that particular producer, the server will send a request to the producer, and then pass on the results back to the producer. However, this approach requires the producers listening on some ports to handle data requests from the server. As a result, the consumer will spend significant time waiting for the server to retrieve data from the producer. The solution will create too much overhead on the server side, and it is unlikely that the server can deal with increasing consumer requests.
 
-Later on, the team arrived to a more elegant solution. On each heartbeat, the producer sends sensor data to the server. The server caches the data, and flushes them to a persistent database on occasion. Now, when a consumer requests sensor data from a particular producer, the server can respond quickly, since the sensor data are cached. A more detailed description of the overall setup is explained in the next
+Later on, the team arrived to a more elegant solution. On each heartbeat, the producer sends sensor data to the server. The server caches the data, and flushes them to a persistent database on occasion. Now, when a consumer requests sensor data from a particular producer, the server can respond quickly, since the sensor data are cached. A more detailed description of the overall setup is explained in the next section.
 
 \subsection{Instructions}
 
-See \enquote{README.md} in the project directory for directions on how to run the servers, producers, and consumers.
+See \enquote{README.md} in the project directory for directions on how to run the servers, producers, and consumers. The file describes the arguments needed to run each system component.
 
 \subsection{Design}
 
@@ -124,7 +124,7 @@ A load balancer is the primary component of the system. It manages every other s
 
 \subsubsection{Load balancer and workers}
 
-The load balancer is the entry point of the entire system. It is initialised to be listening on a specified port. It supports a number of RESTful API calls that allows other entities to interact with its system componenets, such as a worker. The worker is initialised with the IP address and the port number of the load balancer, so that it can register itself as a worker for the load balancer via with the {\it /balancer/int:port} API call. The load balancer processes the registration request, and stores the worker's IP address in memory. The load balancer keeps track of every worker, and will distribute the sever load evenly, using the round robin method. Every worker must go through the above registration process in order to let itself known to the load balancer, whom will redirect producers and consumers to the worker. The worker also listens on a specified port, for handling heartbeats (described below) and sensor data requests.
+The load balancer is the entry point of the entire system. It is initialised to be listening on a specified port. It supports a number of RESTful API calls that allows other entities to interact with its system componenets, such as a worker. The worker is initialised with the IP address and the port number of the load balancer, so that it can register itself as a worker for the load balancer via with the {\it /balancer/int:port} API call. The load balancer processes the registration request, and stores the worker's IP address in memory. The load balancer keeps track of every worker, and will distribute the sever load evenly, using the round robin method. Every worker must go through the above registration process in order to let itself known to the load balancer, whom will redirect producers and consumers to the worker. The worker also listens on a specified port, for handling heartbeats (described below) and sensor data requests. It is worth noting that the worker will exit if it cannot connect to the load balancer.
 
 \begin{figure}[!h]
 \centering
@@ -135,13 +135,7 @@ The load balancer is the entry point of the entire system. It is initialised to 
 
 \subsubsection{Load balancer and producers}
 
-Producers ask the load balancer to be assigned with a worker. Afterwards, the producers only communicate with their assigned workers, and only when the connection disconnects do they speak to the load balancer again. To register, the producers send the 
-
-
-An  {\it /register/int:id} API call is made by the producer to the balancer with its ID. The balancer keeps track of the relationship between producers and workers which is used when the consumer requests are handled. When a worker is found, the producer gets redirected to it and the communication between the producer and balancer is over.
-
-A typical use case:
-A producer is started by providing a balancer address and producer ID. The finds a worker for the producer or returns a message that no workers are available. If a worker is available the corresponding address is returned. All errors regarding connection loss or interruption are handled.
+Producers ask the load balancer to be assigned with a worker. Afterwards, the producers only communicate with their assigned workers, and only when the connection disconnects do they speak to the load balancer again. To register, the producers fire the {\it /register/int:id} API call to the load balancer, with its ID. The producer ID is the unique identifier of the mobile device, also known as the International Mobile Station Equipment Identity, or IMEI. After registration, the load balancer returns the IP address of an available worker to the producer. The load balancer keeps track of the mapping between producers and workers. When a consumer requests data from a certain producer, the load balancer will redirect the request to the worker that has been in contact with that producer. HTTP errors such as disconnected connection and interruption are caught and handled.
 
 \begin{figure}[!h]
 \centering
@@ -152,7 +146,7 @@ A producer is started by providing a balancer address and producer ID. The finds
 
 \subsubsection{Workers and producers: heartbeats}
 
-After a producer receives its assigned worker address it starts sending heartbeats (periodic messages). They contain the following information:
+After a producer receives its assigned worker and the corresponding IP address, it will continuously send heartbeats (periodic messages) to that worker. The message contains the following information:
 
 \vspace*{\baselineskip}
 \begin{lstlisting}[caption={Heartbeat format}, mathescape, upquote=true]
@@ -171,13 +165,9 @@ new_heartbeat = {
 }
 \end{lstlisting}
 
-DATABSE STUFF HERE
-If the worker goes offline / crashes the producer can try to reconnect a specified number of times. It does that through the balancer so if more workers are available it immediately gets given a worker or the moment a worker becomes available. The number of retries can be specified by the user and it can be indefinite, meaning the producer can always be looking for a connection.
+On each heartbeat POST request, the worker extracts the \enquote{id}, \enquote{location}, and \enquote{data} from \enquote{received\_heartbeat}. In addition, the worker takes note of the remote IP address of the request, as well as the current time. The worker puts the information altogether into a new \enquote{heartbeat} object called \enquote{new\_heartbeat} (a dictionary in $Python$). The team has designed a data structure called cache, defined in $worker/cache.py$. In essence, the cache stores a mapping (another dictionary) between the producer ID and the its latest \enquote{heartbeat}. The worker will flush the \enquote{heartbeats} to the database every $20$ seconds. The time interval is chosen for demonstration purposes, and more tests are needed to find out the optimal time. The worker will also flush the cache to the database when it reaches the size limit. The size is kept to $100$, also for demonstration purposes. When the cache is full and the contained data are added to the database, half of the cache is cleared to allow more data to be added.
 
-A typical use case:
-A producer receives a worker address from the balancer and uses it to start making hearbeats to the worker, providing data and information. If the worker happens to go down, a retry mechanism triggers and the producers tries to re-register with the balancer. If workes are available the producer gets a new worker and continues heartbeats. All errors regarding connection loss or interruption are handeled.
-
-On each heartbeat POST request, the worker extracts the \enquote{id}, \enquote{location}, and \enquote{data}. In addition, the worker takes note of the remote IP address of the request, as well as the current time. The worker puts the information altogether into a \enquote{heartbeat} object (a dictionary in $Python$). The team has designed a data structure called cache, defined in $worker/cache.py$. In essence, the cache stores a mapping (another dictionary) between the producer ID and the its latest \enquote{heartbeat}. The worker will flush the \enquote{heartbeats} to the database every $20$ seconds. The time interval is chosen for demonstration purposes, and more tests are needed to find out the optimal time. The worker will also flush the cache to the database when it reaches the size limit. The size is kept to $100$, also for demonstration purposes. When the cache is full and the contained data are added to the database, half of the cache is cleared to allow more data to be added.
+If the worker goes offline or crashes, the producer will ask for a new worker from the load balancer. The producer will do so for a specified number of times (10 in the current system), until it gets a new worker or uses all of the attempts. The number is chosen for no particular reason, and further experiments are required to find the optimal value. The number of retries can also be specified by the user and it can be indefinite, meaning that the producer will always be waiting for an available worker. When the producer gets a new worker, it will resume sending heartbeats. All errors regarding connection loss and interruption are handeled.
 
 \begin{figure}[!h]
 \centering
@@ -188,10 +178,9 @@ On each heartbeat POST request, the worker extracts the \enquote{id}, \enquote{l
 
 \subsubsection{Load balancer and consumers: redirection}
 
-When a consumer requests data it does it through the balancer. As mentioned above the balancer keeps track of the relationship between producers and workers. It redirects the consumer to the appropriate worker to where the data is being stored / received in real time.
+A consumer requests data through the load balancer. As mentioned above, the load balancer keeps track of the relationship between producers and workers. It redirects the consumer to the appropriate worker, where the data are received and stored in real time.
 
-A typical use case:
-A consumer makes a GET request to the balancer. The balancer checks if the ID of the specified producer is being handled by some of the workers. If so the consumer get redirected to the appropriate worker which will handle the request. All connection errors that might occur that might occur are handeled and do not cause crashes.
+The following scenario describes a typical use case. A consumer makes the {\it /get\_data/int:id} API call to the load balancer. The load balancer checks whether the producer ID is being handled by anyone of the workers. If so, the consumer will be redirected to the appropriate worker. The worker will handle the request and return the data that the consumer asks for. All connection errors that might occur are handeled and do not cause crashes.
 
 \begin{figure}[!h]
 \centering
@@ -202,10 +191,7 @@ A consumer makes a GET request to the balancer. The balancer checks if the ID of
 
 \subsubsection{Workers and consumers}
 
-The worker does several things after being contacted by a redirected consumer. First it checks if the requested producer is online and sending that. If yes, then it gets the data from the cache without making queries to the database. In case that the producer is unreachable and there is no current data in the cache a call to the database is made. This greatly reduces the number of database queries while imroving response times.
-
-A typical use case:
-After the consumer is redirected to a worker, the worker checks if live data for the ID is available in the cache. If not it makes a query to the database. The data is returned to the consumer.
+The worker does several things after being contacted by a redirected consumer. Firstly, it checks whether it has the data in the cache. If so, the worker will return the data to the consumer. Otherwise, the worker will issue a database query to find such data from the database. The cache greatly reduces the number of database queries, while imroving response times.
 
 \begin{figure}[!h]
 \centering
@@ -220,13 +206,11 @@ The team decides to use the python web framework Flask, alongside with Requests 
 
 \subsubsection{Why RESTful?}
 
-A decision was made to base the system on a RESTful API. RESTful API provide a simple standardized communication over HTTP, which is stateless. It is very convenient to use on mobile devices as well. The language that was chosen was Python and bash for the shell scripts used to simulate and test the system. 
-
-\subsection{Evaluation}
+A decision was made to base the system on a RESTful API. RESTful API provide a simple standardized communication over HTTP, which is stateless. Also, the technology is very convenient to use on mobile devices. The language that was chosen was Python and bash for the shell scripts used to simulate and test the system. 
 
 \subsection{Testing}
 
-The team has included 
+The team has included a number of 
 
 \subsubsection{Timing Test 1: Load balancer}
 
@@ -274,5 +258,9 @@ Instructions:
 \end{lstlisting}
 
 The time per request is 3.86 ms across all concurrent requests. The Server handles the load well and does not crash when multiple concurrent requests are made.
+
+\subsection{Evaluation and Conclusion}
+
+
 
 \end{document}
