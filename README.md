@@ -9,6 +9,10 @@ Requirements
 	pip install requests
 	pip install tornado
 
+Database Setup
+=======
+	python db_create.py  
+
 Balancer
 =======
 	python run_balancer.py $balancer_port
