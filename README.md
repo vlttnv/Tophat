@@ -35,7 +35,11 @@ Tests
 =======
 ### All test cases descriptions
 	cd tests/
-	sublime(or any text editor) TEST_CASES
+	sublime(or any text editor) test_cases.txt
+
+### Read individual test results
+	cd tests/results/
+	sublime(or any text editor) test_number.txt
 
 ### Run all tests
 	cd tests/
