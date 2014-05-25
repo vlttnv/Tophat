@@ -1,3 +1,8 @@
+TopHat
+=====
+
+[![Build Status](https://travis-ci.org/vlttnv/Tophat.svg?branch=master)](https://travis-ci.org/vlttnv/Tophat)
+
 Requirements
 =======
 	python 2.x

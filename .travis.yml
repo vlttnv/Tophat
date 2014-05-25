@@ -9,4 +9,5 @@ install:
   - pip install -r requirements.txt
 
 script: 
-  - python run_balancer.py 8000
+  - cd tests/
+  - sh all_tests.sh
