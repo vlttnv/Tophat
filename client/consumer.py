@@ -20,6 +20,7 @@ try:
 		print 'Did not receive data.'
 		
 	print r.text
+
 except requests.ConnectionError:
 	sys.exit('Consumer exits: Balancer server offline or incorrect address/port.')
 except KeyboardInterrupt:
